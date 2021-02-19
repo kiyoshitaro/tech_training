@@ -1,0 +1,22 @@
+
+Curl :
+Transfer data to and from server
+is used to download data from HTTPs site or FTP server 
+
+Download file: 
+    curl -O https://.....filename*.txt (wildcards : *, globbing Parser: [01-10])
+    curl -o renamefile https://.....filename
+    -L redirectif 300 error code
+    -C resume previous file transfer if time out
+
+wget
+is used to download data from HTTPs site or FTP server 
+better curl at downloading multiple file recursively
+
+    -b go background after startup
+    -q turnoff output
+    -c resume broken
+    -i file.txt (save all link download)
+    --limit-rate=200k (limit upper bytes per second)
+    --wait=2.5
+
