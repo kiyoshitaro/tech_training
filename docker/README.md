@@ -66,3 +66,23 @@ docker run -dp 3000:3000 \
    -e MYSQL_DB=todos \
    node:12-alpine \
    sh -c "yarn install && yarn run dev"
+
+
+Dockerfile - Best Practices
+     Be explicit about build process
+     Containers should be stateless
+     Use .dockerignore file
+     Avoid installing unnecessary packages
+          Clean cache after installation
+     Each container should have only one concern / purpose
+     Minimize the number of layers
+          Multi-line arguments, sort alphabetically
+     CMD should be used to run processes inside container
+          Advanced users should use it in conjunction with ENTRYPOINT
+     MAINTAINER is deprecated; use LABEL
+
+Use vscode extension
+https://www.youtube.com/watch?v=sUZxIWDUicA
+
+Cheatsheet 
+https://github.com/wsargent/docker-cheat-sheet
