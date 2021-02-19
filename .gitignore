@@ -1,1 +1,11 @@
 docker/data-science-workflow/*
+
+tensorflow/notMNIST_large
+tensorflow/notMNIST_small
+tensorflow/notMNIST.pickle
+tensorflow/notMNIST_large.tar.gz
+tensorflow/notMNIST_small.tar.gz
+tensorflow/enwik8.zip
+tensorflow/enwik9.zip
+tensorflow/text8.zip
+tensorflow/tf_logs
