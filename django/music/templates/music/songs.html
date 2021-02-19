@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Django Girls blog</title>
+    </head>
+        <div>
+            <h1><a href="/">List songs</a></h1>
+        </div>
+
+        {% for song in songs %}
+        <div>
+            <p>published: {{ song.title }}</p>
+            <h2><a href="">{{ song.artist }}</a></h2>
+        </div>
+
+    {% endfor %}
+    <a href = "/music/form">
+    <button type="submit" value="Add"> Add</button>
+    </a>
+    </body>
+</html>
