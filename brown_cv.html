@@ -1,0 +1,186 @@
+<!DOCTYPEhtml>
+    <html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>Curriculum Vitae</title>
+        <style>
+            img {
+                margin: 20px 50px 20px 50px;
+                border: solid black 2px;
+            }
+
+            .border {
+                padding: 0px 100px 0px 100px;
+            }
+
+            .head {
+                padding: 50px 70px 100px 100px;
+            }
+
+            .bg {
+                background-color: #dbb883;
+            }
+
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+                border-radius: 5px;
+                background: white;
+                margin: 20px 15px 20px 15px;
+                padding: 10px 10px 10px 10px;
+                width: 400px;
+            }
+
+            .select {
+                text-align: right;
+                padding: 20px 15px 20px 15px;
+                font-size: large;
+            }
+
+
+            @media (min-width: 900px) {
+                .card {
+                    display: inline-block;
+                }
+            }
+        </style>
+
+    <body class="bg">
+
+        <div class="border">
+
+            <div class="select">
+                <label>Change theme:</label>
+                <select id="theme" onchange="changeTheme()">
+                    <option value="white">Default</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="yellow">Yellow</option>
+                </select>
+            </div>
+
+
+            <div class="head">
+                <img src=" https://tse4.mm.bing.net/th?id=OIP.NurO3c_hzKu1z4MT3EdytgEsDh&pid=15.1" height="210px"
+                    width="150px" style="float:left;" />
+
+                <h1>Brown Nguyen</h1>
+                <h2>Software Engineer, Web Developer</h2>
+                <p>Hai Ba Trung, Ha Noi, Viet Nam</p>
+                <p>034-493-3366 </p>
+                <p>hunglhp1998@gmail.com</p>
+            </div>
+
+
+            <div>
+                <h3>Education</h3>
+                <hr class="hr_color" />
+                <br />
+            </div>
+            <ul>
+                <li>
+                    <p><strong>High school: </strong>Le Hong Phong High School, Nam Dinh</p>
+                </li>
+                <li>
+                    <p><strong>College: </strong>Talent Engineer Programme, School of Information and
+                        Communication Technology, Hanoi University of Science and Technology
+                    </p>
+                </li>
+            </ul>
+            <br />
+
+            <div>
+                <h3>Skill </h3>
+                <hr class="hr_color" />
+                <br />
+            </div>
+
+
+            <ol>
+                <li>
+                    <p><strong>Languages & Software: </strong>Latex ,HTML, CSS, JavaScript, PHP, Python, mySQL, C++,
+                        Java</p>
+                </li>
+                <li>
+                    <p><strong>Technologies: </strong>ReactJS, Redux, Mobx, Laravel, Bootstrap, Git , Docker
+                        , OpenCV, Tensorflow, Keras, Aws, Server
+                    </p>
+                </li>
+            </ol>
+            <br />
+
+
+            <div>
+                <h3>Project</h3>
+                <hr class="hr_color" />
+                <br />
+            </div>
+
+            <div class="card">
+                <div>
+
+                    <p align="left"><i>Web Developer</i>
+                        <span style="float:right">2016-2017</span>
+                    </p>
+                </div>
+
+                <div>CODE A WEB</div>
+
+                <ul>
+                    <li>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus,
+                            interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="card">
+                <p align="left"><i>AI Engineer</i>
+                    <span style="float:right">2017-2019</span>
+                </p>
+                <div>BUILD DATAPILE</div>
+
+                <ul>
+                    <li>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus,
+                            interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <p align="left"><i>AI Researcher</i>
+                    <span style="float:right">2019-2021</span>
+                </p>
+                <div>BUILD DEEP LEARNING MODEL</div>
+
+                <ul>
+                    <li>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus,
+                            interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script>
+        function changeTheme() {
+            let s = document.getElementById("theme").value;
+            let hrs = document.getElementsByClassName("hr_color");
+            for (hr of hrs) {
+                console.log(hr)
+                hr.style.height = "2px";
+                hr.style.backgroundColor = s;
+                hr.style.color = s;
+                hr.style.borderWidth = 0;
+            }
+        }
+    </script>
+
+    </html>
