@@ -10,7 +10,7 @@
         <title>Curriculum Vitae</title>
         <style>
             img {
-                margin: 20px 50px 20px 50px;
+                margin: 20px 50px 20px 20px;
                 border: solid black 2px;
             }
 
@@ -19,7 +19,8 @@
             }
 
             .head {
-                padding: 50px 70px 100px 100px;
+                padding: 100px 0 100px 0px;
+                width: 600px
             }
 
             .bg {
@@ -40,6 +41,14 @@
                 padding: 20px 15px 20px 15px;
                 font-size: large;
             }
+            hr{
+                height:1px;
+                background-color:black;
+                border-width: 0;
+            }
+            .theme_class {
+                color: black;
+            }
 
 
             @media (min-width: 900px) {
@@ -56,7 +65,7 @@
             <div class="select">
                 <label>Change theme:</label>
                 <select id="theme" onchange="changeTheme()">
-                    <option value="white">Default</option>
+                    <option value="black">Default</option>
                     <option value="red">Red</option>
                     <option value="green">Green</option>
                     <option value="yellow">Yellow</option>
@@ -64,7 +73,13 @@
             </div>
 
 
-            <div class="head">
+            <div class="head theme_class">
+                <div>
+                    <h3>Personal Information</h3>
+                    <hr />
+                    <br />
+                </div>
+    
                 <img src=" https://tse4.mm.bing.net/th?id=OIP.NurO3c_hzKu1z4MT3EdytgEsDh&pid=15.1" height="210px"
                     width="150px" style="float:left;" />
 
@@ -73,12 +88,13 @@
                 <p>Hai Ba Trung, Ha Noi, Viet Nam</p>
                 <p>034-493-3366 </p>
                 <p>hunglhp1998@gmail.com</p>
+                <!-- <br/> -->
+                <hr/>
             </div>
 
-
-            <div>
+            <div class = "theme_class">
                 <h3>Education</h3>
-                <hr class="hr_color" />
+                <hr />
                 <br />
             </div>
             <ul>
@@ -92,10 +108,9 @@
                 </li>
             </ul>
             <br />
-
-            <div>
+            <div class = "theme_class">
                 <h3>Skill </h3>
-                <hr class="hr_color" />
+                <hr />
                 <br />
             </div>
 
@@ -114,9 +129,9 @@
             <br />
 
 
-            <div>
+            <div class = "theme_class">
                 <h3>Project</h3>
-                <hr class="hr_color" />
+                <hr />
                 <br />
             </div>
 
@@ -172,13 +187,16 @@
     <script>
         function changeTheme() {
             let s = document.getElementById("theme").value;
-            let hrs = document.getElementsByClassName("hr_color");
-            for (hr of hrs) {
-                console.log(hr)
-                hr.style.height = "2px";
-                hr.style.backgroundColor = s;
-                hr.style.color = s;
-                hr.style.borderWidth = 0;
+            let areas = document.getElementsByClassName("theme_class");
+            for (area of areas) {
+                h3s = area.getElementsByTagName("h3");
+                for (h3 of h3s){
+                    h3.style.color = s;
+                }
+                hrs = area.getElementsByTagName("hr");
+                for (hr of hrs){
+                    hr.style.backgroundColor = s;
+                }
             }
         }
     </script>
