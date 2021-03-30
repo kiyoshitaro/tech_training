@@ -4,7 +4,7 @@ img {
 }
 
 .border {
-  padding: 0px 100px 100px 100px;
+  padding: 0px 0px 0px 0px;
 }
 
 .head {
@@ -22,7 +22,8 @@ img {
   background: white;
   margin: 20px 15px 20px 15px;
   padding: 10px 10px 10px 10px;
-  width: calc(30% - 40px);
+  /* width: 400px; */
+  max-width: 400px;
   display: inline-block;
 }
 
@@ -40,3 +41,8 @@ hr {
 .theme_class {
   color: black;
 }
+/* @media (min-width: 800px) {
+  .card {
+    display: inline-block;
+  }
+} */
