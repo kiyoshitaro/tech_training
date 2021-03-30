@@ -1,0 +1,9 @@
+.portal-homepage {
+    padding: 0px 43px;
+}
+
+.portal-homepage .wrap,
+.portal-homepage .header,
+.portal-homepage .content {
+    width: 100%;
+}
