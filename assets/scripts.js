@@ -8,7 +8,7 @@ function changeTheme() {
     }
     hrs = area.getElementsByTagName("hr");
     for (hr of hrs) {
-      hr.style.backgroundColor = s;
+      hr.style.borderColor = s;
     }
   }
 }
