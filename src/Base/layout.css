@@ -43,7 +43,7 @@
 }
 
 /* screen is less than 800px wide ==> two columns stack on top of each other */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1300px) {
   .leftcolumn,
   .rightcolumn {
     width: 100%;

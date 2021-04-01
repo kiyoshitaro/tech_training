@@ -3,6 +3,7 @@ import "./layout.css";
 import Navigation from "../Components/Navigation/Navigation";
 import Announcement from "../Components/Announcement/Announcement";
 import News from "../Components/News/News";
+import QuickLinks from "../Components/QuickLinks/QuickLinks";
 
 export default class Layout extends React.Component {
   render() {
@@ -33,7 +34,10 @@ export default class Layout extends React.Component {
               </div>
 
               <div class="rightcolumn">
-                <div id="quick-links"></div>
+                <div id="quick-links">
+                  <p className="topic">Quick Links</p>
+                  <QuickLinks></QuickLinks>
+                </div>
                 <div id="events"></div>
                 <div id="how-do-i"></div>
               </div>
