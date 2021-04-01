@@ -1,9 +1,52 @@
 .portal-homepage {
-    padding: 0px 43px;
+  padding: 0px 43px;
 }
 
 .portal-homepage .wrap,
 .portal-homepage .header,
 .portal-homepage .content {
+  width: 100%;
+}
+.topic {
+  font-family: "Segoe UI";
+  font-weight: 600;
+  font-size: 24px;
+  color: #444444;
+  letter-spacing: 0px;
+  line-height: 32px;
+}
+.viewmore {
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 14px;
+  color: #0074bd;
+  letter-spacing: 0px;
+  line-height: 19px;
+}
+
+.leftcolumn {
+  float: left;
+  width: 65%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 30%;
+  padding-left: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* screen is less than 800px wide ==> two columns stack on top of each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn,
+  .rightcolumn {
     width: 100%;
+    padding: 0;
+  }
 }
