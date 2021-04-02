@@ -51,6 +51,14 @@ export default class HowDoI extends React.Component {
             return <Collapse key={index} item={item}></Collapse>;
           })}
         </div>
+        <a
+          className="thumb-title viewmore"
+          href="#"
+          style={{ marginTop: "20px" }}
+        >
+          View more
+          <img className="thumb-img" src={Image.arrowicon} />
+        </a>
       </div>
     );
   }

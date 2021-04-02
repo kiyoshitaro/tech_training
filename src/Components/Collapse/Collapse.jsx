@@ -32,7 +32,7 @@ export default class Collapse extends React.Component {
     return (
       <div>
         <button className={this.state.titleClass} onClick={this.switchCollapse}>
-          <img className="img_thumbnail" src={Image.collapse} />
+          <img className="thumb-img" src={Image.collapse} />
           <span>{this.props.item.question}</span>
         </button>
         <div className={this.state.contentClass}>

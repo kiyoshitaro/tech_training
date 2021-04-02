@@ -1,4 +1,4 @@
-.container {
+.container-event {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -15,7 +15,6 @@
   height: 90px;
   flex: 0 0 360px;
   background-color: #d6f3e9;
-
   padding-left: 10px;
 }
 

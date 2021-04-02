@@ -57,7 +57,7 @@ export default class Events extends React.Component {
       <div>
         {this.state.events.map((item, index) => {
           return (
-            <div key={index} className="container">
+            <div key={index} className="container-event">
               <div className="item-1">
                 <p className="event-day">{item.day}</p>
                 <p className="event-month">{item.month}</p>
@@ -65,15 +65,25 @@ export default class Events extends React.Component {
               <div className="item-2">
                 <p className="post-title">{item.title}</p>
 
-                <p className="post-time">
-                  <img className="img_thumbnail" src={Image.date} />
-                  {item.start} - {item.end}
-                </p>
+                <div className="thumb-title" style={{ marginTop: "-10px" }}>
+                  <img className="thumb-img" src={Image.date} />
+                  <p className="post-time">
+                    {item.start} - {item.end}
+                  </p>
+                </div>
               </div>
               <br />
             </div>
           );
         })}
+        <a
+          className="thumb-title viewmore"
+          href="#"
+          style={{ marginTop: "20px" }}
+        >
+          View more
+          <img className="thumb-img" src={Image.arrowicon} />
+        </a>
       </div>
     );
   }

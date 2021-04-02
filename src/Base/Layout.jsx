@@ -7,6 +7,9 @@ import QuickLinks from "../Components/QuickLinks/QuickLinks";
 import Events from "../Components/Events/Events";
 import HowDoI from "../Components/HowDoI/HowDoI";
 import ImageGallery from "../Components/ImageGallery/ImageGallery";
+import VideoGallery from "../Components/VideoGallery/VideoGallery";
+import DocumentGallery from "../Components/DocumentGallery/DocumentGallery";
+import Image from "./Image.jsx";
 
 export default class Layout extends React.Component {
   render() {
@@ -22,22 +25,25 @@ export default class Layout extends React.Component {
                 <div id="announcement">
                   <p className="topic">Announcement</p>
                   <Announcement></Announcement>
-                  <a className="viewmore">View more</a>
                 </div>
 
                 <div id="news">
                   <p className="topic">News</p>
                   <News></News>
-                  <a className="viewmore">View more</a>
                 </div>
 
                 <div id="image-gallery">
                   <p className="topic">Image Gallery</p>
                   <ImageGallery></ImageGallery>
-                  <a className="viewmore">View more</a>
                 </div>
-                <div id="video-gallery"></div>
-                <div id="document-gallery"></div>
+                <div id="video-gallery">
+                  <p className="topic">Video Gallery</p>
+                  <VideoGallery></VideoGallery>
+                </div>
+                <div id="document-gallery">
+                  <p className="topic">Document Gallery</p>
+                  <DocumentGallery></DocumentGallery>
+                </div>
               </div>
 
               <div className="rightcolumn">
@@ -48,12 +54,10 @@ export default class Layout extends React.Component {
                 <div id="events">
                   <p className="topic">Events</p>
                   <Events></Events>
-                  <a className="viewmore">View more</a>
                 </div>
                 <div id="how-do-i">
                   <p className="topic">How do I</p>
                   <HowDoI></HowDoI>
-                  <a className="viewmore">View more</a>
                 </div>
               </div>
             </div>

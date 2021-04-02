@@ -2,15 +2,15 @@ import React from "react";
 import "./index.css";
 import Image from "../../Base/Image.jsx";
 
-export default class ImageGallery extends React.Component {
+export default class VideoGallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: [
-        { src: Image.image_gallery },
-        { src: Image.image_gallery_1 },
-        { src: Image.image_gallery_2 },
-        { src: Image.image_gallery_3 },
+      videos: [
+        { src: Image.video },
+        { src: Image.video_1 },
+        { src: Image.video_2 },
+        { src: Image.video_3 },
       ],
     };
   }
@@ -18,10 +18,13 @@ export default class ImageGallery extends React.Component {
     return (
       <div>
         <div className="container">
-          {this.state.images.map((item, index) => {
+          {this.state.videos.map((item, index) => {
             return (
               <div key={index}>
-                <img className="img_thumbnail" src={item.src} />
+                <video className="video-thumb" controls>
+                  <source src={item.src} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             );
           })}

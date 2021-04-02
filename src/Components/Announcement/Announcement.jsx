@@ -49,6 +49,10 @@ export default class Announcement extends React.Component {
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}
+        <a className="thumb-title viewmore" href="#">
+          View more
+          <img className="thumb-img" src={Image.arrowicon} />
+        </a>
       </div>
     );
   }
