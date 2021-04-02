@@ -6,6 +6,7 @@ import News from "../Components/News/News";
 import QuickLinks from "../Components/QuickLinks/QuickLinks";
 import Events from "../Components/Events/Events";
 import HowDoI from "../Components/HowDoI/HowDoI";
+import ImageGallery from "../Components/ImageGallery/ImageGallery";
 
 export default class Layout extends React.Component {
   render() {
@@ -30,7 +31,11 @@ export default class Layout extends React.Component {
                   <a className="viewmore">View more</a>
                 </div>
 
-                <div id="image-gallery"></div>
+                <div id="image-gallery">
+                  <p className="topic">Image Gallery</p>
+                  <ImageGallery></ImageGallery>
+                  <a className="viewmore">View more</a>
+                </div>
                 <div id="video-gallery"></div>
                 <div id="document-gallery"></div>
               </div>
