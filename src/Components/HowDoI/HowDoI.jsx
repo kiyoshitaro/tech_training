@@ -38,9 +38,19 @@ export default class HowDoI extends React.Component {
   render() {
     return (
       <div>
-        {this.state.faq.map((item, index) => {
-          return <Collapse key={index} item={item}></Collapse>;
-        })}
+        <form>
+          <input
+            className="search-box "
+            type="text"
+            name="search"
+            placeholder="Find Questions"
+          />
+        </form>
+        <div>
+          {this.state.faq.map((item, index) => {
+            return <Collapse key={index} item={item}></Collapse>;
+          })}
+        </div>
       </div>
     );
   }

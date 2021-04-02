@@ -1,0 +1,17 @@
+.search-box {
+  /* width: 130px; */
+  box-sizing: border-box;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: white;
+  background-image: url("../../Base/Images/search.png");
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 35px;
+}
+
+.search-box:hover {
+  border-color: #0074bd;
+}
