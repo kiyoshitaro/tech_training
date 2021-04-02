@@ -4,12 +4,21 @@
   grid-template-columns: 150px 150px 150px;
   grid-template-rows: 150px 150px 150px;
   background-color: white;
-  padding: 0px;
 }
 
 .grid-item {
   background-color: #0074bd;
-  padding: 55px;
+  padding: 40px 30px 40px 30px;
   font-size: 30px;
+  text-decoration: none;
   text-align: center;
+}
+
+.link-content {
+  font-family: "NotoSans-Regular";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0px;
+  line-height: 18px;
 }

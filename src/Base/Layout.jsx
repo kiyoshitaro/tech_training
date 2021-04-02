@@ -4,6 +4,8 @@ import Navigation from "../Components/Navigation/Navigation";
 import Announcement from "../Components/Announcement/Announcement";
 import News from "../Components/News/News";
 import QuickLinks from "../Components/QuickLinks/QuickLinks";
+import Events from "../Components/Events/Events";
+import HowDoI from "../Components/HowDoI/HowDoI";
 
 export default class Layout extends React.Component {
   render() {
@@ -14,8 +16,8 @@ export default class Layout extends React.Component {
             <Navigation></Navigation>
           </div>
           <div className="content">
-            <div class="row">
-              <div class="leftcolumn">
+            <div className="row">
+              <div className="leftcolumn">
                 <div id="announcement">
                   <p className="topic">Announcement</p>
                   <Announcement></Announcement>
@@ -33,13 +35,21 @@ export default class Layout extends React.Component {
                 <div id="document-gallery"></div>
               </div>
 
-              <div class="rightcolumn">
+              <div className="rightcolumn">
                 <div id="quick-links">
                   <p className="topic">Quick Links</p>
                   <QuickLinks></QuickLinks>
                 </div>
-                <div id="events"></div>
-                <div id="how-do-i"></div>
+                <div id="events">
+                  <p className="topic">Events</p>
+                  <Events></Events>
+                  <a className="viewmore">View more</a>
+                </div>
+                <div id="how-do-i">
+                  <p className="topic">How do I</p>
+                  <HowDoI></HowDoI>
+                  <a className="viewmore">View more</a>
+                </div>
               </div>
             </div>
           </div>

@@ -7,25 +7,26 @@ export default class QuickLinks extends React.Component {
     super(props);
     this.state = {
       links: [
-        { icon: Image.icon, link: "#" },
-        { icon: Image.icon_1, link: "#" },
-        { icon: Image.icon_2, link: "#" },
-        { icon: Image.icon_3, link: "#" },
-        { icon: Image.icon_4, link: "#" },
-        { icon: Image.icon_5, link: "#" },
-        { icon: Image.icon_6, link: "#" },
-        { icon: Image.icon_7, link: "#" },
-        { icon: Image.icon_8, link: "#" },
+        { icon: Image.icon, link: "#", title: "Training" },
+        { icon: Image.icon_1, link: "#", title: "Organization" },
+        { icon: Image.icon_2, link: "#", title: "Task" },
+        { icon: Image.icon_3, link: "#", title: "Global Sales" },
+        { icon: Image.icon_4, link: "#", title: "Birthday" },
+        { icon: Image.icon_5, link: "#", title: "Health" },
+        { icon: Image.icon_6, link: "#", title: "Service Desk" },
+        { icon: Image.icon_7, link: "#", title: "Truck" },
+        { icon: Image.icon_8, link: "#", title: "Idea" },
       ],
     };
   }
   render() {
     return (
-      <div class="grid-container">
+      <div className="grid-container">
         {this.state.links.map((item, index) => {
           return (
-            <a class="grid-item" key={index} href={item.link}>
+            <a className="grid-item" key={index} href={item.link}>
               <img src={item.icon}></img>
+              <p className="link-content">{item.title}</p>
             </a>
           );
         })}

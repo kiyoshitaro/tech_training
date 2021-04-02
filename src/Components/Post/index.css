@@ -1,4 +1,4 @@
-.img_align {
+.img_thumbnail {
   float: left;
   margin: 0px 10px 0px 0px;
 }
@@ -20,7 +20,7 @@
   /* border: 1px solid transparent; */
 }
 
-.title {
+.post-title {
   /* display: inline-block; */
 
   font-family: "Segoe UI";
@@ -31,7 +31,7 @@
   line-height: 21px;
 }
 
-.content {
+.post-content {
   font-family: "Segoe UI";
   font-weight: 400;
   font-size: 13px;
@@ -39,7 +39,7 @@
   letter-spacing: 0px;
   line-height: 17px;
 }
-.time {
+.post-time {
   display: inline;
   margin-right: 20px;
   font-family: "Segoe UI";

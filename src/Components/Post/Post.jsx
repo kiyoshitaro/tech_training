@@ -7,15 +7,14 @@ export default class Post extends React.Component {
     super(props);
   }
   render() {
-    console.log(this.props.item.img);
     return (
       <div style={{ marginBottom: "80px" }}>
-        <img className="img_align" src={this.props.item.img} />
-        <p className="title">{this.props.item.title}</p>
-        <p className="content">{this.props.item.content}</p>
+        <img className="img_thumbnail" src={this.props.item.img} />
+        <p className="post-title">{this.props.item.title}</p>
+        <p className="post-content">{this.props.item.content}</p>
 
-        <img className="img_align" src={Image.date} />
-        <p className="time">{this.props.item.time}</p>
+        <img className="img_thumbnail" src={Image.date} />
+        <p className="post-time">{this.props.item.time}</p>
 
         {this.props.item.tags.map((tag) => {
           return <span className="tag">{tag}</span>;
