@@ -58,12 +58,12 @@ export default class Events extends React.Component {
         <div className="event">
           {this.state.events.map((item, index) => {
             return (
-              <div key={index} className="container-event">
-                <div className="item-1">
+              <div key={index} className="event-container">
+                <div className="event-item-1">
                   <p className="event-day">{item.day}</p>
                   <p className="event-month">{item.month}</p>
                 </div>
-                <div className="item-2">
+                <div className="event-item-2">
                   <p className="post-title">{item.title}</p>
 
                   <div className="thumb-title" style={{ marginTop: "-10px" }}>

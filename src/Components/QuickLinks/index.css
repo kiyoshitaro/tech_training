@@ -1,4 +1,4 @@
-.grid-container {
+.quicklink-grid-container {
   display: grid;
   grid-gap: 5px 5px;
   grid-template-columns: 150px 150px 150px;
@@ -7,7 +7,7 @@
   background-color: white;
 }
 
-.grid-item {
+.quicklink-grid-item {
   background-color: #0074bd;
   padding: 40px 30px 40px 30px;
   font-size: 30px;
@@ -15,7 +15,7 @@
   text-align: center;
 }
 
-.link-content {
+.link-title {
   font-family: "NotoSans-Regular";
   font-weight: 400;
   font-size: 14px;

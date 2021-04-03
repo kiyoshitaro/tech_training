@@ -17,11 +17,11 @@ export default class VideoGallery extends React.Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <div className="image-gallery-container">
           {this.state.videos.map((item, index) => {
             return (
               <div key={index}>
-                <video className="video-thumb" controls>
+                <video className="video-left" controls>
                   <source src={item.src} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>

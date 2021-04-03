@@ -1,8 +1,11 @@
-.img_left {
+.img-left {
   float: left;
   margin: 10px 10px 0px 0px;
 }
 
+.post {
+  margin-bottom: 80px;
+}
 .tag {
   display: inline-block;
   cursor: pointer;
@@ -17,11 +20,11 @@
   background-color: #e4e6e8;
   border-radius: 8px;
   padding: 2px 20px 2px 20px;
-  /* border: 1px solid transparent; */
 }
 
 .post-title {
   display: inline-block;
+  /* Title not split when down size */
 
   font-family: "Segoe UI";
   font-weight: 600;
@@ -40,8 +43,8 @@
   line-height: 17px;
 }
 .post-time {
-  display: inline;
   margin-right: 10px;
+
   font-family: "Segoe UI";
   font-weight: 400;
   font-size: 14px;

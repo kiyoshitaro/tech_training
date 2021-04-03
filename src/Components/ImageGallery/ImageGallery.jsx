@@ -17,11 +17,11 @@ export default class ImageGallery extends React.Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <div className="image-gallery-container">
           {this.state.images.map((item, index) => {
             return (
               <div key={index}>
-                <img className="thumb-img" src={item.src} />
+                <img className="img-left" src={item.src} />
               </div>
             );
           })}

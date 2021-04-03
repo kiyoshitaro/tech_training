@@ -21,12 +21,12 @@ export default class QuickLinks extends React.Component {
   }
   render() {
     return (
-      <div className="grid-container">
+      <div className="quicklink-grid-container">
         {this.state.links.map((item, index) => {
           return (
-            <a className="grid-item" key={index} href={item.link}>
+            <a className="quicklink-grid-item" key={index} href={item.link}>
               <img src={item.icon}></img>
-              <p className="link-content">{item.title}</p>
+              <p className="link-title">{item.title}</p>
             </a>
           );
         })}

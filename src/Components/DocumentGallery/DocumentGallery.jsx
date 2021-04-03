@@ -63,16 +63,16 @@ export default class DocumentGallery extends React.Component {
   }
   render() {
     return (
-      <div className="grid-container-document">
+      <div className="document-grid-container">
         {this.state.documents.map((item, index) => {
           return (
-            <div key={index} className="grid-item-document">
+            <div key={index} className="document-grid-item">
               <p>{item.topic}</p>
               {item.docs.map((it, ind) => {
                 return (
                   <div className="thumb-title" key={ind}>
                     <img className="thumb-img" src={item.icon} />
-                    <p className="post-time">{it.title}</p>
+                    <p className="doocument-title">{it.title}</p>
                   </div>
                 );
               })}

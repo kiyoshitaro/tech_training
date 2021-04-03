@@ -1,17 +1,17 @@
-.container-event {
+.event-container {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: stretch;
   margin-top: 10px;
 }
-.item-1 {
+.event-item-1 {
   height: 84px;
   flex: 0 0 84px;
   border: 3px solid #4ac49a;
   margin-right: 10px;
 }
-.item-2 {
+.event-item-2 {
   height: 90px;
   flex: 0 0 360px;
   background-color: #d6f3e9;
@@ -55,7 +55,7 @@
     width: 40%;
     /* margin: 50px; */
   }
-  .item-2 {
+  .event-item-2 {
     flex: 0 0 60%;
   }
 }

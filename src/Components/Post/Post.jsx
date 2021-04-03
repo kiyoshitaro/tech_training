@@ -8,11 +8,10 @@ export default class Post extends React.Component {
   }
   render() {
     return (
-      <div style={{ marginBottom: "80px" }}>
-        <img className="img_left" src={this.props.item.img} />
+      <div className="post">
+        <img className="img-left" src={this.props.item.img} />
         <p className="post-title">{this.props.item.title}</p>
         <p className="post-content">{this.props.item.content}</p>
-
         <div className="thumb-title">
           <img className="thumb-img" src={Image.date} />
           <p className="post-time">{this.props.item.time}</p>
