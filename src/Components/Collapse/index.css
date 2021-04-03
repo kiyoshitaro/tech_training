@@ -24,10 +24,9 @@
   background-color: #4ac49a;
 }
 
-.content-collapse-close {
+.content-collapse {
   padding: 0px 18px;
   max-height: 0;
-  overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: #636363;
 
@@ -39,17 +38,13 @@
   line-height: 18px;
 }
 
-.content-collapse-open {
-  padding: 10px 18px 10px;
-  /* max-height: 18px; */
-  overflow: visible;
-  transition: max-height 0.2s ease-out;
-  background-color: #636363;
+.content-collapse-close {
+  padding: 0px 18px;
+  overflow: hidden;
+}
 
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  letter-spacing: 0px;
-  line-height: 18px;
+.content-collapse-open {
+  max-height: 100%;
+  padding: 10px 18px 10px;
+  overflow: visible;
 }

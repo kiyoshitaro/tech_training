@@ -9,7 +9,7 @@ export default class Collapse extends React.Component {
     this.state = {
       isOpenCollapse: false,
       titleClass: "title-collapse",
-      contentClass: "content-collapse-close",
+      contentClass: "content-collapse content-collapse-close",
     };
     this.switchCollapse = this.switchCollapse.bind(this);
     this.setClassCollapse = this.setClassCollapse.bind(this);
@@ -24,12 +24,12 @@ export default class Collapse extends React.Component {
     if (this.state.isOpenCollapse) {
       this.setState({
         titleClass: "title-collapse active",
-        contentClass: "content-collapse-open",
+        contentClass: "content-collapse content-collapse-open",
       });
     } else {
       this.setState({
         titleClass: "title-collapse",
-        contentClass: "content-collapse-close",
+        contentClass: "content-collapse content-collapse-close",
       });
     }
   }

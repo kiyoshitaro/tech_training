@@ -2,7 +2,6 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  align-items: stretch;
   margin-top: 10px;
 }
 .event-item-1 {
@@ -10,6 +9,11 @@
   flex: 0 0 84px;
   border: 3px solid #4ac49a;
   margin-right: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .event-item-2 {
   height: 90px;
@@ -25,9 +29,7 @@
   color: #4ac49a;
   letter-spacing: 0px;
   line-height: 5px;
-
-  display: flex;
-  justify-content: center;
+  margin: 10px;
 }
 
 .event-month {
@@ -37,9 +39,6 @@
   color: #4ac49a;
   letter-spacing: 0px;
   line-height: 5px;
-
-  display: flex;
-  justify-content: center;
 }
 
 .event {
@@ -50,10 +49,10 @@
   .event {
     flex-flow: row wrap;
     justify-content: space-around;
+    align-items: center;
   }
   .event > * {
     width: 40%;
-    /* margin: 50px; */
   }
   .event-item-2 {
     flex: 0 0 60%;
@@ -66,6 +65,5 @@
   }
   .event > * {
     width: 100%;
-    /* margin: 50px; */
   }
 }
