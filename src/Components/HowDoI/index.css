@@ -14,3 +14,13 @@
 .search-box:hover {
   border-color: #0074bd;
 }
+
+.howdoi {
+  width: 70%;
+}
+
+@media screen and (max-width: 1130px) {
+  .howdoi {
+    width: 100%;
+  }
+}

@@ -37,7 +37,7 @@ export default class HowDoI extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="howdoi">
         <form>
           <input
             className="search-box "

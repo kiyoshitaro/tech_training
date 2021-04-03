@@ -41,3 +41,31 @@
   display: flex;
   justify-content: center;
 }
+
+.event {
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (max-width: 1130px) {
+  .event {
+    flex-flow: row wrap;
+    justify-content: space-around;
+  }
+  .event > * {
+    width: 40%;
+    /* margin: 50px; */
+  }
+  .item-2 {
+    flex: 0 0 60%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .event {
+    flex-flow: column;
+  }
+  .event > * {
+    width: 100%;
+    /* margin: 50px; */
+  }
+}

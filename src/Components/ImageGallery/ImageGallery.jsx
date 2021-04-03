@@ -21,7 +21,7 @@ export default class ImageGallery extends React.Component {
           {this.state.images.map((item, index) => {
             return (
               <div key={index}>
-                <img className="img_thumbnail" src={item.src} />
+                <img className="thumb-img" src={item.src} />
               </div>
             );
           })}

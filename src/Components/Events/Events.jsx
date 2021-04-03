@@ -55,27 +55,29 @@ export default class Events extends React.Component {
   render() {
     return (
       <div>
-        {this.state.events.map((item, index) => {
-          return (
-            <div key={index} className="container-event">
-              <div className="item-1">
-                <p className="event-day">{item.day}</p>
-                <p className="event-month">{item.month}</p>
-              </div>
-              <div className="item-2">
-                <p className="post-title">{item.title}</p>
-
-                <div className="thumb-title" style={{ marginTop: "-10px" }}>
-                  <img className="thumb-img" src={Image.date} />
-                  <p className="post-time">
-                    {item.start} - {item.end}
-                  </p>
+        <div className="event">
+          {this.state.events.map((item, index) => {
+            return (
+              <div key={index} className="container-event">
+                <div className="item-1">
+                  <p className="event-day">{item.day}</p>
+                  <p className="event-month">{item.month}</p>
                 </div>
+                <div className="item-2">
+                  <p className="post-title">{item.title}</p>
+
+                  <div className="thumb-title" style={{ marginTop: "-10px" }}>
+                    <img className="thumb-img" src={Image.date} />
+                    <p className="post-time">
+                      {item.start} - {item.end}
+                    </p>
+                  </div>
+                </div>
+                <br />
               </div>
-              <br />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
         <a
           className="thumb-title viewmore"
           href="#"

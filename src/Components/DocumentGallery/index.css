@@ -21,3 +21,9 @@
   letter-spacing: 0px;
   line-height: 19px;
 }
+
+@media screen and (max-width: 530px) {
+  .grid-container-document {
+    grid-template-columns: auto;
+  }
+}

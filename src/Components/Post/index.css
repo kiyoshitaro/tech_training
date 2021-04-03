@@ -1,6 +1,6 @@
 .img_left {
   float: left;
-  margin: 2px 10px 0px 0px;
+  margin: 10px 10px 0px 0px;
 }
 
 .tag {
@@ -21,7 +21,7 @@
 }
 
 .post-title {
-  /* display: inline-block; */
+  display: inline-block;
 
   font-family: "Segoe UI";
   font-weight: 600;
@@ -41,7 +41,7 @@
 }
 .post-time {
   display: inline;
-  margin-right: 20px;
+  margin-right: 10px;
   font-family: "Segoe UI";
   font-weight: 400;
   font-size: 14px;
