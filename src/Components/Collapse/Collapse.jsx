@@ -12,9 +12,15 @@ export default class Collapse extends React.Component {
       contentClass: "content-collapse-close",
     };
     this.switchCollapse = this.switchCollapse.bind(this);
+    this.setClassCollapse = this.setClassCollapse.bind(this);
   }
   switchCollapse() {
-    this.setState({ isOpenCollapse: !this.state.isOpenCollapse });
+    this.setState(
+      { isOpenCollapse: !this.state.isOpenCollapse },
+      this.setClassCollapse
+    );
+  }
+  setClassCollapse() {
     if (this.state.isOpenCollapse) {
       this.setState({
         titleClass: "title-collapse active",
