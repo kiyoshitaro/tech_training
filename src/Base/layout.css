@@ -1,6 +1,5 @@
 .portal-homepage {
-  padding: 0px 43px 0px 30px;
-  /* padding: 10px; */
+  padding: 0px 43px;
 }
 
 .portal-homepage .wrap,
@@ -50,7 +49,7 @@
 .rightcolumn {
   flex: 20%;
   padding-left: 20px;
-  padding-right: 50px;
+  padding-right: 20px;
 }
 
 @media screen and (max-width: 1130px) {

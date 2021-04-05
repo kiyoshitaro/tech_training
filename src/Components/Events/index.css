@@ -20,7 +20,8 @@
 .event-grid-container {
   display: grid;
   grid-gap: 10px 10px;
-  grid-template-columns: 80px 327px;
+  grid-template-columns: 80px calc(100% - 90px);
+  /* grid-template-columns: 80px 327px; */
   grid-auto-rows: 80px;
   justify-items: stretch;
   align-items: stretch;
@@ -42,15 +43,15 @@
   align-items: center;
 }
 
-@media screen and (max-width: 1130px) {
+@media screen and (max-width: 1130px) and (min-width: 700px) {
   .event-grid-container {
     grid-template-columns: 80px auto 80px auto;
     grid-auto-rows: 80px;
   }
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 400px) {
   .event-grid-container {
-    grid-template-columns: 80px 80%;
+    grid-template-columns: 80px 75%;
     grid-auto-rows: 80px;
   }
 }
