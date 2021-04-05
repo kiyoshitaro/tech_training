@@ -66,7 +66,7 @@ export default class Events extends React.Component {
                 <div className="event-grid-item">
                   <p className="post-title">{item.title}</p>
 
-                  <div className="thumb-title" style={{ marginTop: "-10px" }}>
+                  <div className="thumb-title" >
                     <img className="thumb-img" src={Image.clock} />
                     <p className="post-time">
                       {item.start} - {item.end}
