@@ -48,7 +48,7 @@
     grid-auto-rows: 80px;
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 700px) {
   .event-grid-container {
     grid-template-columns: 80px auto;
     grid-auto-rows: 80px;
