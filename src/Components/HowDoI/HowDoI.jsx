@@ -36,7 +36,6 @@ export default class HowDoI extends React.Component {
       // statuses: new Array(this.faq.length).fill(false),
     };
     this.state.statuses = new Array(this.state.faq.length).fill(false);
-    // console.log(this.state);
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
   }
   changeAllCollapse(key, value) {

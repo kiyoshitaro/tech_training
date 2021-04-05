@@ -32,7 +32,6 @@ export default class Collapse extends React.Component {
     }
   }
   render() {
-    console.log(this.props);
     return (
       <div>
         <button
@@ -44,7 +43,10 @@ export default class Collapse extends React.Component {
             )
           }
         >
-          <img className="thumb-img" src={Image.collapse} />
+          <img
+            className="thumb-img"
+            src={this.props.isOpenCollapse ? Image.expand : Image.collapse}
+          />
           <span>{this.props.item.question}</span>
         </button>
         <div className={this.state.contentClass}>
