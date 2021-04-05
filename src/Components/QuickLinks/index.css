@@ -1,9 +1,9 @@
 .quicklink-grid-container {
   display: grid;
   grid-gap: 5px 5px;
-  grid-template-columns: 150px 150px 150px;
-  grid-template-rows: 150px 150px 150px;
-  background-color: white;
+  grid-template-columns: 136px 136px 136px;
+  grid-template-rows: 136px 136px 136px;
+  justify-content: center;
 }
 
 .quicklink-grid-item {
@@ -25,6 +25,9 @@
 
 @media screen and (max-width: 1130px) {
   .quicklink-grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+    /* grid-template-columns: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3);
+    grid-template-rows: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3); */
+    /* grid-template-columns: repeat(auto-fill, 136px); */
   }
 }

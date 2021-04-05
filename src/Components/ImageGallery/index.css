@@ -2,6 +2,10 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 55px;
 }
+
+/* @media screen and (max-width: 281px) {
+  .image-gallery-container {
+    justify-content: center;
+  }
+} */

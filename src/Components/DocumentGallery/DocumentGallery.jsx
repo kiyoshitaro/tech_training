@@ -76,11 +76,7 @@ export default class DocumentGallery extends React.Component {
                   </div>
                 );
               })}
-              <a
-                className="thumb-title viewmore"
-                href="#"
-                style={{ marginTop: "20px" }}
-              >
+              <a className="thumb-title viewmore" href="#">
                 View more
                 <img className="thumb-img" src={Image.arrowicon} />
               </a>

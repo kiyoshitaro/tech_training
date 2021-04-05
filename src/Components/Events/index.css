@@ -1,27 +1,3 @@
-.event-container {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  margin-top: 10px;
-}
-.event-item-1 {
-  height: 84px;
-  flex: 0 0 84px;
-  border: 3px solid #4ac49a;
-  margin-right: 10px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.event-item-2 {
-  height: 90px;
-  flex: 0 0 360px;
-  background-color: #d6f3e9;
-  padding-left: 10px;
-}
-
 .event-day {
   font-family: "Segoe UI";
   font-weight: 600;
@@ -29,7 +5,7 @@
   color: #4ac49a;
   letter-spacing: 0px;
   line-height: 5px;
-  margin: 10px;
+  margin-bottom: 5px;
 }
 
 .event-month {
@@ -41,29 +17,40 @@
   line-height: 5px;
 }
 
-.event {
+.event-grid-container {
+  display: grid;
+  grid-gap: 10px 10px;
+  grid-template-columns: 80px 327px;
+  grid-auto-rows: 80px;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.event-grid-item:nth-child(2n) {
+  background-color: #d6f3e9;
+  padding-left: 10px;
+
   display: flex;
   flex-direction: column;
 }
-@media screen and (max-width: 1130px) {
-  .event {
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-  }
-  .event > * {
-    width: 40%;
-  }
-  .event-item-2 {
-    flex: 0 0 60%;
-  }
+.event-grid-item:nth-child(2n + 1) {
+  background-color: #ffffff;
+  border: 3px solid #4ac49a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@media screen and (max-width: 750px) {
-  .event {
-    flex-flow: column;
+@media screen and (max-width: 1130px) {
+  .event-grid-container {
+    grid-template-columns: 80px auto 80px auto;
+    grid-auto-rows: 80px;
   }
-  .event > * {
-    width: 100%;
+}
+@media screen and (max-width: 750px) {
+  .event-grid-container {
+    grid-template-columns: 80px auto;
+    grid-auto-rows: 80px;
   }
 }

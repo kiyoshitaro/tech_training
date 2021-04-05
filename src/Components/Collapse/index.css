@@ -27,7 +27,7 @@
 .content-collapse {
   padding: 0px 18px;
   max-height: 0;
-  transition: max-height 0.2s ease-out;
+  transition: max-height 0s ease-out;
   background-color: #636363;
 
   font-family: "Segoe UI";

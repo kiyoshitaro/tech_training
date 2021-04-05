@@ -7,21 +7,14 @@ export default class Collapse extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpenCollapse: false,
+      // isOpenCollapse: props.isOpenCollapse,
       titleClass: "title-collapse",
       contentClass: "content-collapse content-collapse-close",
     };
-    this.switchCollapse = this.switchCollapse.bind(this);
     this.setClassCollapse = this.setClassCollapse.bind(this);
   }
-  switchCollapse() {
-    this.setState(
-      { isOpenCollapse: !this.state.isOpenCollapse },
-      this.setClassCollapse
-    );
-  }
   setClassCollapse() {
-    if (this.state.isOpenCollapse) {
+    if (this.props.isOpenCollapse) {
       this.setState({
         titleClass: "title-collapse active",
         contentClass: "content-collapse content-collapse-open",
@@ -33,11 +26,24 @@ export default class Collapse extends React.Component {
       });
     }
   }
-  componentDidMount() {}
+  componentDidUpdate(prevProps) {
+    if (this.props.isOpenCollapse !== prevProps.isOpenCollapse) {
+      this.setClassCollapse();
+    }
+  }
   render() {
+    console.log(this.props);
     return (
       <div>
-        <button className={this.state.titleClass} onClick={this.switchCollapse}>
+        <button
+          className={this.state.titleClass}
+          onClick={() =>
+            this.props.changeAllCollapse(
+              this.props.id,
+              !this.props.isOpenCollapse
+            )
+          }
+        >
           <img className="thumb-img" src={Image.collapse} />
           <span>{this.props.item.question}</span>
         </button>

@@ -26,9 +26,8 @@
   margin: 0px 5px 0px 5px;
 }
 .viewmore {
-  margin-top: -40px;
   text-decoration: none;
-  /* display: inline-block; */
+  margin-top: 20px;
 
   font-family: "Segoe UI";
   font-weight: 400;
@@ -44,13 +43,14 @@
 }
 
 .leftcolumn {
-  flex: 50%;
+  flex: 55%;
   padding: 20px;
 }
 
 .rightcolumn {
   flex: 20%;
   padding-left: 20px;
+  padding-right: 50px;
 }
 
 @media screen and (max-width: 1130px) {

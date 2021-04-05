@@ -33,7 +33,25 @@ export default class HowDoI extends React.Component {
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
         },
       ],
+      // statuses: new Array(this.faq.length).fill(false),
     };
+    this.state.statuses = new Array(this.state.faq.length).fill(false);
+    // console.log(this.state);
+    this.changeAllCollapse = this.changeAllCollapse.bind(this);
+  }
+  changeAllCollapse(key, value) {
+    this.setState((state) => {
+      const statuses = state.statuses.map((item, j) => {
+        if (j === key) {
+          return value;
+        } else {
+          return false;
+        }
+      });
+      return {
+        statuses,
+      };
+    });
   }
   render() {
     return (
@@ -48,14 +66,18 @@ export default class HowDoI extends React.Component {
         </form>
         <div>
           {this.state.faq.map((item, index) => {
-            return <Collapse key={index} item={item}></Collapse>;
+            return (
+              <Collapse
+                key={index}
+                id={index}
+                item={item}
+                changeAllCollapse={this.changeAllCollapse}
+                isOpenCollapse={this.state.statuses[index]}
+              ></Collapse>
+            );
           })}
         </div>
-        <a
-          className="thumb-title viewmore"
-          href="#"
-          style={{ marginTop: "20px" }}
-        >
+        <a className="thumb-title viewmore" href="#">
           View more
           <img className="thumb-img" src={Image.arrowicon} />
         </a>
