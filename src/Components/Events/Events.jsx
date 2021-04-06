@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
 import Image from "../../Base/Image.jsx";
+import Viewmore from "../Viewmore/Viewmore";
 
 export default class Events extends React.Component {
   constructor(props) {
@@ -66,7 +67,7 @@ export default class Events extends React.Component {
                 <div className="event-grid-item">
                   <p className="post-title">{item.title}</p>
 
-                  <div className="thumb-title" >
+                  <div className="thumb-title">
                     <img className="thumb-img" src={Image.clock} />
                     <p className="post-time">
                       {item.start} - {item.end}
@@ -77,10 +78,7 @@ export default class Events extends React.Component {
             );
           })}
         </div>
-        <a className="thumb-title viewmore" href="#">
-          View more
-          <img className="thumb-img" src={Image.arrowicon} />
-        </a>
+        <Viewmore></Viewmore>
       </div>
     );
   }

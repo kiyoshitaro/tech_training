@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
 import Image from "../../Base/Image.jsx";
+import Viewmore from "../Viewmore/Viewmore";
 
 export default class DocumentGallery extends React.Component {
   constructor(props) {
@@ -76,10 +77,7 @@ export default class DocumentGallery extends React.Component {
                   </div>
                 );
               })}
-              <a className="thumb-title viewmore" href="#">
-                View more
-                <img className="thumb-img" src={Image.arrowicon} />
-              </a>
+              <Viewmore></Viewmore>
             </div>
           );
         })}

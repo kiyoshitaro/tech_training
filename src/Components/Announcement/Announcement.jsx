@@ -2,6 +2,7 @@ import React from "react";
 // import "./index.css";
 import Image from "../../Base/Image.jsx";
 import Post from "../Post/Post";
+import Viewmore from "../Viewmore/Viewmore";
 
 export default class Announcement extends React.Component {
   constructor(props) {
@@ -49,10 +50,7 @@ export default class Announcement extends React.Component {
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}
-        <a className="thumb-title viewmore" href="#">
-          View more
-          <img className="thumb-img" src={Image.arrowicon} />
-        </a>
+        <Viewmore></Viewmore>
       </div>
     );
   }

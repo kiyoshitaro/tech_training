@@ -26,6 +26,7 @@
 @media screen and (max-width: 1130px) {
   .quicklink-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+    grid-template-rows: auto;
     /* grid-template-columns: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3);
     grid-template-rows: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3); */
     /* grid-template-columns: repeat(auto-fill, 136px); */

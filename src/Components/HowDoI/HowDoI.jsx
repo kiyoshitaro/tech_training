@@ -2,6 +2,8 @@ import React from "react";
 import "./index.css";
 import Image from "../../Base/Image.jsx";
 import Collapse from "../Collapse/Collapse";
+import Viewmore from "../Viewmore/Viewmore";
+
 export default class HowDoI extends React.Component {
   constructor(props) {
     super(props);
@@ -76,10 +78,7 @@ export default class HowDoI extends React.Component {
             );
           })}
         </div>
-        <a className="thumb-title viewmore" href="#">
-          View more
-          <img className="thumb-img" src={Image.arrowicon} />
-        </a>
+        <Viewmore></Viewmore>
       </div>
     );
   }

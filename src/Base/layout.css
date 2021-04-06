@@ -24,18 +24,6 @@
 .thumb-img {
   margin: 0px 5px 0px 5px;
 }
-.viewmore {
-  text-decoration: none;
-  margin-top: 20px;
-
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #0074bd;
-  letter-spacing: 0px;
-  line-height: 19px;
-}
-
 .row {
   display: inline-flex;
   /* flex-wrap: wrap; */
