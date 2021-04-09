@@ -41,7 +41,7 @@ export default class Howdoi extends React.Component<IHowdoiProps, IHowdoiStates>
     };
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
   }
-  changeAllCollapse(key, value) {
+  public changeAllCollapse(key, value) {
     this.setState((state) => {
       const statuses = state.statuses.map((item, j) => {
         if (j === key) {

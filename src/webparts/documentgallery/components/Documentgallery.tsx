@@ -62,7 +62,7 @@ export default class Documentgallery extends React.Component<IDocumentgalleryPro
           ],
         },
       ],
-    }
+    };
   }
 
   public render(): React.ReactElement<IDocumentgalleryProps> {
