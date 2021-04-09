@@ -49,6 +49,14 @@
           "manifest": "./src/webparts/howdoi/HowdoiWebPart.manifest.json"
         }
       ]
+    },
+    "documentgallery-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/documentgallery/DocumentgalleryWebPart.js",
+          "manifest": "./src/webparts/documentgallery/DocumentgalleryWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -58,6 +66,7 @@
     "AnnouncementWebPartStrings": "lib/webparts/announcement/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
     "ImagegalleryWebPartStrings": "lib/webparts/imagegallery/loc/{locale}.js",
-    "HowdoiWebPartStrings": "lib/webparts/howdoi/loc/{locale}.js"
+    "HowdoiWebPartStrings": "lib/webparts/howdoi/loc/{locale}.js",
+    "DocumentgalleryWebPartStrings": "lib/webparts/documentgallery/loc/{locale}.js"
   }
 }

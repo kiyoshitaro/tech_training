@@ -19,7 +19,7 @@ export default class Viewmore extends React.Component<ICollapseProps, ICollapseS
   setClassCollapse() {
     if (this.props.isOpenCollapse) {
       this.setState({
-        titleClass: `${styles.titleCollapse} active`,
+        titleClass: `${styles.titleCollapse} ${styles.active}`,
         contentClass: `${styles.contentCollapse} ${styles.contentCollapseOpen}`,
       });
     } else {
