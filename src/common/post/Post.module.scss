@@ -1,0 +1,29 @@
+@import "../scss/Common.scss";
+
+.post {
+  margin-bottom: 20px;
+}
+.tag {
+  display: inline-block;
+  cursor: pointer;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 13px;
+  color: #333333;
+  letter-spacing: 0px;
+  line-height: 17px;
+
+  background-color: #e4e6e8;
+  border-radius: 8px;
+  padding: 2px 20px 2px 20px;
+}
+
+.postContent {
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 13px;
+  color: #333333;
+  letter-spacing: 0px;
+  line-height: 17px;
+}
