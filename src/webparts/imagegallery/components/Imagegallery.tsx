@@ -16,7 +16,7 @@ export default class Imagegallery extends React.Component<IImagegalleryProps, II
         { src: Image.image_gallery_2 },
         { src: Image.image_gallery_3 },
       ],
-    }
+    };
   }
   public render(): React.ReactElement<IImagegalleryProps> {
     return (

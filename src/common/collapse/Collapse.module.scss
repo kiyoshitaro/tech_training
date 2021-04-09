@@ -1,0 +1,52 @@
+@import "../scss/Common.module.scss";
+
+.titleCollapse {
+  cursor: pointer;
+  outline: none;
+
+  border: none;
+  height: 40px;
+  width: 100%;
+  background-color: #636363;
+
+  padding-left: 10px;
+  margin-top: 5px;
+  text-align: left;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0px;
+  line-height: 16px;
+}
+
+.active,
+.titleCollapse:hover {
+  background-color: #4ac49a;
+}
+
+.contentCollapse {
+  padding: 0px 18px;
+  max-height: 0;
+  transition: max-height 0s ease-out;
+  background-color: #636363;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0px;
+  line-height: 18px;
+}
+
+.contentCollapseClose {
+  padding: 0px 18px;
+  overflow: hidden;
+}
+
+.contentCollapseOpen {
+  max-height: 100%;
+  padding: 10px 18px 10px;
+  overflow: visible;
+}

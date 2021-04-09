@@ -41,6 +41,14 @@
           "manifest": "./src/webparts/imagegallery/ImagegalleryWebPart.manifest.json"
         }
       ]
+    },
+    "howdoi-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/howdoi/HowdoiWebPart.js",
+          "manifest": "./src/webparts/howdoi/HowdoiWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -49,6 +57,7 @@
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
     "AnnouncementWebPartStrings": "lib/webparts/announcement/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
-    "ImagegalleryWebPartStrings": "lib/webparts/imagegallery/loc/{locale}.js"
+    "ImagegalleryWebPartStrings": "lib/webparts/imagegallery/loc/{locale}.js",
+    "HowdoiWebPartStrings": "lib/webparts/howdoi/loc/{locale}.js"
   }
 }
