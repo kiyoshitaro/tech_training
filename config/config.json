@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/quicklinks/QuicklinksWebPart.manifest.json"
         }
       ]
+    },
+    "events-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/events/EventsWebPart.js",
+          "manifest": "./src/webparts/events/EventsWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "QuicklinksWebPartStrings": "lib/webparts/quicklinks/loc/{locale}.js"
+    "QuicklinksWebPartStrings": "lib/webparts/quicklinks/loc/{locale}.js",
+    "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js"
   }
 }

@@ -1,0 +1,31 @@
+.thumbTitle {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.thumbImg {
+  margin: 0px 5px 0px 5px;
+}
+
+.postTitle {
+  display: inline-block;
+  /* Title not split when down size */
+
+  font-family: "Segoe UI";
+  font-weight: 600;
+  font-size: 16px;
+  color: #333333;
+  letter-spacing: 0px;
+  line-height: 21px;
+}
+
+.postTime {
+  margin-right: 10px;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 12px;
+  color: #444444;
+  letter-spacing: 0px;
+  line-height: 19px;
+}
