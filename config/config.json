@@ -33,6 +33,14 @@
           "manifest": "./src/webparts/news/NewsWebPart.manifest.json"
         }
       ]
+    },
+    "imagegallery-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/imagegallery/ImagegalleryWebPart.js",
+          "manifest": "./src/webparts/imagegallery/ImagegalleryWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -40,6 +48,7 @@
     "QuicklinksWebPartStrings": "lib/webparts/quicklinks/loc/{locale}.js",
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
     "AnnouncementWebPartStrings": "lib/webparts/announcement/loc/{locale}.js",
-    "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js"
+    "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
+    "ImagegalleryWebPartStrings": "lib/webparts/imagegallery/loc/{locale}.js"
   }
 }

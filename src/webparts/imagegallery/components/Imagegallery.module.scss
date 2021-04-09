@@ -1,0 +1,6 @@
+@import "../../../common/scss/Common.scss";
+.imageGalleryContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
