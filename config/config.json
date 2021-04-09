@@ -25,12 +25,21 @@
           "manifest": "./src/webparts/announcement/AnnouncementWebPart.manifest.json"
         }
       ]
+    },
+    "news-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/news/NewsWebPart.js",
+          "manifest": "./src/webparts/news/NewsWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "QuicklinksWebPartStrings": "lib/webparts/quicklinks/loc/{locale}.js",
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
-    "AnnouncementWebPartStrings": "lib/webparts/announcement/loc/{locale}.js"
+    "AnnouncementWebPartStrings": "lib/webparts/announcement/loc/{locale}.js",
+    "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js"
   }
 }
