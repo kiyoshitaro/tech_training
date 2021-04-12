@@ -1,13 +1,25 @@
-@import "../scss/Common.module.scss";
+@import "../scss/_Common.module.scss";
 
 .viewmore {
   text-decoration: none;
   margin-top: 20px;
+}
 
+.text {
   font-family: "Segoe UI";
   font-weight: 400;
   font-size: 14px;
   color: #0074bd;
   letter-spacing: 0px;
   line-height: 19px;
+}
+.thumbImg {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  font-size: 14px;
+  color: #0074bd;
+  letter-spacing: 0px;
+  line-height: 14px;
+
+  // margin-top: -2px;
 }

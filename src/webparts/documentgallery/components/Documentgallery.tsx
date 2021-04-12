@@ -67,6 +67,9 @@ export default class Documentgallery extends React.Component<IDocumentgalleryPro
 
   public render(): React.ReactElement<IDocumentgalleryProps> {
     return (
+      <div>
+                <p className={styles.topic}>Document Gallery</p>
+
       <div className={styles.documentGridContainer}>
         {this.state.documents.map((item, index) => {
           return (
@@ -84,6 +87,7 @@ export default class Documentgallery extends React.Component<IDocumentgalleryPro
             </div>
           );
         })}
+      </div>
       </div>
     );
   }

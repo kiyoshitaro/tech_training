@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styles from './Post.module.scss';
 import { IPostProps, IPostStates } from './IPost';
-import Image from "../../assets/Image";
+import Image from "../../assets/Image.jsx";
 
 
 export default class Viewmore extends React.Component<IPostProps, IPostStates> {

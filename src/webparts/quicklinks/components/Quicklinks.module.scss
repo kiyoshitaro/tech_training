@@ -1,23 +1,36 @@
-
+@import "../../../common/scss/_Common.module.scss";
 .quicklinkGridContainer {
-  display: grid;
-  grid-gap: 5px 5px;
-  grid-template-columns: 136px 136px 136px;
-  grid-template-rows: 136px 136px 136px;
+  // --content-width: 100%;
+  --content-width: 340px;
+  // --content-width: 18vw;
 
-  // justify-content: center;
+  // The size of the gap
+  --gap: 5px;
+
+  // The amount of columns
+  --columns: 3;
+
+  $size: calc(
+    (var(--content-width) - (var(--gap) * (var(--columns) - 1))) /
+      var(--columns)
+  );
+  // @debug $size;
+  display: grid;
+  grid-gap: var(--gap) var(--gap);
+  grid-template-columns: repeat(var(--columns), $size);
+  grid-auto-rows: $size;
 }
 
 .quicklinkGridItem {
   background-color: #0074bd;
-  padding: 40px 30px 40px 30px;
+  padding: 20px 10px 20px 10px;
   font-size: 30px;
   text-decoration: none;
   text-align: center;
 }
 
 .linkTitle {
-  font-family: "NotoSans-Regular";
+  font-family: "NotoSans";
   font-weight: 400;
   font-size: 14px;
   color: #ffffff;
@@ -25,12 +38,10 @@
   line-height: 18px;
 }
 
-@media screen and (max-width: 1130px) {
+@media screen and (max-width: 1023px) {
   .quicklinkGridContainer {
-    grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
-    grid-template-rows: auto;
-    /* grid-template-columns: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3);
-    grid-template-rows: calc((100% - 10px)/3) calc((100% - 10px)/3) calc((100% - 10px)/3); */
-    /* grid-template-columns: repeat(auto-fill, 136px); */
+    // --content-width: 50vw;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    grid-auto-rows: 108px;
   }
 }

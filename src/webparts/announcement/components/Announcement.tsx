@@ -53,6 +53,8 @@ export default class Announcement extends React.Component<IAnnouncementProps, IA
   public render(): React.ReactElement<IAnnouncementProps> {
     return (
       <div>
+        <p className={styles.topic}>Announcement</p>
+
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}

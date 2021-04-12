@@ -21,6 +21,8 @@ export default class Imagegallery extends React.Component<IImagegalleryProps, II
   public render(): React.ReactElement<IImagegalleryProps> {
     return (
       <div>
+                <p className={styles.topic}>Image Gallery</p>
+
         <div className={styles.imageGalleryContainer}>
           {this.state.images.map((item, index) => {
             return (

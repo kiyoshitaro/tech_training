@@ -58,6 +58,8 @@ export default class Howdoi extends React.Component<IHowdoiProps, IHowdoiStates>
   public render(): React.ReactElement<IHowdoiProps> {
     return (
       <div className={styles.howdoi}>
+        <p className={styles.topic}>How do i</p>
+
         <form>
           <input
             className= {styles.searchBox}

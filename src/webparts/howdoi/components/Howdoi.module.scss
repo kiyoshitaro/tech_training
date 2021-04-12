@@ -1,4 +1,4 @@
-@import "../../../common/scss/Common.module.scss";
+@import "../../../common/scss/_Common.module.scss";
 
 .searchBox {
   box-sizing: border-box;
@@ -18,10 +18,10 @@
 }
 
 .howdoi {
-  width: 388px;
+  // width: 388px;
 }
 
-@media screen and (max-width: 1130px) {
+@media screen and (max-width: 1023px) {
   .howdoi {
     width: 100%;
   }

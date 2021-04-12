@@ -61,6 +61,8 @@ export default class Events extends React.Component<IEventsProps,  IEventsStates
   public render(): React.ReactElement<IEventsProps> {
     return (
       <div>
+                <p className={styles.topic}>Events</p>
+
         <div className={styles.eventGridContainer}>
           {this.state.events.map((item, index) => {
             return (

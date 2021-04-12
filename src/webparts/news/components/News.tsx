@@ -54,6 +54,8 @@ export default class News extends React.Component<INewsProps, INewsStates> {
   public render(): React.ReactElement<INewsProps> {
     return (
       <div>
+                <p className={styles.topic}>News</p>
+
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}

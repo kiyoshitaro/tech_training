@@ -24,8 +24,10 @@ export default class Quicklink extends React.Component<IQuicklinksProps, IQuickl
 
 
   public render(): React.ReactElement<IQuicklinksProps> {
-    // console.log(typeof Image.icon );
     return (
+      <div>
+                <p className={styles.topic}>Quick Links</p>
+
       <div className={styles.quicklinkGridContainer}>
         {this.state.links.map((item, index) => {
           return (
@@ -35,6 +37,7 @@ export default class Quicklink extends React.Component<IQuicklinksProps, IQuickl
             </a>
           );
         })}
+      </div>
       </div>
     );
   }

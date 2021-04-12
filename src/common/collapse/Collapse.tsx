@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styles from './Collapse.module.scss';
 import { ICollapseProps, ICollapseStates } from './ICollapse';
-import Image from "../../assets/Image";
+import Image from "../../assets/Image.jsx";
 
 
 export default class Viewmore extends React.Component<ICollapseProps, ICollapseStates> {
