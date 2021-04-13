@@ -1,23 +1,12 @@
 @import "../../../common/scss/_Common.module.scss";
 
 .eventDay {
-  font-family: "Segoe UI";
-  font-weight: 600;
-  font-size: 26px;
-  color: #4ac49a;
-  letter-spacing: 0px;
-  line-height: 5px;
-
+  @include textStyle("Segoe UI", 600, 26px, #4ac49a, 0px, 5px);
   margin-bottom: 5px;
 }
 
 .eventMonth {
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 16px;
-  color: #4ac49a;
-  letter-spacing: 0px;
-  line-height: 5px;
+  @include textStyle("Segoe UI", 400, 16px, #4ac49a, 0px, 5px);
 }
 
 .eventGridContainer {

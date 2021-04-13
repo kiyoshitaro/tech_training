@@ -16,23 +16,13 @@
   // font-size: 30px;
   text-decoration: none;
 
-  font-family: "Segoe UI";
-  font-weight: 600;
-  font-size: 14px;
-  color: #27313c;
-  letter-spacing: 0px;
-  line-height: 19px;
+  @include textStyle("Segoe UI", 600, 14px, #27313c, 0px, 19px);
 }
 .documentTitle {
   margin-right: 10px;
   margin-bottom: 20px;
 
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #27313c;
-  letter-spacing: 0px;
-  line-height: 19px;
+  @include textStyle("Segoe UI", 400, 14px, #27313c, 0px, 19px);
 }
 @media screen and (max-width: 530px) {
   .documentGridContainer {

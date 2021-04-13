@@ -30,12 +30,7 @@
 }
 
 .linkTitle {
-  font-family: "NotoSans";
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  letter-spacing: 0px;
-  line-height: 18px;
+  @include textStyle("NotoSans", 400, 14px, #ffffff, 0px, 18px);
 }
 
 @media screen and (max-width: 1023px) {

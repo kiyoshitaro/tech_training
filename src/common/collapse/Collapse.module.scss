@@ -13,12 +13,7 @@
   margin-top: 5px;
   text-align: left;
 
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  letter-spacing: 0px;
-  line-height: 16px;
+  @include textStyle("Segoe UI", 400, 14px, #ffffff, 0px, 16px);
 }
 
 .active,
@@ -32,12 +27,14 @@
   transition: max-height 0s ease-out;
   background-color: #636363;
 
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
-  letter-spacing: 0px;
-  line-height: 18px;
+  @include textStyle("Segoe UI", 400, 14px, #ffffff, 0px, 18px);
+
+  // font-family: "Segoe UI";
+  // font-weight: 400;
+  // font-size: 14px;
+  // color: #ffffff;
+  // letter-spacing: 0px;
+  // line-height: 18px;
 }
 
 .contentCollapseClose {

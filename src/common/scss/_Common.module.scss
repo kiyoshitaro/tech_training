@@ -1,10 +1,21 @@
+@mixin textStyle(
+  $font-family,
+  $font-weight,
+  $font-size,
+  $color,
+  $letter-spacing,
+  $line-height
+) {
+  font-family: $font-family;
+  font-weight: $font-weight;
+  font-size: $font-size;
+  color: $color;
+  letter-spacing: $letter-spacing;
+  line-height: $line-height;
+}
+
 .topic {
-  font-family: "Segoe UI";
-  font-weight: 600;
-  font-size: 24px;
-  color: #444444;
-  letter-spacing: 0px;
-  line-height: 32px;
+  @include textStyle("Segoe UI", 600, 24px, #444444, 0px, 32px);
 }
 
 .thumbTitle {
@@ -19,42 +30,16 @@
 .postTitle {
   display: inline-block;
   /* Title not split when down size */
-  font-family: "Segoe UI";
-  font-weight: 600;
-  font-size: 16px;
-  color: #333333;
-  letter-spacing: 0px;
-  line-height: 21px;
+  @include textStyle("Segoe UI", 600, 16px, #333333, 0px, 21px);
 }
 
 .postTime {
   margin-right: 10px;
 
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 12px;
-  color: #444444;
-  letter-spacing: 0px;
-  line-height: 19px;
+  @include textStyle("Segoe UI", 400, 12px, #444444, 0px, 19px);
 }
 
 .imgLeft {
   float: left;
   margin: 10px 10px 0px 0px;
 }
-
-// @mixin textStyle(
-//   $font-family: "Segoe UI",
-//   $font-weight: 400,
-//   $font-size: 12px,
-//   $color,
-//   $letter-spacing: 0px,
-//   $line-height: 19px
-// ) {
-//   font-family: $font-family;
-//   font-weight: $font-weight;
-//   font-size: $font-size;
-//   color: $color;
-//   letter-spacing: $letter-spacing;
-//   line-height: $line-height;
-// }

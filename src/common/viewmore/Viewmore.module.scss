@@ -6,20 +6,10 @@
 }
 
 .text {
-  font-family: "Segoe UI";
-  font-weight: 400;
-  font-size: 14px;
-  color: #0074bd;
-  letter-spacing: 0px;
-  line-height: 19px;
+  @include textStyle("Segoe UI", 400, 14px, #0074bd, 0px, 19px);
 }
 .thumbImg {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 400;
-  font-size: 14px;
-  color: #0074bd;
-  letter-spacing: 0px;
-  line-height: 14px;
+  @include textStyle("Font Awesome 5 Free", 400, 14px, #0074bd, 0px, 14px);
 
   // margin-top: -2px;
 }
