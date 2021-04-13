@@ -21,14 +21,14 @@ import image_gallery_3 from "./Images/image_gallery-3.png";
 
 import logo from "./Images/Logo.png";
 
-import markgroup_1 from "./Images/Mask Group -1.png";
-import markgroup_2 from "./Images/Mask Group -2.png";
-import markgroup_3 from "./Images/Mask Group -3.png";
-import markgroup_4 from "./Images/Mask Group -4.png";
-import markgroup_5 from "./Images/Mask Group -5.png";
-import markgroup_6 from "./Images/Mask Group -6.png";
-import markgroup1 from "./Images/Mask Group 1.png";
-import markgroup2 from "./Images/Mask Group 2.png";
+import markgroup_1 from "./Images/Mask_Group-1.png";
+import markgroup_2 from "./Images/Mask_Group-2.png";
+import markgroup_3 from "./Images/Mask_Group-3.png";
+import markgroup_4 from "./Images/Mask_Group-4.png";
+import markgroup_5 from "./Images/Mask_Group-5.png";
+import markgroup_6 from "./Images/Mask_Group-6.png";
+import markgroup1 from "./Images/Mask_Group1.png";
+import markgroup2 from "./Images/Mask_Group2.png";
 
 import powerpoint from "./Images/powerpoint_-1.png";
 import search from "./Images/search.png";

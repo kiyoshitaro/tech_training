@@ -30,7 +30,7 @@ export default class Viewmore extends React.Component<ICollapseProps, ICollapseS
     }
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     if (this.props.isOpenCollapse !== prevProps.isOpenCollapse) {
       this.setClassCollapse();
     }
