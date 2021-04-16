@@ -11,6 +11,7 @@ import * as strings from 'EventsWebPartStrings';
 import Events from './components/Events';
 import { IEventsProps } from './components/IEventsProps';
 
+
 export interface IEventsWebPartProps {
   description: string;
 }
@@ -21,7 +22,9 @@ export default class EventsWebPart extends BaseClientSideWebPart<IEventsWebPartP
     const element: React.ReactElement<IEventsProps> = React.createElement(
       Events,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spContext: this.context,
+
       }
     );
 
