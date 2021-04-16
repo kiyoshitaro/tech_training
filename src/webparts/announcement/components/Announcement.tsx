@@ -7,47 +7,29 @@ import Post from "../../../common/post/Post";
 import Viewmore from "../../../common/viewmore/Viewmore";
 
 
+import { sp} from "@pnp/sp/presets/all";
+import {List} from "../../../common/container/List";
+
 export default class Announcement extends React.Component<IAnnouncementProps, IAnnouncementStates> {
+  private _listService;
 
 
   constructor(props: IAnnouncementProps) {
+    
     super(props); 
+    sp.setup({spfxContext: this.props.spContext});
+    this._listService = new List("Announcement");
+
     this.state = {
-      posts: [
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: ["Human Resource"],
-          img: Image.image_gallery,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: ["Human Resource"],
-          img: Image.image_gallery_1,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: ["Human Resource"],
-          img: Image.image_gallery_2,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: ["Human Resource"],
-          img: Image.image_gallery_3,
-        },
-      ],
+      posts: [],
     };
+}
+public componentDidMount(){
+  this._listService.getItems().then(list => {
+
+    this.setState({posts: list.map(item =>{return {title: item.Title,content: item.content,time:item.time,img: JSON.parse(item.img).serverRelativeUrl, tags: item.tags}})});
+
+  })
 }
 
   public render(): React.ReactElement<IAnnouncementProps> {

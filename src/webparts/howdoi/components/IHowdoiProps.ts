@@ -1,6 +1,8 @@
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 export interface IHowdoiProps {
   description: string;
-  spContext: any;
+  spContext: WebPartContext;
 }
 export interface IHowdoiStates{
   faq: {question:string;answer:string, status: boolean}[];

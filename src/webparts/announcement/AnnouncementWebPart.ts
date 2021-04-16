@@ -21,7 +21,8 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
     const element: React.ReactElement<IAnnouncementProps> = React.createElement(
       Announcement,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spContext: this.context,
       }
     );
 
