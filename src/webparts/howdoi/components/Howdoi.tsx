@@ -12,46 +12,46 @@ export default class Howdoi extends React.Component<IHowdoiProps, IHowdoiStates>
   private _listService;
   constructor(props: IHowdoiProps){
     super(props);
-    console.log(this.props.spContext,"pppppppp");
+    // console.log(this.props.spContext,"pppppppp");
     sp.setup({spfxContext: this.props.spContext});
     this._listService = new List("faq");
 
     this.state = {
       faq: [
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-          status: false,
-        },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            status: false,
+        // {
+        //   question: "Lorem ipsum dolor sit amet",
+        //   answer:
+        //     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        //   status: false,
+        // },
+        // {
+        //   question: "Lorem ipsum dolor sit amet",
+        //   answer:
+        //     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        //     status: false,
         
-          },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            status: false,
+        //   },
+        // {
+        //   question: "Lorem ipsum dolor sit amet",
+        //   answer:
+        //     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        //     status: false,
         
-          },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            status: false,
+        //   },
+        // {
+        //   question: "Lorem ipsum dolor sit amet",
+        //   answer:
+        //     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        //     status: false,
        
-          },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            status: false,
+        //   },
+        // {
+        //   question: "Lorem ipsum dolor sit amet",
+        //   answer:
+        //     "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        //     status: false,
         
-          },
+        //   },
       ],
     };
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
