@@ -21,7 +21,8 @@ export default class HowdoiWebPart extends BaseClientSideWebPart<IHowdoiWebPartP
     const element: React.ReactElement<IHowdoiProps> = React.createElement(
       Howdoi,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spContext: this.context,
       }
     );
 

@@ -5,56 +5,80 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import Viewmore from "../../../common/viewmore/Viewmore";
 import Collapse from "../../../common/collapse/Collapse";
 
+import { sp} from "@pnp/sp/presets/all";
+import {List} from "../../../common/container/List";
 
 export default class Howdoi extends React.Component<IHowdoiProps, IHowdoiStates> {
+  private _listService;
   constructor(props: IHowdoiProps){
     super(props);
+    console.log(this.props.spContext,"pppppppp");
+    sp.setup({spfxContext: this.props.spContext});
+    this._listService = new List("faq");
+
     this.state = {
       faq: [
         {
           question: "Lorem ipsum dolor sit amet",
           answer:
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+          status: false,
         },
         {
           question: "Lorem ipsum dolor sit amet",
           answer:
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
+            status: false,
+        
+          },
         {
           question: "Lorem ipsum dolor sit amet",
           answer:
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
+            status: false,
+        
+          },
         {
           question: "Lorem ipsum dolor sit amet",
           answer:
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
+            status: false,
+       
+          },
         {
           question: "Lorem ipsum dolor sit amet",
           answer:
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
+            status: false,
+        
+          },
       ],
-      statuses : [false,false,false,false,false,false],
     };
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
   }
+  public componentDidMount(){
+    this._listService.getItems().then(list => {
+
+      this.setState({faq: list.map(item =>{return {question: item.question,answer: item.answer,status:false}})});
+
+    })
+  }
   public changeAllCollapse(key:number, value: boolean) {
     this.setState((state) => {
-      const statuses = state.statuses.map((item, j) => {
+      const faq = state.faq.map((item, j) => {
         if (j === key) {
-          return value;
+          return {...item,status:value};
         } else {
-          return false;
+          return {...item,status:false};
         }
       });
       return {
-        statuses,
+        faq,
       };
     });
   }
+
+
   public render(): React.ReactElement<IHowdoiProps> {
     return (
       <div className={styles.howdoi}>
@@ -76,7 +100,7 @@ export default class Howdoi extends React.Component<IHowdoiProps, IHowdoiStates>
                 id={index}
                 item={item}
                 changeAllCollapse={this.changeAllCollapse}
-                isOpenCollapse={this.state.statuses[index]}
+                isOpenCollapse={this.state.faq[index].status}
               ></Collapse>
             );
           })}
