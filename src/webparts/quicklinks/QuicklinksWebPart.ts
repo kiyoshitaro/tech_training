@@ -21,7 +21,8 @@ export default class QuicklinksWebPart extends BaseClientSideWebPart<IQuicklinks
     const element: React.ReactElement<IQuicklinksProps> = React.createElement(
       Quicklinks,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spContext: this.context,
       }
     );
 
