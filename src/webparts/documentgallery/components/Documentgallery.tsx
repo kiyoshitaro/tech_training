@@ -1,93 +1,95 @@
-import * as React from 'react';
-import styles from './Documentgallery.module.scss';
-import { IDocumentgalleryProps, IDocumentgalleryStates } from './IDocumentgalleryProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+import * as React from "react";
+import styles from "./Documentgallery.module.scss";
+import {
+  IDocumentgalleryProps,
+  IDocumentgalleryStates,
+} from "./IDocumentgalleryProps";
 import Image from "../../../assets/Image.jsx";
 import Viewmore from "../../../common/viewmore/Viewmore";
 
-export default class Documentgallery extends React.Component<IDocumentgalleryProps,IDocumentgalleryStates > {
-  constructor(props: IDocumentgalleryProps){
+import { sp } from "@pnp/sp/presets/all";
+import { Library } from "../../../common/container/Library";
+
+export default class Documentgallery extends React.Component<
+  IDocumentgalleryProps,
+  IDocumentgalleryStates
+> {
+  private _libService;
+
+  constructor(props: IDocumentgalleryProps) {
     super(props);
+    sp.setup({ spfxContext: this.props.spContext });
+    this._libService = new Library("document");
+
     this.state = {
-      documents: [
-        {
-          topic: "Policy",
-          icon: Image.word,
-          docs: [
-            { title: "Policy 1" },
-            { title: "Policy 2" },
-            { title: "Policy 4" },
-            { title: "Policy 6" },
-          ],
-        },
-        {
-          topic: "SOP",
-          icon: Image.word,
-          docs: [
-            { title: "Demo Script" },
-            { title: "App Introduction" },
-            { title: "Index" },
-            { title: "Training" },
-          ],
-        },
-
-        {
-          topic: "Corporate Template",
-          icon: Image.word,
-
-          docs: [
-            { title: "Template 1" },
-            { title: "Template 2" },
-            { title: "Template 3" },
-          ],
-        },
-
-        {
-          topic: "Report",
-          icon: Image.vsdx,
-          docs: [
-            { title: "Report 1" },
-            { title: "Report 2" },
-            { title: "Report 3" },
-            { title: "Report 4" },
-          ],
-        },
-        {
-          topic: "Slider",
-          icon: Image.powerpoint,
-          docs: [
-            { title: "Template 1" },
-            { title: "Template 2" },
-            { title: "Template 3" },
-          ],
-        },
-      ],
+      documents: [],
     };
+  }
+  public componentDidMount() {
+    let icons = {
+      docx: Image.word,
+      pptx: Image.powerpoint,
+      xlsx: Image.word,
+    };
+    this._libService.getAllTopic().then((allTopic) => {
+      allTopic
+        .filter((tp) => tp.Name !== "Forms")
+        .map((tp) => {
+          this._libService.getFileByTopic(tp.Name).then((allFile) => {
+            this.setState({
+              documents: [
+                ...this.state.documents,
+                {
+                  topic: tp.Name,
+                  docs: allFile.map((file) => {
+                    let ext: string = file.Name.split(".")[
+                      file.Name.split(".").length - 1
+                    ];
+                    return {
+                      title: file.Name,
+                      icon: icons[ext],
+                      url: file.LinkingUrl,
+                    };
+                  }),
+                },
+              ],
+            });
+          });
+        });
+    });
   }
 
   public render(): React.ReactElement<IDocumentgalleryProps> {
     return (
       <div>
-                <p className={styles.topic}>Document Gallery</p>
+        <p className={styles.topic}>Document Gallery</p>
 
-      <div className={styles.documentGridContainer}>
-        {this.state.documents.map((item, index) => {
-          return (
-            <div key={index} className={styles.documentGridItem}>
-              <p>{item.topic}</p>
-              {item.docs.map((it, ind) => {
-                return (
-                  <div className={styles.thumbTitle} key={ind}>
-                    <img className={styles.thumbImg} src={item.icon} />
-                    <p className={styles.documentTitle}>{it.title}</p>
-                  </div>
-                );
-              })}
-              <Viewmore></Viewmore>
-            </div>
-          );
-        })}
-      </div>
+        <div className={styles.documentGridContainer}>
+          {this.state.documents &&
+            this.state.documents.map((item, index) => {
+              return (
+                <div key={index} className={styles.documentGridItem}>
+                  <p>{item.topic}</p>
+                  {item.docs &&
+                    item.docs.map((it, ind) => {
+                      return (
+                        <div className={styles.thumbTitle} key={ind}>
+                          <img className={styles.thumbImg} src={it.icon} />
+                          <a
+                            className={styles.documentTitle}
+                            // target="_blank"
+                            href={it.url}
+                          >
+                            {it.title}
+                          </a>
+                        </div>
+                      );
+                    })}
+                  <Viewmore></Viewmore>
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }

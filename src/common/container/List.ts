@@ -4,7 +4,6 @@ import "@pnp/sp/items";
 import {IList, IListInfo, sp} from "@pnp/sp/presets/all";
 
 export class List{
-    private _context : any;
     private _listTitle: string;
     constructor(title:string){
         this._listTitle = title;

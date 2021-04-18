@@ -10,18 +10,14 @@
 }
 
 .documentGridItem {
-  /* border: 1px solid rgba(0, 0, 0, 0.8); */
-  /* padding: 40px 30px 40px 30px; */
-
-  // font-size: 30px;
-  text-decoration: none;
-
   @include textStyle("Segoe UI", 600, 14px, #27313c, 0px, 19px);
+}
+.thumbTitle {
+  margin-bottom: 20px;
 }
 .documentTitle {
   margin-right: 10px;
-  margin-bottom: 20px;
-
+  text-decoration: none;
   @include textStyle("Segoe UI", 400, 14px, #27313c, 0px, 19px);
 }
 @media screen and (max-width: 530px) {

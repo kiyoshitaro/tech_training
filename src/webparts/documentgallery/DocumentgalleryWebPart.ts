@@ -21,7 +21,9 @@ export default class DocumentgalleryWebPart extends BaseClientSideWebPart<IDocum
     const element: React.ReactElement<IDocumentgalleryProps> = React.createElement(
       Documentgallery,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spContext: this.context,
+
       }
     );
 
