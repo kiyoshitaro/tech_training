@@ -19,7 +19,7 @@ export default class Documentgallery extends React.Component<
   constructor(props: IDocumentgalleryProps) {
     super(props);
     sp.setup({ spfxContext: this.props.spContext });
-    this._libService = new Library("document");
+    this._libService = new Library("Shared Documents");
 
     this.state = {
       documents: [],

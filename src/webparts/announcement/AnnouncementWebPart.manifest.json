@@ -21,7 +21,9 @@
     "description": { "default": "announcement description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "announcement"
+      "description": "announcement",
+      "listName": "",
+      "item": ""
     }
   }]
 }

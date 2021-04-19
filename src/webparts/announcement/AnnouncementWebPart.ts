@@ -3,7 +3,9 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneDropdown,
+  IPropertyPaneDropdownOption,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
@@ -13,9 +15,21 @@ import { IAnnouncementProps } from './components/IAnnouncementProps';
 
 export interface IAnnouncementWebPartProps {
   description: string;
+  listName: string;
+
 }
 
 export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnouncementWebPartProps> {
+  private lists: IPropertyPaneDropdownOption[] = [{
+    key: 'Announcement',
+    text: 'Announcement'
+  },
+  {
+    key: 'News',
+    text: 'News'
+  }];
+  private listsDropdownDisabled: boolean = false;
+
 
   public render(): void {
     const element: React.ReactElement<IAnnouncementProps> = React.createElement(
@@ -23,6 +37,7 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
       {
         description: this.properties.description,
         spContext: this.context,
+        listName: this.properties.listName,
       }
     );
 
@@ -50,7 +65,12 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
-                })
+                }),
+                PropertyPaneDropdown('listName', {
+                  label: strings.ListNameFieldLabel,
+                  options: this.lists,
+                  disabled: this.listsDropdownDisabled
+                }),
               ]
             }
           ]
