@@ -22,8 +22,6 @@ export default class Events extends React.Component<
     this.state = {
       events: [],
     };
-    // this._convert_time = this._convert_time.bind(this);
-    // this._process_data = this._process_data.bind(this);
   }
 
   private _convert_time(time) {
@@ -62,13 +60,18 @@ export default class Events extends React.Component<
     };
   }
   public componentDidMount() {
-    this._listService.getItems().then((list) => {
-      this.setState({
-        events: list.map((item) => {
-          return { ...this._process_data(item) };
-        }),
+    this._listService
+      .getItems()
+      .then((list) => {
+        this.setState({
+          events: list.map((item) => {
+            return { ...this._process_data(item) };
+          }),
+        });
+      })
+      .catch(() => {
+        this.setState({ events: [] });
       });
-    });
   }
 
   public render(): React.ReactElement<IEventsProps> {

@@ -21,17 +21,22 @@ export default class Quicklink extends React.Component<
     };
   }
   public componentDidMount() {
-    this._listService.getItems().then((list) => {
-      this.setState({
-        links: list.map((item) => {
-          return {
-            title: item.Title,
-            icon: JSON.parse(item.icon).serverRelativeUrl,
-            link: item.link,
-          };
-        }),
+    this._listService
+      .getItems()
+      .then((list) => {
+        this.setState({
+          links: list.map((item) => {
+            return {
+              title: item.Title,
+              icon: JSON.parse(item.icon).serverRelativeUrl,
+              link: item.link,
+            };
+          }),
+        });
+      })
+      .catch(() => {
+        this.setState({ links: [] });
       });
-    });
   }
 
   public render(): React.ReactElement<IQuicklinksProps> {

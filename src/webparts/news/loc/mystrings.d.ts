@@ -2,6 +2,7 @@ declare interface INewsWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
+  ListNameFieldLabel: string;
 }
 
 declare module 'NewsWebPartStrings' {

@@ -3,7 +3,9 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  IPropertyPaneDropdownOption,
+  PropertyPaneDropdown,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
@@ -13,9 +15,20 @@ import { INewsProps } from './components/INewsProps';
 
 export interface INewsWebPartProps {
   description: string;
+  listName: string;
 }
 
 export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps> {
+  private lists: IPropertyPaneDropdownOption[] = [{
+    key: 'Announcement',
+    text: 'Announcement'
+  },
+  {
+    key: 'News',
+    text: 'News'
+  }];
+  private listsDropdownDisabled: boolean = false;
+
 
   public render(): void {
     const element: React.ReactElement<INewsProps> = React.createElement(
@@ -23,7 +36,7 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
       {
         description: this.properties.description,
         spContext: this.context,
-
+        listName: this.properties.listName,
       }
     );
 
@@ -51,7 +64,13 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
-                })
+                }),
+                PropertyPaneDropdown('listName', {
+                  label: strings.ListNameFieldLabel,
+                  options: this.lists,
+                  disabled: this.listsDropdownDisabled
+                }),
+
               ]
             }
           ]

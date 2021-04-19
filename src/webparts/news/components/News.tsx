@@ -3,7 +3,6 @@ import styles from "./News.module.scss";
 import { INewsProps, INewsStates } from "./INewsProps";
 import { escape } from "@microsoft/sp-lodash-subset";
 
-import Image from "../../../assets/Image.jsx";
 import Post from "../../../common/post/Post";
 import Viewmore from "../../../common/viewmore/Viewmore";
 
@@ -15,31 +14,42 @@ export default class News extends React.Component<INewsProps, INewsStates> {
 
   constructor(props: INewsProps) {
     super(props);
-
     sp.setup({ spfxContext: this.props.spContext });
-    this._listService = new List("News");
-
     this.state = {
       posts: [],
     };
   }
-  public componentDidMount() {
-    this._listService.getItems().then((list) => {
-      console.log(list);
 
-      this.setState({
-        posts: list.map((item) => {
-          console.log(item.time);
-          return {
-            title: item.Title,
-            content: item.content,
-            time: item.time,
-            img: JSON.parse(item.img).serverRelativeUrl,
-            tags: item.tags,
-          };
-        }),
+  private _getData(listName) {
+    this._listService = new List(listName);
+    this._listService
+      .getItems()
+      .then((list) => {
+        this.setState({
+          posts: list.map((item) => {
+            return {
+              title: item.Title,
+              content: item.content,
+              time: item.time.split("T")[0],
+              img: JSON.parse(item.img).serverRelativeUrl,
+              tags: item.tags,
+            };
+          }),
+        });
+      })
+      .catch(() => {
+        this.setState({ posts: [] });
       });
-    });
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.listName != this.props.listName) {
+      this._getData(nextProps.listName);
+    }
+  }
+
+  public componentDidMount() {
+    this._getData(this.props.listName);
   }
 
   public render(): React.ReactElement<INewsProps> {

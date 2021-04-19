@@ -16,7 +16,6 @@ import { IAnnouncementProps } from './components/IAnnouncementProps';
 export interface IAnnouncementWebPartProps {
   description: string;
   listName: string;
-
 }
 
 export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnouncementWebPartProps> {
@@ -25,8 +24,8 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
     text: 'Announcement'
   },
   {
-    key: 'News',
-    text: 'News'
+    key: 'Announcement1',
+    text: 'Announcement1'
   }];
   private listsDropdownDisabled: boolean = false;
 

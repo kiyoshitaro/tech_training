@@ -2,7 +2,6 @@ import * as React from "react";
 import styles from "./Announcement.module.scss";
 import { IAnnouncementProps, IAnnouncementStates } from "./IAnnouncementProps";
 
-import Image from "../../../assets/Image.jsx";
 import Post from "../../../common/post/Post";
 import Viewmore from "../../../common/viewmore/Viewmore";
 
@@ -17,28 +16,32 @@ export default class Announcement extends React.Component<
 
   constructor(props: IAnnouncementProps) {
     super(props);
+    console.log(props.listName, "ppppp");
     sp.setup({ spfxContext: this.props.spContext });
-
     this.state = {
       posts: [],
     };
   }
   private _getData(listName) {
     this._listService = new List(listName);
-    this._listService.getItems().then((list) => {
-      console.log(list, "ppppp");
-      this.setState({
-        posts: list.map((item) => {
-          return {
-            title: item.Title,
-            content: item.content,
-            time: item.time,
-            img: JSON.parse(item.img).serverRelativeUrl,
-            tags: item.tags,
-          };
-        }),
+    this._listService
+      .getItems()
+      .then((list) => {
+        this.setState({
+          posts: list.map((item) => {
+            return {
+              title: item.Title,
+              content: item.content,
+              time: item.time.split("T")[0],
+              img: JSON.parse(item.img).serverRelativeUrl,
+              tags: item.tags,
+            };
+          }),
+        });
+      })
+      .catch(() => {
+        this.setState({ posts: [] });
       });
-    });
   }
 
   public componentWillReceiveProps(nextProps) {
