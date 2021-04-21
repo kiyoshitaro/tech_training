@@ -147,7 +147,7 @@ export default class Announcement extends React.Component<
             </a>
           )}
         </div>
-        <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/SitePages/Announcement.aspx"></Viewmore>
+        {/* <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/SitePages/Announcement.aspx"></Viewmore> */}
       </div>
     );
   }
