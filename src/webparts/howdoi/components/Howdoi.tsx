@@ -83,7 +83,7 @@ export default class Howdoi extends React.Component<
             );
           })}
         </div>
-        <Viewmore></Viewmore>
+        <Viewmore url=""></Viewmore>
       </div>
     );
   }

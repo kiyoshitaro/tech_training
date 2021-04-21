@@ -1,17 +1,23 @@
-import * as React from 'react';
+import * as React from "react";
 
-import styles from './Viewmore.module.scss';
-import { IViewmoreProps, IViewmoreStates } from './IViewmore';
+import styles from "./Viewmore.module.scss";
+import { IViewmoreProps, IViewmoreStates } from "./IViewmore";
 import Image from "../../assets/Image.jsx";
 
-
-export default class Viewmore extends React.Component<IViewmoreProps, IViewmoreStates> {
-    constructor(props : IViewmoreProps) {
+export default class Viewmore extends React.Component<
+  IViewmoreProps,
+  IViewmoreStates
+> {
+  constructor(props: IViewmoreProps) {
     super(props);
   }
   public render(): React.ReactElement<IViewmoreProps> {
     return (
-      <a className={`${styles.thumbTitle}, ${styles.viewmore}`}  href="#">
+      <a
+        className={`${styles.thumbTitle}, ${styles.viewmore}`}
+        href={this.props.url}
+        target="_blank"
+      >
         <span className={styles.text}>View more</span>
         <img className={styles.thumbImg} src={Image.arrowicon} />
       </a>

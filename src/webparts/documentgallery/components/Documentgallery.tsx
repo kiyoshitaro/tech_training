@@ -85,7 +85,7 @@ export default class Documentgallery extends React.Component<
                         </div>
                       );
                     })}
-                  <Viewmore></Viewmore>
+                  <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/Shared%20Documents/Forms/AllItems.aspx"></Viewmore>
                 </div>
               );
             })}

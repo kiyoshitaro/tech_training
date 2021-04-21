@@ -1,9 +1,8 @@
 define([], function () {
   return {
-    PropertyPaneDescription: "Description",
+    PropertyPaneDescription: "This is announcement",
     BasicGroupName: "Group Name",
     DescriptionFieldLabel: "Description Field",
-    // ListFieldLabel: "List",
     ListNameFieldLabel: "List",
   };
 });

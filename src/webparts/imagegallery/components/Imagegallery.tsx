@@ -1,13 +1,15 @@
-import * as React from 'react';
-import styles from './Imagegallery.module.scss';
-import { IImagegalleryProps, IImagegalleryStates } from './IImagegalleryProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+import * as React from "react";
+import styles from "./Imagegallery.module.scss";
+import { IImagegalleryProps, IImagegalleryStates } from "./IImagegalleryProps";
+import { escape } from "@microsoft/sp-lodash-subset";
 import Image from "../../../assets/Image.jsx";
 import Viewmore from "../../../common/viewmore/Viewmore";
 
-export default class Imagegallery extends React.Component<IImagegalleryProps, IImagegalleryStates> {
-
-  constructor(props: IImagegalleryProps){
+export default class Imagegallery extends React.Component<
+  IImagegalleryProps,
+  IImagegalleryStates
+> {
+  constructor(props: IImagegalleryProps) {
     super(props);
     this.state = {
       images: [
@@ -21,7 +23,7 @@ export default class Imagegallery extends React.Component<IImagegalleryProps, II
   public render(): React.ReactElement<IImagegalleryProps> {
     return (
       <div>
-                <p className={styles.topic}>Image Gallery</p>
+        <p className={styles.topic}>Image Gallery</p>
 
         <div className={styles.imageGalleryContainer}>
           {this.state.images.map((item, index) => {
@@ -32,9 +34,8 @@ export default class Imagegallery extends React.Component<IImagegalleryProps, II
             );
           })}
         </div>
-        <Viewmore></Viewmore>
+        <Viewmore url=""></Viewmore>
       </div>
-
     );
   }
 }

@@ -61,7 +61,7 @@ export default class News extends React.Component<INewsProps, INewsStates> {
           this.state.posts.map((item, index) => {
             return <Post key={index} item={item}></Post>;
           })}
-        <Viewmore></Viewmore>
+        <Viewmore url=""></Viewmore>
       </div>
     );
   }

@@ -102,7 +102,7 @@ export default class Events extends React.Component<
               );
             })}
         </div>
-        <Viewmore></Viewmore>
+        <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/Lists/Events/calendar.aspx"></Viewmore>
       </div>
     );
   }

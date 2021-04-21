@@ -1,6 +1,5 @@
 export interface IViewmoreProps {
+  url : string,
   }
   
-  export interface IViewmoreStates{
-
-  }
+  export interface IViewmoreStates{}

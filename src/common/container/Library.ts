@@ -5,12 +5,6 @@ import Image from "../../assets/Image.jsx";
 
 import { IFolders, IList, IListInfo, sp } from "@pnp/sp/presets/all";
 
-
-let icons = {
-    docx : Image.word,
-    pptx: Image.powerpoint,
-    xlsx: Image.word,
-}
 export class Library {
 
     private _libTitle: string;
@@ -20,7 +14,6 @@ export class Library {
     public async getFileByTopic(topic:string){
         // return await sp.web.getFolderByServerRelativePath("/sites/brown/Shared Documents").listItemAllFields();
         return await sp.web.folders.getByName(this._libTitle).folders.getByName(topic).files.get();
-        // return await sp.web.rootFolder.folders.getByName("document").folders();
 
     }
     public async getAllTopic(){

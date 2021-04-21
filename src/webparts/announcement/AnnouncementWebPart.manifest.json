@@ -22,7 +22,8 @@
     "officeFabricIconFontName": "Page",
     "properties": {
       "description": "announcement",
-      "listName": "Announcement"
+      "listName": "Announcement",
+      "postPerPage":2
     }
   }]
 }
