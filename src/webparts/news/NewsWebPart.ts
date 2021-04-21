@@ -6,6 +6,7 @@ import {
   PropertyPaneTextField,
   IPropertyPaneDropdownOption,
   PropertyPaneDropdown,
+  PropertyPaneSlider
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
@@ -16,6 +17,7 @@ import { INewsProps } from './components/INewsProps';
 export interface INewsWebPartProps {
   description: string;
   listName: string;
+  postPerPage: number;
 }
 
 export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps> {
@@ -37,6 +39,8 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
         description: this.properties.description,
         spContext: this.context,
         listName: this.properties.listName,
+        postPerPage: this.properties.postPerPage,
+
       }
     );
 
@@ -50,7 +54,14 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
-
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
+  }
+  // click Apply button and render webpart again
+  protected onAfterPropertyPaneChangesApplied(): void {
+    ReactDom.unmountComponentAtNode(this.domElement);
+    this.render();
+  }
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -70,6 +81,14 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
                   options: this.lists,
                   disabled: this.listsDropdownDisabled
                 }),
+                PropertyPaneSlider('postPerPage', {
+                  label: 'postPerPage',
+                  min:2,  
+                  max:10,  
+                  value:3,  
+                  showValue:true,  
+                  step:1                
+                  }),
 
               ]
             }

@@ -22,7 +22,9 @@
     "officeFabricIconFontName": "Page",
     "properties": {
       "description": "news",
-      "listName" : "News"
+      "listName" : "News",
+      "postPerPage":2
+
     }
   }]
 }
