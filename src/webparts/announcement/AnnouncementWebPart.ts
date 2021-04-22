@@ -97,6 +97,8 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
                   label: strings.ListNameFieldLabel,
                   options: this.lists,
                   disabled: this.listsDropdownDisabled,
+                  selectedKey: 'Announcement',
+
                 }),
                 PropertyPaneSlider('postPerPage', {
                   label: 'postPerPage',

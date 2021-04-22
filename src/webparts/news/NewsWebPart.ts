@@ -79,7 +79,9 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
                 PropertyPaneDropdown('listName', {
                   label: strings.ListNameFieldLabel,
                   options: this.lists,
-                  disabled: this.listsDropdownDisabled
+                  disabled: this.listsDropdownDisabled,
+                  selectedKey: 'News',
+
                 }),
                 PropertyPaneSlider('postPerPage', {
                   label: 'postPerPage',

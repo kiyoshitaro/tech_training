@@ -8,6 +8,7 @@ export interface IDocumentgalleryProps {
 export interface IDocumentgalleryStates{
   documents: {
     topic: string;
+    urlTopic:string;
     docs: {
       title: string;
       icon: string;

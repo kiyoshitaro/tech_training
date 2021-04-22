@@ -59,31 +59,33 @@ export default class Howdoi extends React.Component<
 
   public render(): React.ReactElement<IHowdoiProps> {
     return (
-      <div className={styles.howdoi}>
-        <p className={styles.topic}>How do i</p>
+      <div>
+        <div className={styles.howdoi}>
+          <p className={styles.topic}>How do i</p>
 
-        <form>
-          <input
-            className={styles.searchBox}
-            type="text"
-            name="search"
-            placeholder="Find Questions"
-          />
-        </form>
-        <div>
-          {this.state.faq.map((item, index) => {
-            return (
-              <Collapse
-                key={index}
-                id={index}
-                item={item}
-                changeAllCollapse={this.changeAllCollapse}
-                isOpenCollapse={this.state.faq[index].status}
-              ></Collapse>
-            );
-          })}
+          <form>
+            <input
+              className={styles.searchBox}
+              type="text"
+              name="search"
+              placeholder="Find Questions"
+            />
+          </form>
+          <div>
+            {this.state.faq.map((item, index) => {
+              return (
+                <Collapse
+                  key={index}
+                  id={index}
+                  item={item}
+                  changeAllCollapse={this.changeAllCollapse}
+                  isOpenCollapse={this.state.faq[index].status}
+                ></Collapse>
+              );
+            })}
+          </div>
         </div>
-        <Viewmore url=""></Viewmore>
+        <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/Lists/faq/AllItems.aspx"></Viewmore>
       </div>
     );
   }

@@ -36,11 +36,14 @@ export default class Documentgallery extends React.Component<
         .filter((tp) => tp.Name !== "Forms")
         .map((tp) => {
           this._libService.getFileByTopic(tp.Name).then((allFile) => {
+            console.log(tp, "uuuu");
+
             this.setState({
               documents: [
                 ...this.state.documents,
                 {
                   topic: tp.Name,
+                  urlTopic: tp.ServerRelativeUrl,
                   docs: allFile.map((file) => {
                     let ext: string = file.Name.split(".")[
                       file.Name.split(".").length - 1
@@ -77,7 +80,7 @@ export default class Documentgallery extends React.Component<
                           <img className={styles.thumbImg} src={it.icon} />
                           <a
                             className={styles.documentTitle}
-                            // target="_blank"
+                            target="_blank"
                             href={it.url}
                           >
                             {it.title}
@@ -85,7 +88,7 @@ export default class Documentgallery extends React.Component<
                         </div>
                       );
                     })}
-                  <Viewmore url="https://vndevcore.sharepoint.com/sites/brown/Shared%20Documents/Forms/AllItems.aspx"></Viewmore>
+                  <Viewmore url={item.urlTopic}></Viewmore>
                 </div>
               );
             })}
