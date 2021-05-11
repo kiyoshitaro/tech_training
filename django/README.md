@@ -1,0 +1,1 @@
+https://www.hocpython.com/blog/category/django/
