@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PageConfig Name="demo.aspx" LogoUrl="https://i.pinimg.com/originals/53/93/d4/5393d4e3cd22af6e28d4aea2cc1282de.png">
+	<Section SectionType="TwoColumnLeft">
+		<WebPart Name="announcement"
+				 ListName="Announcement"
+				 PostPerPage="3"
+				 Column="0">
+		</WebPart>
+		<WebPart Name="news"
+				 ListName="News"
+				 PostPerPage="3"
+				 Column="0">
+		</WebPart>
+		<WebPart Name="documentgallery"
+				 Column="0">
+		</WebPart>
+		<WebPart Name="quicklinks"
+				 Column="1">
+		</WebPart>
+		<WebPart Name="events"
+				 Column="1">
+		</WebPart>
+		<WebPart Name="howdoi"
+				 Column="1">
+		</WebPart>
+	</Section>
+</PageConfig>
