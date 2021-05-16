@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PageConfig Name="demo.aspx" LogoUrl="https://i.pinimg.com/originals/53/93/d4/5393d4e3cd22af6e28d4aea2cc1282de.png">
+<PageConfig Name="demo.aspx" LogoUrl="https://wallpapercave.com/wp/t5hpbkz.jpg">
 	<Section SectionType="TwoColumnLeft">
 		<WebPart Name="announcement"
 				 ListName="Announcement"

@@ -47,21 +47,26 @@ namespace PnPSitesCoreDemo
             //PAGE
             string PageName = PageConfig.Name;
             ClientSidePage Page = null;
-            try {
+            try
+            {
                 Page = ClientSidePage.Load(context, PageName);
-
-                Console.WriteLine($"1");
+                Console.WriteLine($"{PageName} existed, we are going to edit it");
 
                 Page.Publish();
                 Page.ClearPage();
                 Page.Save();
                 Page.Publish();
+            }
+            catch
+            {
+                Console.WriteLine($"Created new page {PageName}");
+                Page = new ClientSidePage(context, ClientSidePageLayoutType.Home);
+            }
 
-                Console.WriteLine($"Reloaded {PageName}");
 
 
-                //SECTION
-                var SectionConfig = PageConfig.Sections;
+            //SECTION
+            var SectionConfig = PageConfig.Sections;
 
                 if (SectionConfig.Count > 0)
                 {
@@ -110,7 +115,6 @@ namespace PnPSitesCoreDemo
                                 catch (Exception e)
                                 {
                                     Console.WriteLine(e.Message);
-
                                 }
 
                                 switch (Name)
@@ -150,58 +154,6 @@ namespace PnPSitesCoreDemo
                 else {
                     Console.WriteLine($"No section to create");
                 }
-            }
-            catch
-            {
-                Console.WriteLine($"Create new page {PageName}");
-                Page = new ClientSidePage(context, ClientSidePageLayoutType.Home);
-            }
-
-
-
-
-            //string pageName = "Test-Page.aspx";
-            //ClientSidePage newPage = null;
-            //try
-            //{
-            //    //EXISTED
-            //    newPage = ClientSidePage.Load(context, pageName);
-
-            //    //need to public first
-            //    newPage.Publish();
-            //    newPage.ClearPage();
-            //    newPage.Save();
-            //    newPage.Publish();
-
-            //    //SECTION
-            //    CanvasSection section = new CanvasSection(newPage, CanvasSectionTemplate.TwoColumn, 0);
-            //    newPage.AddSection(section);
-
-            //    //WEBPART1
-            //    ClientSideText webpart1 = new ClientSideText()
-            //    {
-            //        Text = "abc"
-            //    };
-            //    newPage.AddControl(webpart1, section.Columns[0]);
-
-
-            //    //WEBPART2               
-            //    ClientSideWebPart webpart2 = newPage.InstantiateDefaultWebPart(DefaultClientSideWebParts.List);
-            //    webpart2.Title = "document gallery";
-            //    webpart2.PropertiesJson = "{}";
-            //    newPage.AddControl(webpart2, section.Columns[1]);
-
-            //    newPage.Save();
-            //    newPage.Publish();
-            //}
-            //catch
-            //{
-            //    Console.WriteLine($"Create new page {pageName}");
-
-            //    newPage = new ClientSidePage(context, ClientSidePageLayoutType.Home);
-
-            //}
-
         }
 
         static void Main(string[] args)
