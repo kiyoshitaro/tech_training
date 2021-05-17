@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ListConfig>
+	<List Title="Announcement2">
+		<Field Name="content" Type="Note" IsRequired="FALSE"/>
+		<Field Name="img" Type="Note" IsRequired="FALSE"/>
+	</List>
+	<List Title="QuickLinks1">
+		<Field Name="link" Type="Thumbnail"  IsRequired="TRUE"/>
+		<Field Name="icon" Type="Text"  IsRequired="TRUE"/>
+	</List>
+	<List Title="faq1">
+		<Field Name="question" Type="Note" IsRequired="TRUE"/>
+		<Field Name="answer" Type="Note" IsRequired="TRUE"/>
+	</List>
+	<!--<List Name="Events">
+		<Field Name="EventName" Type="Text" IsRequired="TRUE"/>
+		<Field Name="StartTime" Type="DateTime" IsRequired="TRUE"/>
+		<Field Name="EndTime" Type="DateTime" IsRequired="TRUE"/>
+	</List>-->
+
+
+</ListConfig>

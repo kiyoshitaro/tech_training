@@ -13,6 +13,7 @@ using System.Reflection;
 using PnPSitesCoreDemo.Utility;
 using System.Diagnostics;
 using OfficeDevPnP.Core.Pages;
+using SP = Microsoft.SharePoint.Client;
 
 namespace PnPSitesCoreDemo
 {
@@ -24,12 +25,156 @@ namespace PnPSitesCoreDemo
 
         };
 
+        private static void DeployList(DeployList ListConfiguration, ClientContext context) {
+            Web oWebsite = context.Web;
+
+            List<DList> ListsConfig = ListConfiguration.Lists;
+            for (int i = 0; i < ListsConfig.Count; i++) {
+                DList ListConfig = ListsConfig[i];
+
+                string ListTitleConfig = ListConfig.Title;
+
+                //DELETE LIST
+                List ListObject;
+                if (oWebsite.ListExists(ListTitleConfig))
+                {
+                    Console.WriteLine($"------{ListTitleConfig} existed, deleting------");
+                    try
+                    {
+                        ListObject = oWebsite.Lists.GetByTitle(ListTitleConfig);
+                        ListObject.DeleteObject();
+                        context.ExecuteQuery();
+                    }
+                    catch (Exception ex) {
+                        Console.WriteLine($"Exception {ex.Message} when deleting{ListTitleConfig}");
+                    }
+                }
+
+                //CREATE LIST
+                Console.WriteLine($"--------Creating {ListTitleConfig} list--------");
+                try
+                {
+                    ListCreationInformation listCreationInfo = new ListCreationInformation();
+                    listCreationInfo.Title = ListTitleConfig;
+                    listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
+                    context.Web.Lists.Add(listCreationInfo);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception {ex.Message} when creating {ListTitleConfig} list");
+                }
+
+                //ADD FIELD
+                ListObject = oWebsite.Lists.GetByTitle(ListTitleConfig);
+                List<DField> FieldsConfig = ListConfig.Fields;
+
+                for (int j = 0; j < FieldsConfig.Count; j++) {
+                    DField FieldConfig = FieldsConfig[j];
+
+                    string FieldNameConfig = "";
+                    string FieldTypeConfig = "";
+                    string FieldIsRequiredConfig = "";
+
+                    try
+                    {
+                        FieldNameConfig = FieldConfig.Name;
+                        FieldTypeConfig = FieldConfig.Type;
+                        FieldIsRequiredConfig = FieldConfig.IsRequired;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                    try
+                    {
+                        string xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}'/>";
+                        ListObject.Fields.AddFieldAsXml(xml, true, AddFieldOptions.DefaultValue);
+                        context.ExecuteQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception {ex.Message} when creating {FieldConfig.Name} field in {ListTitleConfig} list");
+                    }
+                }
+                Console.WriteLine($"------Created {ListTitleConfig}--------");
+            }
+
+
+
+            //CREATE LIST
+            //ListCreationInformation listCreationInfo = new ListCreationInformation();
+            //listCreationInfo.Title = "Announcement2";
+            //listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
+            //List oList = oWebsite.Lists.Add(listCreationInfo);
+
+
+            //ADD FIELD
+            //SP.List oList = oWebsite.Lists.GetByTitle("Announcement2");
+
+            //SP.Field oField = oList.Fields.AddFieldAsXml("<Field DisplayName='MyField' Type='Number' />",
+            //    true, AddFieldOptions.DefaultValue);
+
+            //SP.FieldNumber fieldNumber = context.CastTo<FieldNumber>(oField);
+            //fieldNumber.MaximumValue = 100;
+            //fieldNumber.MinimumValue = 35;
+
+            //fieldNumber.Update();
+
+
+            //DELETE LIST
+            //List oList = oWebsite.Lists.GetByTitle("Announcement2");
+            //oList.DeleteObject();
+
+
+            //READ ITEM
+            //List oList = oWebsite.Lists.GetByTitle("Announcement2");
+            //CamlQuery camlQuery = new CamlQuery();
+            //camlQuery.ViewXml = "<View><Query><Where><Geq><FieldRef Name='ID'/>" +
+            //    "<Value Type='Number'>10</Value></Geq></Where></Query><RowLimit>100</RowLimit></View>";
+            //ListItemCollection collListItem = oList.GetItems(camlQuery);
+            //context.Load(collListItem);
+
+            //CREATE ITEM
+            //ListCollection collList = oWebsite.Lists;
+            SP.List oList = oWebsite.Lists.GetByTitle("Announcement1");
+            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            ListItem oListItem = oList.AddItem(itemCreateInfo);
+            oListItem["Title"] = "My New Item!";
+            oListItem["content"] = "Hello World!";
+            //oListItem["tags"] = "Hello World!";
+
+
+            oListItem.Update();
+
+
+
+
+
+
+
+
+
+
+            context.ExecuteQuery();
+
+
+
+            //foreach (SP.List oList in collList)
+            //{
+            //    Console.WriteLine("Title: {0} ID: {1}", oList.Title, oList.Id.ToString("D"));
+            //}
+
+
+        }
+
 
         private static void DeployPage(DeployPage PageConfig, ClientContext context)
         {
+            Console.WriteLine($"-----Connecting-----");
+
             try
             {
-
                 //LOGO 
                 var web = context.Web;
                 //context.Load(web, p => p.Title);
@@ -38,35 +183,27 @@ namespace PnPSitesCoreDemo
                 web.Update();
                 context.ExecuteQuery();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Exception: {ex.Message} when making logo");
             }
 
 
             //PAGE
-            string PageName = PageConfig.Name;
-            ClientSidePage Page = null;
+            string PageNameConfig = PageConfig.Name;
+            ClientSidePage PageObject = null;
             try
             {
-                Page = ClientSidePage.Load(context, PageName);
-                Console.WriteLine($"{PageName} existed, we are going to edit it");
+                PageObject = ClientSidePage.Load(context, PageNameConfig);
+                Console.WriteLine($"{PageNameConfig} existed, we are going to edit it");
 
-                Page.Publish();
-                Page.ClearPage();
-                Page.Save();
-                Page.Publish();
-            }
-            catch
-            {
-                Console.WriteLine($"Created new page {PageName}");
-                Page = new ClientSidePage(context, ClientSidePageLayoutType.Home);
-            }
+                PageObject.Publish();
+                PageObject.ClearPage();
+                PageObject.Save();
+                PageObject.Publish();
 
-
-
-            //SECTION
-            var SectionConfig = PageConfig.Sections;
+                //SECTION
+                var SectionConfig = PageConfig.Sections;
 
                 if (SectionConfig.Count > 0)
                 {
@@ -75,18 +212,19 @@ namespace PnPSitesCoreDemo
                         Console.WriteLine($"-----Creating section {i+1}-----");
                         Console.WriteLine($"--------------------------------");
 
-                        string SectionType = SectionConfig[i].SectionType;
-                        CanvasSection Section = new CanvasSection(Page, SectionTypeMapping[SectionType], 0);
-                        Page.AddSection(Section);
+                        string SectionTypeConfig = SectionConfig[i].SectionType;
+                        CanvasSection Section = new CanvasSection(PageObject, SectionTypeMapping[SectionTypeConfig], 0);
+                        PageObject.AddSection(Section);
 
 
                         //WEBPARTS
-                        string Name = "";
-                        string ListName = "";
-                        int PostPerPage = 4;
-                        int Column = 0;
-
                         var WebpartConfig = SectionConfig[i].WebParts;
+
+                        string WebpartNameConfig = "";
+                        string WebpartListNameConfig = "";
+                        int WebpartPostPerPageConfig = 4;
+                        int WebpartColumnConfig = 0;
+
 
                         if (WebpartConfig.Count > 0)
                         {
@@ -94,49 +232,55 @@ namespace PnPSitesCoreDemo
                             {
                                 try
                                 {
-                                    Name = WebpartConfig[j].Name;
-                                    ListName = WebpartConfig[j].ListName;
-                                    PostPerPage = WebpartConfig[j].PostPerPage;
-                                    Column = WebpartConfig[j].Column;
+                                    WebpartNameConfig = WebpartConfig[j].Name;
+                                    WebpartListNameConfig = WebpartConfig[j].ListName;
+                                    WebpartPostPerPageConfig = WebpartConfig[j].PostPerPage;
+                                    WebpartColumnConfig = WebpartConfig[j].Column;
                                 }
-                                catch (Exception e)
+                                catch (Exception ex)
                                 {
-                                    Console.WriteLine(e.Message);
+                                    Console.WriteLine(ex.Message);
                                 }
-                                Console.WriteLine($"-----Creating {Name} webpart-----");
-                                var Webpart = Page.AvailableClientSideComponents(Name).ToList();
-                                string PropertiesJson = "";
 
-                                ClientSideWebPart ClientWP = null;
+                                Console.WriteLine($"-----Creating {WebpartNameConfig} webpart-----");
                                 try
                                 {
-                                    ClientWP = new ClientSideWebPart(Webpart.First());
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine(e.Message);
-                                }
+                                    var Webpart = PageObject.AvailableClientSideComponents(WebpartNameConfig).ToList();
+                                    string PropertiesJson = "";
 
-                                switch (Name)
-                                {
-                                    case "announcement":
-                                        PropertiesJson = "{\"listName\": \"" + ListName + "\"," +
-                                                            "\"postPerPage\": \"" + PostPerPage + "\"}";
-                                        break;
-                                    case "news":
-                                        PropertiesJson = "{\"listName\": \"" + ListName + "\"," +
-                                                            "\"postPerPage\": \"" + PostPerPage + "\"}";
-                                        //Console.WriteLine($"-----cccccccc-----{PropertiesJson}");
-                                        break;
-                                    default:
-                                        break;
+                                    ClientSideWebPart WebpartObject = null;
+                                    try
+                                    {
+                                        WebpartObject = new ClientSideWebPart(Webpart.First());
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                    }
+
+                                    switch (WebpartNameConfig)
+                                    {
+                                        case "announcement":
+                                            PropertiesJson = "{\"listName\": \"" + WebpartListNameConfig + "\"," +
+                                                                "\"postPerPage\": \"" + WebpartPostPerPageConfig + "\"}";
+                                            break;
+                                        case "news":
+                                            PropertiesJson = "{\"listName\": \"" + WebpartListNameConfig + "\"," +
+                                                                "\"postPerPage\": \"" + WebpartPostPerPageConfig + "\"}";
+                                            //Console.WriteLine($"-----cccccccc-----{PropertiesJson}");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    WebpartObject.PropertiesJson = PropertiesJson;
+                                    PageObject.AddControl(WebpartObject, Section.Columns[WebpartColumnConfig]);
+
+                                    Console.WriteLine($"-----Created {WebpartNameConfig} webpart-----");
+                                    Console.WriteLine($"--------------------------------");
                                 }
-                                ClientWP.PropertiesJson = PropertiesJson;
-                                Page.AddControl(ClientWP, Section.Columns[Column]);
-
-                                Console.WriteLine($"-----Created {Name} webpart-----");
-                                Console.WriteLine($"--------------------------------");
-
+                                catch (Exception ex) {
+                                    Console.WriteLine(ex.Message);
+                                }
                             }
                         }
                         else {
@@ -146,14 +290,24 @@ namespace PnPSitesCoreDemo
                         Console.WriteLine($"--------------------------------");
 
                     }
-                    Page.Save();
-                    Page.Publish();
+                    PageObject.Save();
+                    PageObject.Publish();
                     Console.WriteLine($"-----Save and Publish page-----");
 
                 }
                 else {
                     Console.WriteLine($"No section to create");
                 }
+
+            }
+            catch
+            {
+
+                PageObject = new ClientSidePage(context, ClientSidePageLayoutType.Home);
+                Console.WriteLine($"----- Created new page {PageNameConfig}, run again ------");
+
+            }
+
         }
 
         static void Main(string[] args)
@@ -177,8 +331,12 @@ namespace PnPSitesCoreDemo
            
             var PageConfigXml = new XmlDocument();
             PageConfigXml.Load(@"Configuration\PageConfig.xml");
-            Console.WriteLine(PageConfigXml.InnerXml);
             DeployPage PageConfig = XmlUtility.ToObject<DeployPage>(PageConfigXml.InnerXml);
+
+            var ListConfigXml = new XmlDocument();
+            ListConfigXml.Load(@"Configuration\ListConfig.xml");
+            DeployList ListConfig = XmlUtility.ToObject<DeployList>(ListConfigXml.InnerXml);
+
 
 
 
@@ -187,6 +345,7 @@ namespace PnPSitesCoreDemo
             stopwatch.Start();
 
             DeployPage(PageConfig, context);
+            //DeployList(ListConfig, context); 
 
             stopwatch.Stop();
             Console.WriteLine(string.Format("Home site deployment takes: {0} s", stopwatch.ElapsedTicks / 10000000));
@@ -221,10 +380,10 @@ namespace PnPSitesCoreDemo
                 }
                 Console.WriteLine("");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 sStrPwd = null;
-                Console.WriteLine(e.Message);
+                Console.WriteLine(ex.Message);
             }
 
             return sStrPwd;
