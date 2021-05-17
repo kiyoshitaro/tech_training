@@ -136,34 +136,13 @@ namespace PnPSitesCoreDemo
             //context.Load(collListItem);
 
             //CREATE ITEM
-            //ListCollection collList = oWebsite.Lists;
-            SP.List oList = oWebsite.Lists.GetByTitle("Announcement1");
-            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            ListItem oListItem = oList.AddItem(itemCreateInfo);
-            oListItem["Title"] = "My New Item!";
-            oListItem["content"] = "Hello World!";
-            //oListItem["tags"] = "Hello World!";
-
-
-            oListItem.Update();
-
-
-
-
-
-
-
-
-
-
-            context.ExecuteQuery();
-
-
-
-            //foreach (SP.List oList in collList)
-            //{
-            //    Console.WriteLine("Title: {0} ID: {1}", oList.Title, oList.Id.ToString("D"));
-            //}
+            //SP.List oList = oWebsite.Lists.GetByTitle("Announcement1");
+            //ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            //ListItem oListItem = oList.AddItem(itemCreateInfo);
+            //oListItem["Title"] = "My New Item!";
+            //oListItem["content"] = "Hello World!";
+            //oListItem.Update();
+            //context.ExecuteQuery();
 
 
         }
