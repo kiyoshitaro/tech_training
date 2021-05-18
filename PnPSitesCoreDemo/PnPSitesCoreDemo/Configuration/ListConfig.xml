@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ListConfig>
-	<List Title="Announcement2">
+	<List Title="Announcement3">
 		<Field Name="content" Type="Note" IsRequired="FALSE"/>
-		<Field Name="img" Type="Note" IsRequired="FALSE"/>
+		<Field Name="img" Type="Image" IsRequired="FALSE" Format="Image"/>
+		<Field Name="time" Type="DateTime" IsRequired="FALSE" Format="DateOnly"/>
+		<Field Name="tags" Type="MultiChoice" IsRequired="FALSE">
+			<Choice Value ="Administration"/>
+			<Choice Value ="Information"/>
+			<Choice Value= "Facilities"/>
+			<Choice Value ="Operations"/>
+		</Field>
 	</List>
 	<List Title="QuickLinks1">
 		<Field Name="link" Type="Thumbnail"  IsRequired="TRUE"/>
-		<Field Name="icon" Type="Text"  IsRequired="TRUE"/>
+		<Field Name="icon" Type="Image"  IsRequired="TRUE" Format="Image"/>
 	</List>
 	<List Title="faq1">
 		<Field Name="question" Type="Note" IsRequired="TRUE"/>

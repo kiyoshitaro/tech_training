@@ -14,6 +14,7 @@ using PnPSitesCoreDemo.Utility;
 using System.Diagnostics;
 using OfficeDevPnP.Core.Pages;
 using SP = Microsoft.SharePoint.Client;
+using System.IO;
 
 namespace PnPSitesCoreDemo
 {
@@ -25,11 +26,144 @@ namespace PnPSitesCoreDemo
 
         };
 
-        private static void DeployList(DeployList ListConfiguration, ClientContext context) {
+        private static string UploadImage(string fileName, string value, ClientContext context)
+        {
+            Folder folder = context.Web.GetFolderByServerRelativeUrl("SiteAssets");
+            context.Load(folder);
+            context.ExecuteQuery();
+            string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fileName);
+            using (FileStream fsWrite = new FileStream(value, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+            {
+                Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(new FileCreationInformation()
+                {
+                    ContentStream = fsWrite,
+                    Url = fileUrl,
+                    Overwrite = true
+                });
+                context.ExecuteQuery();
+                context.Load(uploadFile);
+                context.ExecuteQuery();
+                string val = string.Format("{{\"type\":\"thumbnail\"," +
+                    "\"fileName\":\"{0}\"," +
+                    "\"nativeFile\":{{}}," +
+                    "\"fieldName\":\"Image\"," +
+                    "\"serverUrl\":\"https://curecorona.sharepoint.com\"," +
+                    "\"serverRelativeUrl\":\"{1}\"," +
+                    "\"id\":\"{2}\"}}", fileName, uploadFile.ServerRelativeUrl, uploadFile.UniqueId);
+                return val;
+            }
+        }
+
+        private static void DeployItem(DeployItem ItemConfiguration, ClientContext context) {
+            Console.WriteLine($"-----Deploying Item-----");
+
+            //LIST
+            List<ListItems> ListItemsConfig = ItemConfiguration.ListItems;
+            for (int i = 0; i < ListItemsConfig.Count; i++)
+            {
+                ListItems ListItemConfig = ListItemsConfig[i];
+                string ListTitleConfig = ListItemConfig.Title;
+                Console.WriteLine($"-----Adding item in {ListTitleConfig} list-----");
+
+
+                if (!context.Web.ListExists(ListTitleConfig))
+                {
+                    Console.WriteLine($"------{ListTitleConfig} not exist------");
+                    break;
+                }
+
+                //DELETE ALL ITEM IN EXIST LIST
+                else
+                {
+                    SP.List oList = context.Web.Lists.GetByTitle(ListTitleConfig);
+                    CamlQuery camlQuery = new CamlQuery();
+                    camlQuery.ViewXml = "<View><Query><Where><Geq><FieldRef Name='ID'/>" +
+                        "<Value Type='Number'>10</Value></Geq></Where></Query><RowLimit>100</RowLimit></View>";
+                    ListItemCollection collListItem = oList.GetItems(camlQuery);
+
+                    context.Load(collListItem);
+                    context.ExecuteQuery();
+                    
+                    int NumItems = collListItem.Count;
+                    while (collListItem.Count > 0) {
+                        collListItem[0].DeleteObject();
+                        context.Load(collListItem);
+                    }
+                    context.ExecuteQuery();
+                    Console.WriteLine($"------Deleted all {NumItems} items in {ListTitleConfig} list------");
+                }
+
+
+                //ITEM
+                List<Item> ItemsConfig = ListItemConfig.Items;
+                if (ItemsConfig.Count > 0)
+                {
+
+                    for (int j = 0; j < ItemsConfig.Count; j++) {
+
+
+                        //GET LIST
+
+                        SP.List oList = context.Web.Lists.GetByTitle(ListTitleConfig);
+                        ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                        ListItem oListItem = oList.AddItem(itemCreateInfo);
+
+
+                        Item ItemConfig = ItemsConfig[j];
+                        //FIELD
+                        List<ItemField> ItemFieldsConfig = ItemConfig.ItemFields;
+                        foreach (ItemField ItemFieldConfig in ItemFieldsConfig)
+                        {
+                            string KeyConfig = ItemFieldConfig.Key;
+                            string ValueConfig = ItemFieldConfig.Value;
+
+                            try
+                            {
+                                switch (KeyConfig)
+                                {
+                                    case "img":
+                                    case "icon":
+                                        string[] fileName = ValueConfig.Split('\\');
+                                        oListItem[KeyConfig] = UploadImage(fileName[fileName.Length - 1], ValueConfig,context);
+                                        oListItem.Update();
+
+                                        break;
+                                    case "time":
+                                        DateTime xx = Convert.ToDateTime(ValueConfig);
+                                        oListItem[KeyConfig] = xx;
+                                        break;
+                                    default:
+                                        oListItem[KeyConfig] = ValueConfig;
+                                        break;
+                                }
+                                oListItem.Update();
+                                context.ExecuteQuery();
+
+                                Console.WriteLine($"------Added {KeyConfig}, {j}/{ItemsConfig.Count}");
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Exception:{ex.Message}  when add Item with key{KeyConfig} in {ListTitleConfig}");
+                            }
+                        }
+                    }
+
+
+                    Console.WriteLine($"------Added {ItemsConfig.Count} items in {ListTitleConfig} list------");
+                }
+                else {
+                    Console.WriteLine($"------ No item to create in {ListTitleConfig} list------");
+                }
+            }
+        }
+        private static void DeployList(DeployList ListConfiguration, ClientContext context)
+        {
             Web oWebsite = context.Web;
 
             List<DList> ListsConfig = ListConfiguration.Lists;
-            for (int i = 0; i < ListsConfig.Count; i++) {
+            for (int i = 0; i < ListsConfig.Count; i++)
+            {
                 DList ListConfig = ListsConfig[i];
 
                 string ListTitleConfig = ListConfig.Title;
@@ -45,7 +179,8 @@ namespace PnPSitesCoreDemo
                         ListObject.DeleteObject();
                         context.ExecuteQuery();
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         Console.WriteLine($"Exception {ex.Message} when deleting{ListTitleConfig}");
                     }
                 }
@@ -68,18 +203,23 @@ namespace PnPSitesCoreDemo
                 ListObject = oWebsite.Lists.GetByTitle(ListTitleConfig);
                 List<DField> FieldsConfig = ListConfig.Fields;
 
-                for (int j = 0; j < FieldsConfig.Count; j++) {
+                for (int j = 0; j < FieldsConfig.Count; j++)
+                {
                     DField FieldConfig = FieldsConfig[j];
 
                     string FieldNameConfig = "";
                     string FieldTypeConfig = "";
                     string FieldIsRequiredConfig = "";
+                    string FieldFormatConfig = "";
+                    List<DChoice> ChoicesConfig = null;
 
                     try
                     {
                         FieldNameConfig = FieldConfig.Name;
                         FieldTypeConfig = FieldConfig.Type;
                         FieldIsRequiredConfig = FieldConfig.IsRequired;
+                        FieldFormatConfig = FieldConfig.Format;
+                        ChoicesConfig = FieldConfig.Choices;
                     }
                     catch (Exception ex)
                     {
@@ -88,7 +228,24 @@ namespace PnPSitesCoreDemo
 
                     try
                     {
-                        string xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}'/>";
+
+                        string xml = "";
+                        if (ChoicesConfig != null && ChoicesConfig.Count > 0)
+                        {
+                            xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}'><CHOICES>";
+                            foreach (DChoice Choice in ChoicesConfig)
+                            {
+                                Console.WriteLine(Choice.Value);
+                                xml += $"<CHOICE>{Choice.Value}</CHOICE>";
+                            }
+                            xml += $"</CHOICES></Field>";
+                        }
+                        else
+                        {
+                            xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}' Format='{FieldFormatConfig}'/>";
+                        }
+                        Console.WriteLine(xml);
+
                         ListObject.Fields.AddFieldAsXml(xml, true, AddFieldOptions.DefaultValue);
                         context.ExecuteQuery();
                     }
@@ -99,7 +256,6 @@ namespace PnPSitesCoreDemo
                 }
                 Console.WriteLine($"------Created {ListTitleConfig}--------");
             }
-
 
 
             //CREATE LIST
@@ -148,7 +304,7 @@ namespace PnPSitesCoreDemo
         }
 
 
-        private static void DeployPage(DeployPage PageConfig, ClientContext context)
+            private static void DeployPage(DeployPage PageConfig, ClientContext context)
         {
             Console.WriteLine($"-----Connecting-----");
 
@@ -316,15 +472,17 @@ namespace PnPSitesCoreDemo
             ListConfigXml.Load(@"Configuration\ListConfig.xml");
             DeployList ListConfig = XmlUtility.ToObject<DeployList>(ListConfigXml.InnerXml);
 
-
-
+            var ItemConfigXml = new XmlDocument();
+            ItemConfigXml.Load(@"Configuration\ItemConfig.xml");
+            DeployItem ItemConfig = XmlUtility.ToObject<DeployItem>(ItemConfigXml.InnerXml);
 
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            DeployPage(PageConfig, context);
-            //DeployList(ListConfig, context); 
+            //DeployPage(PageConfig, context);
+            //DeployList(ListConfig, context);
+            DeployItem(ItemConfig, context);
 
             stopwatch.Stop();
             Console.WriteLine(string.Format("Home site deployment takes: {0} s", stopwatch.ElapsedTicks / 10000000));

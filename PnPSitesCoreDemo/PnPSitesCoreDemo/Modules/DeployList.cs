@@ -29,10 +29,23 @@ namespace PnPSitesCoreDemo.Modules
 
         [XmlAttribute(AttributeName = "Type")]
         public string Type { get; set; }
-
+        
         [XmlAttribute(AttributeName = "IsRequired")]
         public string IsRequired { get; set; }
 
+        [XmlAttribute(AttributeName = "Format")]
+        public string Format { get; set; }
+
+
+        [XmlElement(ElementName = "Choice")]
+        public List<DChoice> Choices { set; get; }
+
+    }
+    public class DChoice 
+    {
         
+        [XmlAttribute(AttributeName = "Value")]
+        public string Value { get; set; }
+
     }
 }
