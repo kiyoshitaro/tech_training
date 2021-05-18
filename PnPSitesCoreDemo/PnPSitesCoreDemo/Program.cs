@@ -26,33 +26,6 @@ namespace PnPSitesCoreDemo
 
         };
 
-        private static string UploadImage(string fileName, string value, ClientContext context)
-        {
-            Folder folder = context.Web.GetFolderByServerRelativeUrl("SiteAssets");
-            context.Load(folder);
-            context.ExecuteQuery();
-            string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fileName);
-            using (FileStream fsWrite = new FileStream(value, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
-            {
-                Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(new FileCreationInformation()
-                {
-                    ContentStream = fsWrite,
-                    Url = fileUrl,
-                    Overwrite = true
-                });
-                context.ExecuteQuery();
-                context.Load(uploadFile);
-                context.ExecuteQuery();
-                string val = string.Format("{{\"type\":\"thumbnail\"," +
-                    "\"fileName\":\"{0}\"," +
-                    "\"nativeFile\":{{}}," +
-                    "\"fieldName\":\"Image\"," +
-                    "\"serverUrl\":\"https://curecorona.sharepoint.com\"," +
-                    "\"serverRelativeUrl\":\"{1}\"," +
-                    "\"id\":\"{2}\"}}", fileName, uploadFile.ServerRelativeUrl, uploadFile.UniqueId);
-                return val;
-            }
-        }
 
         private static void DeployItem(DeployItem ItemConfiguration, ClientContext context) {
             Console.WriteLine($"-----Deploying Item-----");
@@ -123,9 +96,7 @@ namespace PnPSitesCoreDemo
                                 {
                                     case "img":
                                     case "icon":
-                                        string[] fileName = ValueConfig.Split('\\');
-                                        oListItem[KeyConfig] = UploadImage(fileName[fileName.Length - 1], ValueConfig,context);
-                                        oListItem.Update();
+
 
                                         break;
                                     case "time":
