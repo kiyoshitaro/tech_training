@@ -26,6 +26,50 @@ namespace PnPSitesCoreDemo
 
         };
 
+        private static string UploadImage( string value, ClientContext context)
+        {
+            string[] Path = value.Split('\\');
+            string fileName = Path[Path.Length - 1];
+            Console.WriteLine($"{fileName}");
+
+            Folder folder = context.Web.GetFolderByServerRelativeUrl("SiteAssets");
+            context.Load(folder);
+            context.ExecuteQuery();
+
+            string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fileName);
+
+            using (FileStream fsWrite = new FileStream(value, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+            {
+                try {
+                    Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(new FileCreationInformation()
+                    {
+                        ContentStream = fsWrite,
+                        Url = fileUrl,
+                        Overwrite = true
+                    });
+                    context.ExecuteQuery();
+                    context.Load(uploadFile);
+                    context.ExecuteQuery();
+
+                    string val = string.Format("{{\"type\":\"thumbnail\"," +
+                        "\"fileName\":\"{0}\"," +
+                        "\"nativeFile\":{{}}," +
+                        "\"fieldName\":\"Image\"," +
+                        "\"serverUrl\":\"https://vndevcore.sharepoint.com\"," +
+                        "\"serverRelativeUrl\":\"{1}\"," +
+                        "\"id\":\"{2}\"}}", fileName, uploadFile.ServerRelativeUrl, uploadFile.UniqueId);
+
+
+                    return val;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return "";
+                }
+            }
+        }
 
         private static void DeployItem(DeployItem ItemConfiguration, ClientContext context) {
             Console.WriteLine($"-----Deploying Item-----");
@@ -56,14 +100,14 @@ namespace PnPSitesCoreDemo
 
                     context.Load(collListItem);
                     context.ExecuteQuery();
-                    
-                    int NumItems = collListItem.Count;
+                    int Count = 0;
                     while (collListItem.Count > 0) {
+                        Count += 1;
                         collListItem[0].DeleteObject();
                         context.Load(collListItem);
                     }
                     context.ExecuteQuery();
-                    Console.WriteLine($"------Deleted all {NumItems} items in {ListTitleConfig} list------");
+                    Console.WriteLine($"------Deleted all {Count} items in {ListTitleConfig} list------");
                 }
 
 
@@ -71,7 +115,6 @@ namespace PnPSitesCoreDemo
                 List<Item> ItemsConfig = ListItemConfig.Items;
                 if (ItemsConfig.Count > 0)
                 {
-
                     for (int j = 0; j < ItemsConfig.Count; j++) {
 
 
@@ -96,13 +139,26 @@ namespace PnPSitesCoreDemo
                                 {
                                     case "img":
                                     case "icon":
-
-
+                                        oListItem[KeyConfig] = UploadImage(ValueConfig,context);
                                         break;
                                     case "time":
-                                        DateTime xx = Convert.ToDateTime(ValueConfig);
-                                        oListItem[KeyConfig] = xx;
+                                        try
+                                        {
+                                            oListItem[KeyConfig] = Convert.ToDateTime(ValueConfig);
+
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine($"'{ValueConfig}' is not in the proper format.");
+                                            oListItem[KeyConfig] = Convert.ToDateTime(String.Empty);
+
+                                        }
                                         break;
+                                    case "tags":
+                                        Console.WriteLine(ValueConfig.Split(',').ToList().Count);
+                                        oListItem[KeyConfig] = ValueConfig.Split(',').ToList();
+                                        break;
+
                                     default:
                                         oListItem[KeyConfig] = ValueConfig;
                                         break;
@@ -115,7 +171,7 @@ namespace PnPSitesCoreDemo
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"Exception:{ex.Message}  when add Item with key{KeyConfig} in {ListTitleConfig}");
+                                Console.WriteLine($"Exception:{ex.Message}  when add item with key {KeyConfig} in {ListTitleConfig}");
                             }
                         }
                     }
@@ -452,7 +508,7 @@ namespace PnPSitesCoreDemo
             stopwatch.Start();
 
             //DeployPage(PageConfig, context);
-            //DeployList(ListConfig, context);
+            DeployList(ListConfig, context);
             DeployItem(ItemConfig, context);
 
             stopwatch.Stop();
