@@ -457,21 +457,19 @@ namespace PnPSitesCoreDemo
             {
                 PageObject = ClientSidePage.Load(context, PageNameConfig);
                 Console.WriteLine($"{PageNameConfig} existed, we are going to edit it");
-
-                PageObject.Publish();
-                PageObject.ClearPage();
-                PageObject.Save();
-                PageObject.Publish();
             }
             catch
             {
 
                 PageObject = new ClientSidePage(context, ClientSidePageLayoutType.Home);
                 PageObject.Save($"{PageNameConfig}");
-
-
                 Console.WriteLine($"-----Created new page {PageNameConfig} ------");
             }
+            PageObject.Publish();
+            PageObject.ClearPage();
+            PageObject.Save();
+            PageObject.Publish();
+
 
             //SECTION
             var SectionConfig = PageConfig.Sections;
@@ -606,9 +604,9 @@ namespace PnPSitesCoreDemo
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            DeployList(ListConfig, context);
-            DeployLibrary(LibraryConfig, context, rootAsset);
-            DeployItem(ItemConfig, context, rootAsset);
+            //DeployList(ListConfig, context);
+            //DeployLibrary(LibraryConfig, context, rootAsset);
+            //DeployItem(ItemConfig, context, rootAsset);
             DeployPage(PageConfig, context);
 
             stopwatch.Stop();
