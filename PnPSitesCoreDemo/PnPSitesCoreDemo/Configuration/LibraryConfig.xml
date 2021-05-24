@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LibraryConfig>
+	<Library Title="Document2">
+		<Folder Title="SOP">
+			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+		</Folder>
+		<Folder Title="Policy">
+			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+		</Folder>
+
+		<Folder Title="SWS">
+			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+
+			<Folder Title="KKK">
+				<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+			</Folder>
+
+		</Folder>
+
+	</Library>
+</LibraryConfig>

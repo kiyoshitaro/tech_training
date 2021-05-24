@@ -1,26 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PageConfig Name="demo1.aspx" LogoUrl="https://wallpapercave.com/wp/t5hpbkz.jpg">
+<PageConfig Name="demo2.aspx" LogoUrl="https://wallpapercave.com/wp/t5hpbkz.jpg">
 	<Section SectionType="TwoColumnLeft">
 		<WebPart Name="announcement"
-				 ListName="Announcement"
+				 ListName="Announcement2"
 				 PostPerPage="3"
 				 Column="0">
 		</WebPart>
 		<WebPart Name="news"
-				 ListName="News"
+				 ListName="News2"
 				 PostPerPage="3"
 				 Column="0">
 		</WebPart>
 		<WebPart Name="documentgallery"
+				 ListName="Document2"
 				 Column="0">
 		</WebPart>
 		<WebPart Name="quicklinks"
+				 ListName="Quicklinks2"
 				 Column="1">
 		</WebPart>
 		<WebPart Name="events"
 				 Column="1">
 		</WebPart>
 		<WebPart Name="howdoi"
+				 ListName="faq2"
 				 Column="1">
 		</WebPart>
 	</Section>

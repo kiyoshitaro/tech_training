@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ListConfig>
-	<List Title="Announcement3">
+	<List Title="Announcement5">
 		<Field Name="content" Type="Note" IsRequired="FALSE"/>
 		<Field Name="img" Type="Thumbnail" IsRequired="FALSE" Format="Image"/>
 		<Field Name="time" Type="DateTime" IsRequired="FALSE" Format="DateOnly"/>
@@ -11,19 +11,24 @@
 			<Choice Value ="Operations"/>
 		</Field>
 	</List>
-	<List Title="QuickLinks1">
+	<List Title="News2">
+		<Field Name="content" Type="Note" IsRequired="FALSE"/>
+		<Field Name="img" Type="Thumbnail" IsRequired="FALSE" Format="Image"/>
+		<Field Name="time" Type="DateTime" IsRequired="FALSE" Format="DateOnly"/>
+		<Field Name="tags" Type="MultiChoice" IsRequired="FALSE">
+			<Choice Value ="Administration"/>
+			<Choice Value ="Information"/>
+			<Choice Value= "Human Resource"/>
+			<Choice Value ="Operations"/>
+		</Field>
+	</List>
+
+	<List Title="Quicklinks2">
 		<Field Name="link" Type="Text"  IsRequired="TRUE"/>
 		<Field Name="icon" Type="Thumbnail"  IsRequired="TRUE" Format="Image"/>
 	</List>
-	<List Title="faq1">
+	<List Title="faq2">
 		<Field Name="question" Type="Note" IsRequired="TRUE"/>
 		<Field Name="answer" Type="Note" IsRequired="TRUE"/>
 	</List>
-	<!--<List Name="Events">
-		<Field Name="EventName" Type="Text" IsRequired="TRUE"/>
-		<Field Name="StartTime" Type="DateTime" IsRequired="TRUE"/>
-		<Field Name="EndTime" Type="DateTime" IsRequired="TRUE"/>
-	</List>-->
-
-
 </ListConfig>

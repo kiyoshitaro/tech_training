@@ -5,9 +5,7 @@ using System.Configuration;
 using System.Linq;
 using System.Security;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Threading;
 using PnPSitesCoreDemo.Modules;
 using System.Reflection;
 using PnPSitesCoreDemo.Utility;
@@ -100,14 +98,21 @@ namespace PnPSitesCoreDemo
 
                     context.Load(collListItem);
                     context.ExecuteQuery();
+
+
                     int Count = 0;
                     while (collListItem.Count > 0) {
                         Count += 1;
+
                         collListItem[0].DeleteObject();
                         context.Load(collListItem);
                     }
+
                     context.ExecuteQuery();
+
                     Console.WriteLine($"------Deleted all {Count} items in {ListTitleConfig} list------");
+                    //System.Environment.Exit(0);
+
                 }
 
 
@@ -121,6 +126,7 @@ namespace PnPSitesCoreDemo
                         //GET LIST
 
                         SP.List oList = context.Web.Lists.GetByTitle(ListTitleConfig);
+                        Console.WriteLine(oList);
                         ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
                         ListItem oListItem = oList.AddItem(itemCreateInfo);
 
@@ -142,16 +148,16 @@ namespace PnPSitesCoreDemo
                                         oListItem[KeyConfig] = UploadImage(ValueConfig,context);
                                         break;
                                     case "time":
+                                    case "EndDate":
+                                    case "EventDate":
                                         try
                                         {
-                                            oListItem[KeyConfig] = Convert.ToDateTime(ValueConfig);
-
+                                            oListItem[KeyConfig] = Convert.ToDateTime(ValueConfig).ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                                         }
                                         catch
                                         {
                                             Console.WriteLine($"'{ValueConfig}' is not in the proper format.");
                                             oListItem[KeyConfig] = Convert.ToDateTime(String.Empty);
-
                                         }
                                         break;
                                     case "tags":
@@ -163,20 +169,20 @@ namespace PnPSitesCoreDemo
                                         oListItem[KeyConfig] = ValueConfig;
                                         break;
                                 }
-                                oListItem.Update();
-                                context.ExecuteQuery();
-
-                                Console.WriteLine($"------Added {KeyConfig}, {j}/{ItemsConfig.Count}");
 
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine($"Exception:{ex.Message}  when add item with key {KeyConfig} in {ListTitleConfig}");
                             }
+
                         }
+                        oListItem.Update();
+                        context.ExecuteQuery();
+
+                        Console.WriteLine($"------Added {j}/{ItemsConfig.Count} items");
+
                     }
-
-
                     Console.WriteLine($"------Added {ItemsConfig.Count} items in {ListTitleConfig} list------");
                 }
                 else {
@@ -184,6 +190,117 @@ namespace PnPSitesCoreDemo
                 }
             }
         }
+
+        private static void CreateItemInFolder(DFolder FolderConfig, List LibObject, ClientContext context, string LibTitleConfig)
+        {
+            string FolderTitleConfig = FolderConfig.Title;
+            try
+            {
+                ListItemCreationInformation FolderObject = new ListItemCreationInformation();
+                FolderObject.UnderlyingObjectType = FileSystemObjectType.Folder;
+                FolderObject.LeafName = FolderTitleConfig;
+
+                ListItem newItem = LibObject.AddItem(FolderObject);
+                newItem["Title"] = FolderTitleConfig;
+                newItem.Update();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception {ex.Message} when creating {FolderTitleConfig} folder in {LibTitleConfig}");
+
+            }
+            List<DFile> FilesConfig = FolderConfig.Files;
+            for (int k = 0; k < FilesConfig.Count; k++)
+            {
+                try
+                {
+                    DFile FileConfig = FilesConfig[k];
+                    FileCreationInformation newFile = new FileCreationInformation();
+
+                    newFile.Content = System.IO.File.ReadAllBytes(@FileConfig.Path);
+                    string[] filePath = FileConfig.Path.Split('\\');
+                    string fileName = filePath[filePath.Length - 1];
+                    newFile.Url = @fileName;
+                    Folder fo = LibObject.RootFolder.Folders.GetByUrl(FolderTitleConfig);
+                    var uploadFile = fo.Files.Add(newFile);
+                    context.Load(LibObject);
+                    context.Load(uploadFile);
+                    context.ExecuteQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception {ex.Message} when pushing {FolderTitleConfig}");
+                }
+            }
+
+            List<DFolder> FolsLoopConfig = FolderConfig.Folders;
+            foreach (DFolder FolConfig in FolsLoopConfig)
+            {
+                CreateItemInFolder(FolConfig, LibObject, context, LibTitleConfig);
+                Console.WriteLine($"-------Created all file in folder {FolderTitleConfig}--------");
+            }
+
+
+        }
+        private static void DeployLibrary(DeployLibrary LibConfiguration, ClientContext context)
+        {
+            Console.WriteLine($"-----Deploying Library-----");
+            List<Library> LibsConfig = LibConfiguration.Libs;
+            for (int i = 0; i < LibsConfig.Count; i++)
+            {
+                Library LibConfig = LibsConfig[i];
+                string LibTitleConfig = LibConfig.Title;
+
+                List LibObject;
+
+                //DELETE LIB
+
+                if (context.Web.ListExists(LibTitleConfig))
+                {
+                    Console.WriteLine($"------{LibTitleConfig} existed, deleting------");
+
+                    try
+                    {
+                        List oList = context.Web.Lists.GetByTitle(LibTitleConfig);
+                        oList.DeleteObject();
+                        context.ExecuteQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception {ex.Message} when deleting {LibTitleConfig}");
+                    }
+
+                }
+
+                //CREATE LIB
+                Console.WriteLine($"--------Creating {LibTitleConfig} lib--------");
+                try
+                {
+                    ListCreationInformation libCreationInfo = new ListCreationInformation();
+                    libCreationInfo.Title = LibTitleConfig;
+                    libCreationInfo.TemplateType = (int)ListTemplateType.DocumentLibrary;
+                    context.Web.Lists.Add(libCreationInfo);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception {ex.Message} when creating {LibTitleConfig} list");
+                }
+
+                //ADD FOLDER
+                LibObject = context.Web.Lists.GetByTitle(LibTitleConfig);
+                LibObject.EnableFolderCreation = true;
+                List<DFolder> FoldersConfig = LibConfig.Folders;
+
+                for (int j = 0; j < FoldersConfig.Count; j++)
+                {
+                    DFolder FolderConfig = FoldersConfig[j];
+                    CreateItemInFolder(FolderConfig, LibObject, context, LibTitleConfig);
+                }
+                context.ExecuteQuery();
+                Console.WriteLine($"------Created {LibTitleConfig} lib--------");
+            }
+        }
+
         private static void DeployList(DeployList ListConfiguration, ClientContext context)
         {
             Web oWebsite = context.Web;
@@ -192,7 +309,7 @@ namespace PnPSitesCoreDemo
             for (int i = 0; i < ListsConfig.Count; i++)
             {
                 DList ListConfig = ListsConfig[i];
-
+                
                 string ListTitleConfig = ListConfig.Title;
 
                 //DELETE LIST
@@ -208,7 +325,7 @@ namespace PnPSitesCoreDemo
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Exception {ex.Message} when deleting{ListTitleConfig}");
+                        Console.WriteLine($"Exception {ex.Message} when deleting {ListTitleConfig}");
                     }
                 }
 
@@ -220,6 +337,7 @@ namespace PnPSitesCoreDemo
                     listCreationInfo.Title = ListTitleConfig;
                     listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
                     context.Web.Lists.Add(listCreationInfo);
+                    context.ExecuteQuery();
                 }
                 catch (Exception ex)
                 {
@@ -281,53 +399,8 @@ namespace PnPSitesCoreDemo
                         Console.WriteLine($"Exception {ex.Message} when creating {FieldConfig.Name} field in {ListTitleConfig} list");
                     }
                 }
-                Console.WriteLine($"------Created {ListTitleConfig}--------");
+                Console.WriteLine($"------Created {ListTitleConfig} list--------");
             }
-
-
-            //CREATE LIST
-            //ListCreationInformation listCreationInfo = new ListCreationInformation();
-            //listCreationInfo.Title = "Announcement2";
-            //listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
-            //List oList = oWebsite.Lists.Add(listCreationInfo);
-
-
-            //ADD FIELD
-            //SP.List oList = oWebsite.Lists.GetByTitle("Announcement2");
-
-            //SP.Field oField = oList.Fields.AddFieldAsXml("<Field DisplayName='MyField' Type='Number' />",
-            //    true, AddFieldOptions.DefaultValue);
-
-            //SP.FieldNumber fieldNumber = context.CastTo<FieldNumber>(oField);
-            //fieldNumber.MaximumValue = 100;
-            //fieldNumber.MinimumValue = 35;
-
-            //fieldNumber.Update();
-
-
-            //DELETE LIST
-            //List oList = oWebsite.Lists.GetByTitle("Announcement2");
-            //oList.DeleteObject();
-
-
-            //READ ITEM
-            //List oList = oWebsite.Lists.GetByTitle("Announcement2");
-            //CamlQuery camlQuery = new CamlQuery();
-            //camlQuery.ViewXml = "<View><Query><Where><Geq><FieldRef Name='ID'/>" +
-            //    "<Value Type='Number'>10</Value></Geq></Where></Query><RowLimit>100</RowLimit></View>";
-            //ListItemCollection collListItem = oList.GetItems(camlQuery);
-            //context.Load(collListItem);
-
-            //CREATE ITEM
-            //SP.List oList = oWebsite.Lists.GetByTitle("Announcement1");
-            //ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            //ListItem oListItem = oList.AddItem(itemCreateInfo);
-            //oListItem["Title"] = "My New Item!";
-            //oListItem["content"] = "Hello World!";
-            //oListItem.Update();
-            //context.ExecuteQuery();
-
-
         }
 
 
@@ -432,6 +505,7 @@ namespace PnPSitesCoreDemo
                                             //Console.WriteLine($"-----cccccccc-----{PropertiesJson}");
                                             break;
                                         default:
+                                            PropertiesJson = "{\"listName\": \"" + WebpartListNameConfig + "\"}";
                                             break;
                                     }
                                     WebpartObject.PropertiesJson = PropertiesJson;
@@ -484,12 +558,6 @@ namespace PnPSitesCoreDemo
             var password = GetPassword();
             ClientContext context = new ClientContext(siteUrl);
             context.Credentials = new SharePointOnlineCredentials(username, password);
-
-
-
-            var constConfig = new XmlDocument();
-            constConfig.Load(@"Configuration\Configuration.xml");
-            Elements Configuration = XmlUtility.ToObject<Elements>(constConfig.InnerXml);
            
             var PageConfigXml = new XmlDocument();
             PageConfigXml.Load(@"Configuration\PageConfig.xml");
@@ -499,6 +567,10 @@ namespace PnPSitesCoreDemo
             ListConfigXml.Load(@"Configuration\ListConfig.xml");
             DeployList ListConfig = XmlUtility.ToObject<DeployList>(ListConfigXml.InnerXml);
 
+            var LibraryConfigXml = new XmlDocument();
+            LibraryConfigXml.Load(@"Configuration\LibraryConfig.xml");
+            DeployLibrary LibraryConfig = XmlUtility.ToObject<DeployLibrary>(LibraryConfigXml.InnerXml);
+
             var ItemConfigXml = new XmlDocument();
             ItemConfigXml.Load(@"Configuration\ItemConfig.xml");
             DeployItem ItemConfig = XmlUtility.ToObject<DeployItem>(ItemConfigXml.InnerXml);
@@ -507,9 +579,10 @@ namespace PnPSitesCoreDemo
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            //DeployPage(PageConfig, context);
             DeployList(ListConfig, context);
-            DeployItem(ItemConfig, context);
+            //DeployLibrary(LibraryConfig, context);
+            //DeployItem(ItemConfig, context);
+            //DeployPage(PageConfig, context);
 
             stopwatch.Stop();
             Console.WriteLine(string.Format("Home site deployment takes: {0} s", stopwatch.ElapsedTicks / 10000000));
@@ -559,8 +632,6 @@ namespace PnPSitesCoreDemo
             {
                 using (context)
                 {
-
-                    Console.WriteLine("sssss");
                     //System.Environment.Exit(0);
 
                     Type xmlType = configrationElemetns.GetType();

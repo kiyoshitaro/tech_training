@@ -207,6 +207,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\DeployLibrary.cs" />
     <Compile Include="Modules\DeployItem.cs" />
     <Compile Include="Modules\DeployList.cs" />
     <Compile Include="Modules\DeployPage.cs" />
@@ -232,6 +233,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\ListConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\LibraryConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
