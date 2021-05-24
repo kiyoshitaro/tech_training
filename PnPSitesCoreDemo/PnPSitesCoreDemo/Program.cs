@@ -443,6 +443,8 @@ namespace PnPSitesCoreDemo
                 web.SiteLogoUrl = SiteLogoUrl;
                 web.Update();
                 context.ExecuteQuery();
+                Console.WriteLine($"-----Changed Logo-----");
+                Console.WriteLine($"--------------");
             }
             catch (Exception ex)
             {
