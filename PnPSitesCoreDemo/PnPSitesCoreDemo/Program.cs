@@ -604,9 +604,9 @@ namespace PnPSitesCoreDemo
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            //DeployList(ListConfig, context);
-            //DeployLibrary(LibraryConfig, context, rootAsset);
-            //DeployItem(ItemConfig, context, rootAsset);
+            DeployList(ListConfig, context);
+            DeployLibrary(LibraryConfig, context, rootAsset);
+            DeployItem(ItemConfig, context, rootAsset);
             DeployPage(PageConfig, context);
 
             stopwatch.Stop();
