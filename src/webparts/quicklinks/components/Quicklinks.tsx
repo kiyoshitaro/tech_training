@@ -14,29 +14,43 @@ export default class Quicklink extends React.Component<
   constructor(props: IQuicklinksProps) {
     super(props);
     sp.setup({ spfxContext: this.props.spContext });
-    this._listService = new List("Quicklinks");
-
     this.state = {
       links: [],
     };
+    this._getData = this._getData.bind(this);
   }
-  public componentDidMount() {
+
+  private _getData() {
+    var properties = ["icon", "link"];
     this._listService
       .getItems()
       .then((list) => {
-        this.setState({
-          links: list.map((item) => {
-            return {
-              title: item.Title,
-              icon: JSON.parse(item.icon).serverRelativeUrl,
-              link: item.link,
-            };
-          }),
-        });
+        if (properties.every((v) => v in list[0])) {
+          this.setState({
+            links: list.map((item) => {
+              return {
+                title: item.Title,
+                icon: JSON.parse(item.icon).serverRelativeUrl,
+                link: item.link,
+              };
+            }),
+          });
+        }
       })
       .catch(() => {
         this.setState({ links: [] });
       });
+  }
+
+  public componentDidMount() {
+    this._listService = new List(this.props.listName);
+    this._getData();
+  }
+  public componentDidUpdate(prevProps) {
+    if (prevProps.listName != this.props.listName) {
+      this._listService = new List(this.props.listName);
+      this._getData();
+    }
   }
 
   public render(): React.ReactElement<IQuicklinksProps> {

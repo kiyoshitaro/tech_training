@@ -17,30 +17,46 @@ export default class Howdoi extends React.Component<
     super(props);
     // console.log(this.props.spContext,"pppppppp");
     sp.setup({ spfxContext: this.props.spContext });
-    this._listService = new List("faq");
 
     this.state = {
       faq: [],
     };
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
+    this._getData = this._getData.bind(this);
   }
-  public componentDidMount() {
+
+  private _getData() {
+    var properties = ["question", "answer"];
+
     this._listService
       .getItems()
       .then((list) => {
-        this.setState({
-          faq: list.map((item) => {
-            return {
-              question: item.question,
-              answer: item.answer,
-              status: false,
-            };
-          }),
-        });
+        if (properties.every((v) => v in list[0])) {
+          this.setState({
+            faq: list.map((item) => {
+              return {
+                question: item.question,
+                answer: item.answer,
+                status: false,
+              };
+            }),
+          });
+        }
       })
       .catch(() => {
         this.setState({ faq: [] });
       });
+  }
+  public componentDidUpdate(prevProps) {
+    if (prevProps.listName != this.props.listName) {
+      this._listService = new List(this.props.listName);
+      this._getData();
+    }
+  }
+
+  public componentDidMount() {
+    this._listService = new List(this.props.listName);
+    this._getData();
   }
   public changeAllCollapse(key: number, value: boolean) {
     this.setState((state) => {

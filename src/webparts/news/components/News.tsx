@@ -44,24 +44,29 @@ export default class News extends React.Component<INewsProps, INewsStates> {
     });
   }
   private _getData(dataLoader) {
-    this.setState({
-      posts: [
-        ...this.state.posts,
-        ...dataLoader.results.map((item) => {
-          return {
-            id: item.Id,
-            title: item.Title,
-            content: item.content,
-            time: item.time.split("T")[0],
-            img: JSON.parse(item.img).serverRelativeUrl,
-            tags: item.tags,
-          };
-        }),
-      ],
-    });
-    dataLoader.getNext().then((dl) => {
-      this.setState({ dataLoader: dl });
-    });
+    var properties = ["content", "time", "img", "tags"];
+    if (properties.every((v) => v in dataLoader.results[0])) {
+      this.setState({
+        posts: [
+          ...this.state.posts,
+          ...dataLoader.results.map((item) => {
+            return {
+              id: item.Id,
+              title: item.Title,
+              content: item.content,
+              time: item.time.split("T")[0],
+              img: JSON.parse(item.img).serverRelativeUrl,
+              tags: item.tags,
+            };
+          }),
+        ],
+      });
+      dataLoader.getNext().then((dl) => {
+        this.setState({ dataLoader: dl });
+      });
+    } else {
+      this.setState({ posts: [] });
+    }
   }
 
   public componentDidUpdate(prevProps) {

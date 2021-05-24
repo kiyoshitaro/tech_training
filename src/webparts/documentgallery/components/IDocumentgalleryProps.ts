@@ -3,6 +3,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 export interface IDocumentgalleryProps {
   description: string;
   spContext: WebPartContext;
+  listName: string;
 }
 
 export interface IDocumentgalleryStates{

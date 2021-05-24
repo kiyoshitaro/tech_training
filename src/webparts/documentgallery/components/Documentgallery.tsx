@@ -19,13 +19,14 @@ export default class Documentgallery extends React.Component<
   constructor(props: IDocumentgalleryProps) {
     super(props);
     sp.setup({ spfxContext: this.props.spContext });
-    this._libService = new Library("Shared Documents");
+    // this._libService = new Library("Shared Documents");
 
     this.state = {
       documents: [],
     };
+    this._getData = this._getData.bind(this);
   }
-  public componentDidMount() {
+  private _getData() {
     let icons = {
       docx: Image.word,
       pptx: Image.powerpoint,
@@ -36,8 +37,6 @@ export default class Documentgallery extends React.Component<
         .filter((tp) => tp.Name !== "Forms")
         .map((tp) => {
           this._libService.getFileByTopic(tp.Name).then((allFile) => {
-            console.log(tp, "uuuu");
-
             this.setState({
               documents: [
                 ...this.state.documents,
@@ -45,9 +44,8 @@ export default class Documentgallery extends React.Component<
                   topic: tp.Name,
                   urlTopic: tp.ServerRelativeUrl,
                   docs: allFile.map((file) => {
-                    let ext: string = file.Name.split(".")[
-                      file.Name.split(".").length - 1
-                    ];
+                    let ext: string =
+                      file.Name.split(".")[file.Name.split(".").length - 1];
                     return {
                       title: file.Name,
                       icon: icons[ext],
@@ -60,6 +58,16 @@ export default class Documentgallery extends React.Component<
           });
         });
     });
+  }
+  public componentDidMount() {
+    this._libService = new Library(this.props.listName);
+    this._getData();
+  }
+  public componentDidUpdate(prevProps) {
+    if (prevProps.listName != this.props.listName) {
+      this._libService = new Library(this.props.listName);
+      this._getData();
+    }
   }
 
   public render(): React.ReactElement<IDocumentgalleryProps> {

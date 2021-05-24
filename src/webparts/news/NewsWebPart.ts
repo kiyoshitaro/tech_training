@@ -13,6 +13,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import * as strings from 'NewsWebPartStrings';
 import News from './components/News';
 import { INewsProps } from './components/INewsProps';
+import {sp} from "@pnp/sp/presets/all";
 
 export interface INewsWebPartProps {
   description: string;
@@ -21,17 +22,31 @@ export interface INewsWebPartProps {
 }
 
 export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps> {
-  private lists: IPropertyPaneDropdownOption[] = [{
-    key: 'Announcement',
-    text: 'Announcement'
-  },
-  {
-    key: 'News',
-    text: 'News'
-  }];
+  private loadLists = async () => {return await sp.web.lists.get();};
   private listsDropdownDisabled: boolean = false;
+  private lists: IPropertyPaneDropdownOption[];
 
+  protected onPropertyPaneConfigurationStart(): void {
+    this.listsDropdownDisabled = !this.lists;
 
+    if (this.lists) {
+      return;
+    }
+
+    this.context.statusRenderer.displayLoadingIndicator(this.domElement, 'lists');
+
+    this.loadLists()
+      .then((listOptions)=> {
+        this.lists = listOptions.filter((ls)=>{return ls.EntityTypeName.indexOf("List") != -1;}).map((ls) => {return {
+          key: ls.Title,
+          text: ls.Title,
+        }; });
+        this.listsDropdownDisabled = false;
+        this.context.propertyPane.refresh();
+        this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+        this.render();
+      });
+  }
   public render(): void {
     const element: React.ReactElement<INewsProps> = React.createElement(
       News,
@@ -57,6 +72,7 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
   protected get disableReactivePropertyChanges(): boolean {
     return true;
   }
+  
   // click Apply button and render webpart again
   protected onAfterPropertyPaneChangesApplied(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
@@ -73,9 +89,6 @@ export default class NewsWebPart extends BaseClientSideWebPart<INewsWebPartProps
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                }),
                 PropertyPaneDropdown('listName', {
                   label: strings.ListNameFieldLabel,
                   options: this.lists,

@@ -21,7 +21,8 @@
     "description": { "default": "howdoi description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "howdoi"
+      "description": "howdoi",
+      "listName" : "faq"
     }
   }]
 }

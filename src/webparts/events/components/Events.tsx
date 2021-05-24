@@ -17,7 +17,7 @@ export default class Events extends React.Component<
   constructor(props: IEventsProps) {
     super(props);
     sp.setup({ spfxContext: this.props.spContext });
-    this._listService = new List("Events");
+    this._listService = new List("Events2");
 
     this.state = {
       events: [],
@@ -34,8 +34,8 @@ export default class Events extends React.Component<
     return hours + ":" + mnts + " " + ampm;
   }
   private _process_data(item) {
-    let startTime = new Date(Date.parse(item.EventDate));
-    let endTime = new Date(Date.parse(item.EndDate));
+    let startTime = new Date(item.EventDate.replace("Z", "").replace("T", " "));
+    let endTime = new Date(item.EndDate.replace("Z", "").replace("T", " "));
     const monthNames = [
       "Jan",
       "Feb",
@@ -63,6 +63,7 @@ export default class Events extends React.Component<
     this._listService
       .getItems()
       .then((list) => {
+        // debugger;
         this.setState({
           events: list.map((item) => {
             return { ...this._process_data(item) };

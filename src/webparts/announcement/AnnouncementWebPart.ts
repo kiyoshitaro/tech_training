@@ -7,7 +7,10 @@ import {
   PropertyPaneDropdown,
   IPropertyPaneDropdownOption,
   PropertyPaneSlider,
+  
 } from '@microsoft/sp-property-pane';
+import { IDropdownOption } from 'office-ui-fabric-react/lib/components/Dropdown';
+
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'AnnouncementWebPartStrings';
@@ -22,16 +25,31 @@ export interface IAnnouncementWebPartProps {
 }
 
 export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnouncementWebPartProps> {
-  // private _allLists = async () => {return await sp.web.lists.get()}
-  private lists: IPropertyPaneDropdownOption[] = [{
-    key: 'Announcement',
-    text: 'Announcement'
-  },
-  {
-    key: 'Announcement1',
-    text: 'Announcement1'
-  }];
+  private loadLists = async () => {return await sp.web.lists.get();};
   private listsDropdownDisabled: boolean = false;
+  private lists: IPropertyPaneDropdownOption[];
+
+  protected onPropertyPaneConfigurationStart(): void {
+    this.listsDropdownDisabled = !this.lists;
+
+    if (this.lists) {
+      return;
+    }
+
+    this.context.statusRenderer.displayLoadingIndicator(this.domElement, 'lists');
+
+    this.loadLists()
+      .then((listOptions)=> {
+        this.lists = listOptions.filter((ls)=>{return ls.EntityTypeName.indexOf("List") != -1;}).map((ls) => {return {
+          key: ls.Title,
+          text: ls.Title,
+        }; });
+        this.listsDropdownDisabled = false;
+        this.context.propertyPane.refresh();
+        this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+        this.render();
+      });
+  }
 
   // private validateDescription(value: string): string {
   //   this._allLists().then((list)=>{console.log(list,"mmm")})
@@ -47,6 +65,8 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
   //   return '';
   // }
 
+
+  
   public render(): void {
     const element: React.ReactElement<IAnnouncementProps> = React.createElement(
       Announcement,
@@ -77,7 +97,9 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
     this.render();
   }
 
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+
     return {
       pages: [
         {
@@ -88,11 +110,6 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel,
-                  // onGetErrorMessage: this.validateDescription.bind(this)
-
-                }),
                 PropertyPaneDropdown('listName', {
                   label: strings.ListNameFieldLabel,
                   options: this.lists,
@@ -108,6 +125,13 @@ export default class AnnouncementWebPart extends BaseClientSideWebPart<IAnnounce
                   showValue:true,  
                   step:1                
                   }),
+                // PropertyPaneAsyncDropdown('listName', {
+                //   label: strings.ListFieldLabel,
+                //   loadOptions: this.loadLists.bind(this),
+                //   onPropertyChange: this.onListChange.bind(this),
+                //   selectedKey: this.properties.listName
+                // })
+  
 
               ]
             }
