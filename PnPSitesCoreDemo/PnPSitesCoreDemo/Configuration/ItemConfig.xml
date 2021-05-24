@@ -5,14 +5,14 @@
 		<Item>
 			<Field Key="Title" Value="IT Maintainance"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery.png"/>
+			<Field Key="img" Value="Images\image_gallery.png"/>
 			<Field Key="time" Value="05/04/2021"/>
 			<Field Key="tags" Value="Administration,Human Resource"/>
 		</Item>
 		<Item>
 			<Field Key="Title" Value="IT Maintainance"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-1.png"/>
+			<Field Key="img" Value="Images\image_gallery-1.png"/>
 			<Field Key="time" Value="05/01/2021"/>
 			<Field Key="tags" Value="Operations,Human Resource"/>
 		</Item>
@@ -20,7 +20,7 @@
 		<Item>
 			<Field Key="Title" Value="IT Maintainance"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-2.png"/>
+			<Field Key="img" Value="Images\image_gallery-2.png"/>
 			<Field Key="time" Value="07/20/2020"/>
 			<Field Key="tags" Value="Operations"/>
 		</Item>
@@ -28,7 +28,7 @@
 		<Item>
 			<Field Key="Title" Value="IT Maintainance"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-3.png"/>
+			<Field Key="img" Value="Images\image_gallery-3.png"/>
 			<Field Key="time" Value="07/12/2020"/>
 			<Field Key="tags" Value="Human Resource,Information"/>
 		</Item>
@@ -38,14 +38,14 @@
 		<Item>
 			<Field Key="Title" Value="Tommorrow healthy check"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery.png"/>
+			<Field Key="img" Value="Images\image_gallery.png"/>
 			<Field Key="time" Value="11/04/2021"/>
 			<Field Key="tags" Value=""/>
 		</Item>
 		<Item>
 			<Field Key="Title" Value="Air-conditioning is broken"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-1.png"/>
+			<Field Key="img" Value="Images\image_gallery-1.png"/>
 			<Field Key="time" Value="09/21/2021"/>
 			<Field Key="tags" Value=""/>
 		</Item>
@@ -53,7 +53,7 @@
 		<Item>
 			<Field Key="Title" Value="Keep running"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-2.png"/>
+			<Field Key="img" Value="Images\image_gallery-2.png"/>
 			<Field Key="time" Value="12/22/2021"/>
 			<Field Key="tags" Value=""/>
 		</Item>
@@ -61,7 +61,7 @@
 		<Item>
 			<Field Key="Title" Value="IT Maintainance"/>
 			<Field Key="content" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
-			<Field Key="img" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\image_gallery-3.png"/>
+			<Field Key="img" Value="Images\image_gallery-3.png"/>
 			<Field Key="time" Value="07/12/2021"/>
 			<Field Key="tags" Value=""/>
 		</Item>
@@ -96,59 +96,59 @@
 		<Item>
 			<Field Key="Title" Value="Training" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon.png" />
+			<Field Key="icon" Value="Images\icon.png" />
 		</Item>
 		<Item>
 			<Field Key="Title" Value="Organization" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-1.png" />
+			<Field Key="icon" Value="Images\icon-1.png" />
 		</Item>
 		<Item>
 			<Field Key="Title" Value="Task" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-2.png" />
+			<Field Key="icon" Value="Images\icon-2.png" />
 		</Item>
 
 		<Item>
 			<Field Key="Title" Value="Global Sales" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-3.png" />
+			<Field Key="icon" Value="Images\icon-3.png" />
 		</Item>
 
 		<Item>
 			<Field Key="Title" Value="Birthday" />
 
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-4.png" />
+			<Field Key="icon" Value="Images\icon-4.png" />
 		</Item>
 
 		<Item>
 			<Field Key="Title" Value="Health" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-5.png" />
+			<Field Key="icon" Value="Images\icon-5.png" />
 		</Item>
 
 		<Item>
 			<Field Key="Title" Value="Service Desk" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-6.png" />
+			<Field Key="icon" Value="Images\icon-6.png" />
 		</Item>
 
 		<Item>
 			<Field Key="Title" Value="Truck" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-7.png" />
+			<Field Key="icon" Value="Images\icon-7.png" />
 		</Item>
 		<Item>
 			<Field Key="Title" Value="Idea" />
 			<Field Key="link" Value="#" />
-			<Field Key="icon" Value="C:\Users\brown.nguyen\Desktop\code\spfx20210407\src\assets\Images\icon-8.png" />
+			<Field Key="icon" Value="Images\icon-8.png" />
 		</Item>
 
 
 	</List>
 
-	<List Title="Events1">
+	<List Title="Events2">
 		<Item>
 			<Field Key="Title" Value="aaa" />
 			<Field Key="EventDate" Value="05/23/2021 7:30:47 AM" />
@@ -157,22 +157,18 @@
 
 
 		<Item>
-			
 			<Field Key="Title" Value="IT bbb" />
 			<Field Key="EventDate" Value="07/06/2021 9:00:00 AM" />
-
 			<Field Key="EndDate" Value="07/06/2021 9:30:00 AM" />
 		</Item>
 		<Item>
 			<Field Key="Title" Value="ccc" />
 			<Field Key="EventDate" Value="08/16/2020 6:30:00 AM" />
-
 			<Field Key="EndDate" Value="08/16/2020 7:30:00 AM" />
 		</Item>
 		<Item>
 			<Field Key="Title" Value="ddd" />
 			<Field Key="EventDate" Value="06/16/2021 6:30:00 AM" />
-
 			<Field Key="EndDate" Value="06/16/2021 7:30:00 AM" />
 		</Item>
 

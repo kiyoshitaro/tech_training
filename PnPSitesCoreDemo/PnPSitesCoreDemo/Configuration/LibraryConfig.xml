@@ -2,20 +2,20 @@
 <LibraryConfig>
 	<Library Title="Document2">
 		<Folder Title="SOP">
-			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+			<File Path="Documents\File1.docx"/>
+			<File Path="Documents\File2.docx"/>
 		</Folder>
 		<Folder Title="Policy">
-			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+			<File Path="Documents\File3.docx"/>
 		</Folder>
 
 		<Folder Title="SWS">
-			<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+			<File Path="Documents\powerpoint1.pptx"/>
 
 			<Folder Title="KKK">
-				<File Path="C:\Users\brown.nguyen\Desktop\code\git20210318\File1.docx"/>
+				<File Path="Documents\powerpoint2.pptx"/>
+				<File Path="Documents\powerpoint3.pptx"/>
 			</Folder>
-
 		</Folder>
-
 	</Library>
 </LibraryConfig>

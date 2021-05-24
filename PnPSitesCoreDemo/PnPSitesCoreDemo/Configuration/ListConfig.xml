@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ListConfig>
-	<List Title="Announcement5">
+	<List Title="Announcement2">
 		<Field Name="content" Type="Note" IsRequired="FALSE"/>
 		<Field Name="img" Type="Thumbnail" IsRequired="FALSE" Format="Image"/>
 		<Field Name="time" Type="DateTime" IsRequired="FALSE" Format="DateOnly"/>

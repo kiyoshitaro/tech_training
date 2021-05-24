@@ -28,7 +28,7 @@ namespace PnPSitesCoreDemo
         {
             string[] Path = value.Split('\\');
             string fileName = Path[Path.Length - 1];
-            Console.WriteLine($"{fileName}");
+            //Console.WriteLine($"{fileName}");
 
             Folder folder = context.Web.GetFolderByServerRelativeUrl("SiteAssets");
             context.Load(folder);
@@ -56,10 +56,7 @@ namespace PnPSitesCoreDemo
                         "\"serverUrl\":\"https://vndevcore.sharepoint.com\"," +
                         "\"serverRelativeUrl\":\"{1}\"," +
                         "\"id\":\"{2}\"}}", fileName, uploadFile.ServerRelativeUrl, uploadFile.UniqueId);
-
-
                     return val;
-
                 }
                 catch (Exception ex)
                 {
@@ -69,7 +66,8 @@ namespace PnPSitesCoreDemo
             }
         }
 
-        private static void DeployItem(DeployItem ItemConfiguration, ClientContext context) {
+        private static void DeployItem(DeployItem ItemConfiguration, ClientContext context, string rootAsset) {
+            Console.WriteLine($"-----------------------------------------------");
             Console.WriteLine($"-----Deploying Item-----");
 
             //LIST
@@ -83,11 +81,11 @@ namespace PnPSitesCoreDemo
 
                 if (!context.Web.ListExists(ListTitleConfig))
                 {
-                    Console.WriteLine($"------{ListTitleConfig} not exist------");
+                    Console.WriteLine($"------{ListTitleConfig} not exist, must create list first------");
                     break;
                 }
 
-                //DELETE ALL ITEM IN EXIST LIST
+                //DELETE ALL ITEM IN EXISTED LIST
                 else
                 {
                     SP.List oList = context.Web.Lists.GetByTitle(ListTitleConfig);
@@ -111,6 +109,8 @@ namespace PnPSitesCoreDemo
                     context.ExecuteQuery();
 
                     Console.WriteLine($"------Deleted all {Count} items in {ListTitleConfig} list------");
+                    Console.WriteLine($"--------------");
+
                     //System.Environment.Exit(0);
 
                 }
@@ -124,9 +124,7 @@ namespace PnPSitesCoreDemo
 
 
                         //GET LIST
-
                         SP.List oList = context.Web.Lists.GetByTitle(ListTitleConfig);
-                        Console.WriteLine(oList);
                         ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
                         ListItem oListItem = oList.AddItem(itemCreateInfo);
 
@@ -145,7 +143,7 @@ namespace PnPSitesCoreDemo
                                 {
                                     case "img":
                                     case "icon":
-                                        oListItem[KeyConfig] = UploadImage(ValueConfig,context);
+                                        oListItem[KeyConfig] = UploadImage(Path.Combine(rootAsset,ValueConfig), context);
                                         break;
                                     case "time":
                                     case "EndDate":
@@ -161,14 +159,16 @@ namespace PnPSitesCoreDemo
                                         }
                                         break;
                                     case "tags":
-                                        Console.WriteLine(ValueConfig.Split(',').ToList().Count);
+                                        //Console.WriteLine(ValueConfig.Split(',').ToList().Count);
                                         oListItem[KeyConfig] = ValueConfig.Split(',').ToList();
                                         break;
 
                                     default:
                                         oListItem[KeyConfig] = ValueConfig;
+                                        oListItem.Update();
                                         break;
                                 }
+
 
                             }
                             catch (Exception ex)
@@ -180,33 +180,40 @@ namespace PnPSitesCoreDemo
                         oListItem.Update();
                         context.ExecuteQuery();
 
-                        Console.WriteLine($"------Added {j}/{ItemsConfig.Count} items");
+                        Console.WriteLine($"------Added {j+1}/{ItemsConfig.Count} items");
 
                     }
-                    Console.WriteLine($"------Added {ItemsConfig.Count} items in {ListTitleConfig} list------");
+                    Console.WriteLine($"------Added all {ItemsConfig.Count} items in {ListTitleConfig} list------");
+                    Console.WriteLine($"--------------");
                 }
                 else {
                     Console.WriteLine($"------ No item to create in {ListTitleConfig} list------");
                 }
             }
+            Console.WriteLine($"-----------------------------------------------");
         }
 
-        private static void CreateItemInFolder(DFolder FolderConfig, List LibObject, ClientContext context, string LibTitleConfig)
+        private static void CreateItemInFolder(DFolder FolderConfig, List LibObject, ClientContext context, string PrevFolderTitleConfig, string rootAsset)
         {
             string FolderTitleConfig = FolderConfig.Title;
             try
             {
                 ListItemCreationInformation FolderObject = new ListItemCreationInformation();
                 FolderObject.UnderlyingObjectType = FileSystemObjectType.Folder;
+
+                //context.Load(LibObject.RootFolder);
+                //context.ExecuteQuery();
+                //FolderObject.FolderUrl = LibObject.RootFolder.ServerRelativeUrl + "/" + PrevFolderTitleConfig;
                 FolderObject.LeafName = FolderTitleConfig;
 
                 ListItem newItem = LibObject.AddItem(FolderObject);
                 newItem["Title"] = FolderTitleConfig;
                 newItem.Update();
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception {ex.Message} when creating {FolderTitleConfig} folder in {LibTitleConfig}");
+                Console.WriteLine($"Exception {ex.Message} when creating {FolderTitleConfig} folder in {PrevFolderTitleConfig}");
 
             }
             List<DFile> FilesConfig = FolderConfig.Files;
@@ -215,17 +222,24 @@ namespace PnPSitesCoreDemo
                 try
                 {
                     DFile FileConfig = FilesConfig[k];
-                    FileCreationInformation newFile = new FileCreationInformation();
 
-                    newFile.Content = System.IO.File.ReadAllBytes(@FileConfig.Path);
-                    string[] filePath = FileConfig.Path.Split('\\');
+                    FileCreationInformation FileObject = new FileCreationInformation();
+
+                    string FilePath = Path.Combine(rootAsset, FileConfig.Path);
+                    FileObject.Content = System.IO.File.ReadAllBytes(@FilePath);
+
+                    string[] filePath = FilePath.Split('\\');
                     string fileName = filePath[filePath.Length - 1];
-                    newFile.Url = @fileName;
+                    FileObject.Url = @fileName;
+
                     Folder fo = LibObject.RootFolder.Folders.GetByUrl(FolderTitleConfig);
-                    var uploadFile = fo.Files.Add(newFile);
+                    var uploadFile = fo.Files.Add(FileObject);
+
                     context.Load(LibObject);
                     context.Load(uploadFile);
                     context.ExecuteQuery();
+                    Console.WriteLine($"-------Uploaded {fileName} in folder {FolderTitleConfig}--------");
+
                 }
                 catch (Exception ex)
                 {
@@ -233,17 +247,18 @@ namespace PnPSitesCoreDemo
                 }
             }
 
-            List<DFolder> FolsLoopConfig = FolderConfig.Folders;
-            foreach (DFolder FolConfig in FolsLoopConfig)
+            List<DFolder> FolsConfig = FolderConfig.Folders;
+            foreach (DFolder FolConfig in FolsConfig)
             {
-                CreateItemInFolder(FolConfig, LibObject, context, LibTitleConfig);
-                Console.WriteLine($"-------Created all file in folder {FolderTitleConfig}--------");
+                CreateItemInFolder(FolConfig, LibObject, context, FolderTitleConfig, rootAsset);
             }
+            Console.WriteLine($"--------------");
 
 
         }
-        private static void DeployLibrary(DeployLibrary LibConfiguration, ClientContext context)
+        private static void DeployLibrary(DeployLibrary LibConfiguration, ClientContext context, string rootAsset)
         {
+            Console.WriteLine($"-----------------------------------------------");
             Console.WriteLine($"-----Deploying Library-----");
             List<Library> LibsConfig = LibConfiguration.Libs;
             for (int i = 0; i < LibsConfig.Count; i++)
@@ -286,6 +301,7 @@ namespace PnPSitesCoreDemo
                     Console.WriteLine($"Exception {ex.Message} when creating {LibTitleConfig} list");
                 }
 
+
                 //ADD FOLDER
                 LibObject = context.Web.Lists.GetByTitle(LibTitleConfig);
                 LibObject.EnableFolderCreation = true;
@@ -294,15 +310,20 @@ namespace PnPSitesCoreDemo
                 for (int j = 0; j < FoldersConfig.Count; j++)
                 {
                     DFolder FolderConfig = FoldersConfig[j];
-                    CreateItemInFolder(FolderConfig, LibObject, context, LibTitleConfig);
+                    CreateItemInFolder(FolderConfig, LibObject, context, LibTitleConfig, rootAsset);
                 }
                 context.ExecuteQuery();
-                Console.WriteLine($"------Created {LibTitleConfig} lib--------");
+                Console.WriteLine($"--------Created {LibTitleConfig} lib--------");
             }
+            Console.WriteLine($"-----------------------------------------------");
+
         }
 
         private static void DeployList(DeployList ListConfiguration, ClientContext context)
         {
+            Console.WriteLine($"-----------------------------------------------");
+            Console.WriteLine($"-----Deploying List-----");
+
             Web oWebsite = context.Web;
 
             List<DList> ListsConfig = ListConfiguration.Lists;
@@ -380,7 +401,6 @@ namespace PnPSitesCoreDemo
                             xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}'><CHOICES>";
                             foreach (DChoice Choice in ChoicesConfig)
                             {
-                                Console.WriteLine(Choice.Value);
                                 xml += $"<CHOICE>{Choice.Value}</CHOICE>";
                             }
                             xml += $"</CHOICES></Field>";
@@ -389,10 +409,11 @@ namespace PnPSitesCoreDemo
                         {
                             xml = $"<Field DisplayName='{FieldNameConfig}' Type='{FieldTypeConfig}' Name='{FieldNameConfig}' Required='{FieldIsRequiredConfig}' Format='{FieldFormatConfig}'/>";
                         }
-                        Console.WriteLine(xml);
-
+                        //Console.WriteLine(xml);
                         ListObject.Fields.AddFieldAsXml(xml, true, AddFieldOptions.DefaultValue);
                         context.ExecuteQuery();
+                        Console.WriteLine($"------Created {FieldNameConfig} field in {ListTitleConfig} list--------");
+
                     }
                     catch (Exception ex)
                     {
@@ -400,17 +421,22 @@ namespace PnPSitesCoreDemo
                     }
                 }
                 Console.WriteLine($"------Created {ListTitleConfig} list--------");
+                Console.WriteLine($"--------------");
             }
+            Console.WriteLine($"-----------------------------------------------");
+
         }
 
 
-            private static void DeployPage(DeployPage PageConfig, ClientContext context)
+        private static void DeployPage(DeployPage PageConfig, ClientContext context)
         {
-            Console.WriteLine($"-----Connecting-----");
+            Console.WriteLine($"-----------------------------------------------");
+            Console.WriteLine($"-----Deploying Page-----");
 
+
+            //LOGO 
             try
             {
-                //LOGO 
                 var web = context.Web;
                 //context.Load(web, p => p.Title);
                 string SiteLogoUrl = PageConfig.LogoUrl;
@@ -436,16 +462,25 @@ namespace PnPSitesCoreDemo
                 PageObject.ClearPage();
                 PageObject.Save();
                 PageObject.Publish();
+            }
+            catch
+            {
 
-                //SECTION
-                var SectionConfig = PageConfig.Sections;
+                PageObject = new ClientSidePage(context, ClientSidePageLayoutType.Home);
+                PageObject.Save($"{PageNameConfig}");
+
+
+                Console.WriteLine($"-----Created new page {PageNameConfig} ------");
+            }
+
+            //SECTION
+            var SectionConfig = PageConfig.Sections;
 
                 if (SectionConfig.Count > 0)
                 {
                     for (int i = 0; i < SectionConfig.Count; i++)
                     {
-                        Console.WriteLine($"-----Creating section {i+1}-----");
-                        Console.WriteLine($"--------------------------------");
+                        Console.WriteLine($"-----Creating {i+1}/{SectionConfig.Count} section-----");
 
                         string SectionTypeConfig = SectionConfig[i].SectionType;
                         CanvasSection Section = new CanvasSection(PageObject, SectionTypeMapping[SectionTypeConfig], 0);
@@ -502,7 +537,6 @@ namespace PnPSitesCoreDemo
                                         case "news":
                                             PropertiesJson = "{\"listName\": \"" + WebpartListNameConfig + "\"," +
                                                                 "\"postPerPage\": \"" + WebpartPostPerPageConfig + "\"}";
-                                            //Console.WriteLine($"-----cccccccc-----{PropertiesJson}");
                                             break;
                                         default:
                                             PropertiesJson = "{\"listName\": \"" + WebpartListNameConfig + "\"}";
@@ -512,7 +546,7 @@ namespace PnPSitesCoreDemo
                                     PageObject.AddControl(WebpartObject, Section.Columns[WebpartColumnConfig]);
 
                                     Console.WriteLine($"-----Created {WebpartNameConfig} webpart-----");
-                                    Console.WriteLine($"--------------------------------");
+                                    Console.WriteLine($"--------------");
                                 }
                                 catch (Exception ex) {
                                     Console.WriteLine(ex.Message);
@@ -522,27 +556,19 @@ namespace PnPSitesCoreDemo
                         else {
                             Console.WriteLine($"No webpart to create");
                         }
-                        Console.WriteLine($"-----Created section {i+1}-----");
-                        Console.WriteLine($"--------------------------------");
+                        Console.WriteLine($"-----Created {i+1}/{SectionConfig.Count} section-----");
 
                     }
                     PageObject.Save();
                     PageObject.Publish();
-                    Console.WriteLine($"-----Save and Publish page-----");
+                    Console.WriteLine($"-----Saved and Published page-----");
 
                 }
                 else {
                     Console.WriteLine($"No section to create");
                 }
 
-            }
-            catch
-            {
-
-                PageObject = new ClientSidePage(context, ClientSidePageLayoutType.Home);
-                Console.WriteLine($"----- Created new page {PageNameConfig}, run again ------");
-
-            }
+            Console.WriteLine($"-----------------------------------------------");
 
         }
 
@@ -552,6 +578,7 @@ namespace PnPSitesCoreDemo
 
             var siteUrl = ConfigurationManager.AppSettings["siteUrl"];
             var username = ConfigurationManager.AppSettings["accountName"];
+            var rootAsset = ConfigurationManager.AppSettings["rootAsset"];
             Console.WriteLine($"SharePoint Online User Name: {username}");
             Console.WriteLine("Please input user Password: ");
 
@@ -580,9 +607,9 @@ namespace PnPSitesCoreDemo
             stopwatch.Start();
 
             DeployList(ListConfig, context);
-            //DeployLibrary(LibraryConfig, context);
-            //DeployItem(ItemConfig, context);
-            //DeployPage(PageConfig, context);
+            DeployLibrary(LibraryConfig, context, rootAsset);
+            DeployItem(ItemConfig, context, rootAsset);
+            DeployPage(PageConfig, context);
 
             stopwatch.Stop();
             Console.WriteLine(string.Format("Home site deployment takes: {0} s", stopwatch.ElapsedTicks / 10000000));
