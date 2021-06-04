@@ -1,0 +1,50 @@
+.title-collapse {
+  cursor: pointer;
+  outline: none;
+
+  border: none;
+  height: 40px;
+  width: 100%;
+  background-color: #636363;
+
+  padding-left: 10px;
+  margin-top: 5px;
+  text-align: left;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0px;
+  line-height: 16px;
+}
+
+.active,
+.title-collapse:hover {
+  background-color: #4ac49a;
+}
+
+.content-collapse {
+  padding: 0px 18px;
+  max-height: 0;
+  transition: max-height 0s ease-out;
+  background-color: #636363;
+
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  letter-spacing: 0px;
+  line-height: 18px;
+}
+
+.content-collapse-close {
+  padding: 0px 18px;
+  overflow: hidden;
+}
+
+.content-collapse-open {
+  max-height: 100%;
+  padding: 10px 18px 10px;
+  overflow: visible;
+}

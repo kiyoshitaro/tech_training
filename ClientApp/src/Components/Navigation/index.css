@@ -1,0 +1,20 @@
+.nav {
+    height: 108px;
+    padding:25px 0px;
+    box-sizing: border-box;
+}
+
+.nav .nav-logo {
+    float: left;
+    height: 62px;
+    width: 62px;
+}
+
+.nav .nav-items {
+    float: left;
+}
+
+.nav .nav-item {
+    display: inline-block;
+    padding: 17px 24px;
+}

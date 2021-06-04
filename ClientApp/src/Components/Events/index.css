@@ -1,0 +1,61 @@
+.event-day {
+  font-family: "Segoe UI";
+  font-weight: 600;
+  font-size: 26px;
+  color: #4ac49a;
+  letter-spacing: 0px;
+  line-height: 5px;
+  margin-bottom: 5px;
+}
+
+.event-month {
+  font-family: "Segoe UI";
+  font-weight: 400;
+  font-size: 16px;
+  color: #4ac49a;
+  letter-spacing: 0px;
+  line-height: 5px;
+}
+
+.event-grid-container {
+  display: grid;
+  grid-gap: 10px 10px;
+  grid-template-columns: 80px min(327px, calc(100% - 90px));
+  /* grid-template-columns: 80px 327px; */
+  grid-auto-rows: 80px;
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.event-grid-item:nth-child(2n) {
+  background-color: #d6f3e9;
+  padding-left: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.event-grid-item:nth-child(2n) > div {
+  margin-top: -20px;
+}
+.event-grid-item:nth-child(2n + 1) {
+  background-color: #ffffff;
+  border: 3px solid #4ac49a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 1130px) and (min-width: 700px) {
+  .event-grid-container {
+    grid-template-columns: 80px auto 80px auto;
+    grid-auto-rows: 80px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .event-grid-container {
+    grid-template-columns: 80px 75%;
+    grid-auto-rows: 80px;
+  }
+}
