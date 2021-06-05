@@ -10,11 +10,11 @@ import "./index.css";
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
 
-//ReactDOM.render(
-//  <BrowserRouter basename={baseUrl}>
-//    <App />
-//  </BrowserRouter>,
-//  rootElement);
+// ReactDOM.render(
+//   <BrowserRouter basename={baseUrl}>
+//     <App />
+//   </BrowserRouter>,
+//   rootElement);
 
 ReactDOM.render(
   <React.StrictMode>

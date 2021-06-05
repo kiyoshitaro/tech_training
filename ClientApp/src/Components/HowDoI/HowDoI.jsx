@@ -7,39 +7,23 @@ import Viewmore from "../Viewmore/Viewmore";
 export default class HowDoI extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      faq: [
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
-        {
-          question: "Lorem ipsum dolor sit amet",
-          answer:
-            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        },
-      ],
-      // statuses: new Array(this.faq.length).fill(false),
-    };
-    this.state.statuses = new Array(this.state.faq.length).fill(false);
+    this.state = { faq: [], loading: true };
+    // this.state.statuses = new Array(this.state.faq.length).fill(false);
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
   }
+  componentDidMount() {
+    this.populateWeatherData();
+  }
+  async populateWeatherData() {
+    const response = await fetch("faq");
+    const data = await response.json();
+    this.setState({
+      faq: data,
+      loading: false,
+      statuses: new Array(data.length).fill(false),
+    });
+  }
+
   changeAllCollapse(key, value) {
     this.setState((state) => {
       const statuses = state.statuses.map((item, j) => {
@@ -55,7 +39,11 @@ export default class HowDoI extends React.Component {
     });
   }
   render() {
-    return (
+    return this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
       <div className="howdoi">
         <form>
           <input
