@@ -12,9 +12,9 @@ export default class HowDoI extends React.Component {
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
   }
   componentDidMount() {
-    this.populateWeatherData();
+    this.fetchData();
   }
-  async populateWeatherData() {
+  async fetchData() {
     const response = await fetch("faq");
     const data = await response.json();
     this.setState({
