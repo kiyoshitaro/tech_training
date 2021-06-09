@@ -6,19 +6,24 @@ export default class QuickLinks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      links: [
-        { icon: Image.icon, link: "#", title: "Training" },
-        { icon: Image.icon_1, link: "#", title: "Organization" },
-        { icon: Image.icon_2, link: "#", title: "Task" },
-        { icon: Image.icon_3, link: "#", title: "Global Sales" },
-        { icon: Image.icon_4, link: "#", title: "Birthday" },
-        { icon: Image.icon_5, link: "#", title: "Health" },
-        { icon: Image.icon_6, link: "#", title: "Service Desk" },
-        { icon: Image.icon_7, link: "#", title: "Truck" },
-        { icon: Image.icon_8, link: "#", title: "Idea" },
-      ],
+      links: [],
+      loading: true,
     };
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+  async fetchData() {
+    const response = await fetch("quicklink");
+    const data = await response.json();
+    console.log(Image.icon);
+    debugger;
+    this.setState({
+      links: data,
+      loading: false,
+    });
+  }
+
   render() {
     return (
       <div className="quicklink-grid-container">

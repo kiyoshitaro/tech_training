@@ -23,7 +23,9 @@ namespace aspdotnetcore
         {
 
             services.AddControllersWithViews();
-            // services.AddControllers();
+
+            // services.AddDbContext<MvcMovieContext>(options =>
+            // options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
 
             services.AddSwaggerGen(c =>
             {
