@@ -15,9 +15,10 @@ export default class Post extends React.Component {
         <div className="thumb-title">
           <img className="thumb-img" src={Image.date} />
           <p className="post-time">{this.props.item.time}</p>
-          {this.props.item.tags.map((tag) => {
-            return <span className="tag">{tag}</span>;
-          })}
+          {this.props.item.tags &&
+            this.props.item.tags.map((tag) => {
+              return <span className="tag">{tag}</span>;
+            })}
         </div>
       </div>
     );

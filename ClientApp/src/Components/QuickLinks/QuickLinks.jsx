@@ -17,7 +17,7 @@ export default class QuickLinks extends React.Component {
     const response = await fetch("quicklink");
     const data = await response.json();
     console.log(Image.icon);
-    debugger;
+    // debugger;
     this.setState({
       links: data,
       loading: false,
