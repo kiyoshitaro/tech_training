@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using aspdotnetcore.Services;
 
 namespace aspdotnetcore.Controllers
 {
@@ -18,24 +19,20 @@ namespace aspdotnetcore.Controllers
         // public ITodoRepository TodoItems { get; set; }
 
         private readonly ILogger<EventController> _logger;
+        private readonly IEventService _eventService;
 
-        public EventController(ILogger<EventController> logger)
+        public EventController(ILogger<EventController> logger, IEventService eventService)
         {
             _logger = logger;
+            _eventService = eventService;
+
         }
 
         [HttpGet]
         public IEnumerable<Event> Get()
         {
             // var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Event
-            {
-                Id = index,
-                Title = "IT maintainance",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
-            })
-            .ToArray();
+            return _eventService.GetAll();
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-
+using aspdotnetcore.Services;
 namespace aspdotnetcore
 {
     public class Startup
@@ -23,6 +23,12 @@ namespace aspdotnetcore
         {
 
             services.AddControllersWithViews();
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IAnnouncementService, AnnouncementService>();
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IFaqService, FaqService>();
+            services.AddTransient<IQuicklinkService, QuicklinkService>();
+
 
             // services.AddDbContext<MvcMovieContext>(options =>
             // options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));

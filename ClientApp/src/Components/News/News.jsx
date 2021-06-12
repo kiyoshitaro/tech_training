@@ -8,44 +8,29 @@ export default class Announcement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: [
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: [],
-          img: Image.image_gallery,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: [],
-          img: Image.image_gallery_1,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: [],
-          img: Image.image_gallery_2,
-        },
-        {
-          title: "IT maintainance",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          time: "05/jan/2021",
-          tags: [],
-          img: Image.image_gallery_3,
-        },
-      ],
+      posts: [],
+      loading: true,
     };
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+  async fetchData() {
+    const response = await fetch("news");
+    const data = await response.json();
+    // debugger;
+    this.setState({
+      posts: data,
+      loading: false,
+    });
+  }
+
   render() {
-    return (
+    return this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
       <div>
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
