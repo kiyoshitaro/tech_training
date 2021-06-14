@@ -36,14 +36,14 @@ export default class Layout extends React.Component {
                   <p className="topic">Image Gallery</p>
                   <ImageGallery></ImageGallery>
                 </div>
-                <div id="video-gallery">
+                {/* <div id="video-gallery">
                   <p className="topic">Video Gallery</p>
                   <VideoGallery></VideoGallery>
                 </div>
                 <div id="document-gallery">
                   <p className="topic">Document Gallery</p>
                   <DocumentGallery></DocumentGallery>
-                </div>
+                </div> */}
               </div>
 
               <div className="rightcolumn">

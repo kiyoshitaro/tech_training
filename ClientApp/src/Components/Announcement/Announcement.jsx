@@ -10,19 +10,51 @@ export default class Announcement extends React.Component {
     this.state = {
       posts: [],
       loading: true,
+      currPage: 0,
+      pageSize: 3,
+      pageNum: 0,
     };
+    this._getPreviousPage = this._getPreviousPage.bind(this);
+    this._getNextPage = this._getNextPage.bind(this);
+    this._getSpecificPage = this._getSpecificPage.bind(this);
   }
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    const response = await fetch(
+      `announcement?start=${this.state.currPage}&limit=${this.state.pageSize}`
+    );
+    const data = await response.json();
+    debugger;
+    this.setState({
+      posts: data.data,
+      loading: false,
+      pageNum: data.pageNum,
+    });
   }
-  async fetchData() {
-    const response = await fetch("announcement");
+  async fetchData(currPage, pageSize) {
+    const response = await fetch(
+      `announcement?start=${currPage}&limit=${pageSize}`
+    );
     const data = await response.json();
     // debugger;
     this.setState({
-      posts: data,
+      posts: data.data,
       loading: false,
     });
+  }
+  _getPreviousPage() {
+    this.setState({ currPage: this.state.currPage - 1, loading: true }, () =>
+      this.fetchData(this.state.currPage, this.state.pageSize)
+    );
+  }
+  _getNextPage() {
+    this.setState({ currPage: this.state.currPage + 1, loading: true }, () =>
+      this.fetchData(this.state.currPage, this.state.pageSize)
+    );
+  }
+  _getSpecificPage(page) {
+    this.setState({ currPage: page, loading: true }, () =>
+      this.fetchData(this.state.currPage, this.state.pageSize)
+    );
   }
 
   render() {
@@ -35,7 +67,34 @@ export default class Announcement extends React.Component {
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}
-        <Viewmore></Viewmore>
+        <div className="pagination">
+          {this.state.currPage > 0 && (
+            <a onClick={this._getPreviousPage}>&laquo;</a>
+          )}
+
+          {[...Array(this.state.pageNum)].map((x, i) => {
+            {
+              /* console.log(x, i); */
+            }
+            return (
+              <>
+                {i === this.state.currPage ? (
+                  <a
+                    className="pagination active"
+                    onClick={() => this._getSpecificPage(i)}
+                  >
+                    {i}
+                  </a>
+                ) : (
+                  <a onClick={() => this._getSpecificPage(i)}>{i}</a>
+                )}
+              </>
+            );
+          })}
+          {this.state.posts.length === this.state.pageSize && (
+            <a onClick={this._getNextPage}>&raquo;</a>
+          )}
+        </div>
       </div>
     );
   }

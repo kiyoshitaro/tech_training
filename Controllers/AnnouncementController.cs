@@ -23,9 +23,19 @@ namespace aspdotnetcore.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Announcement> Get()
+        public ActionResult<Announcement> Get(int start=0, int limit=3)
         {
-            return _announcementService.GetAll();
+            var collection = new Dictionary<string, object>();
+            List<Announcement> announcements = _announcementService.GetPage(start,limit);
+            collection.Add("data", announcements);
+            collection.Add("pageNum", _announcementService.GetPageNum(limit));
+
+            if (announcements == null)
+            {
+                return NotFound();
+            }
+            return Ok(collection);
+
         }
     }
 }

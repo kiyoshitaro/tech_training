@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using aspdotnetcore.Services;
+using System.Text.Json;
 
 namespace aspdotnetcore.Controllers
 {
@@ -23,9 +24,29 @@ namespace aspdotnetcore.Controllers
 
         }
         [HttpGet]
-        public IEnumerable<News> Get()
+
+        public ActionResult<News> Get(int start=0, int limit=3)
         {
-            return _newsService.GetAll();
+            var collection = new Dictionary<string, object>();
+            List<News> newss = _newsService.GetPage(start,limit);
+            collection.Add("data", newss);
+            collection.Add("pageNum", _newsService.GetPageNum(limit));
+
+            if (newss == null)
+            {
+                return NotFound();
+            }
+            return Ok(collection);
         }
+
+        // public ActionResult<News> Get(int start=0, int limit=3)
+        // {
+        //     var collection = new Dictionary<string, object>();
+        //     collection.Add("data", _newsService.GetPage(start,limit));
+        //     collection.Add("pageNum", _newsService.GetPageNum(limit));
+
+        //     // return _newsService.GetPage(start,limit);
+        //     return new Ok(Json(collection));
+        // }
     }
 }
