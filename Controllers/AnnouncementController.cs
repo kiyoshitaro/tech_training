@@ -22,8 +22,8 @@ namespace aspdotnetcore.Controllers
 
         }
 
-        [HttpGet]
-        public ActionResult<Announcement> Get(int start=0, int limit=3)
+        [HttpGet("/api/announcement")]
+        public ActionResult<Announcement> Get(int start=0, int limit=-1)
         {
             var collection = new Dictionary<string, object>();
             List<Announcement> announcements = _announcementService.GetPage(start,limit);
@@ -35,7 +35,30 @@ namespace aspdotnetcore.Controllers
                 return NotFound();
             }
             return Ok(collection);
+        }
 
+        [HttpPost("/api/announcement")]
+        public ActionResult<Announcement> AddAnnouncement(Announcement announcement)
+        {
+            _announcementService.AddAnnouncement(announcement);
+            _logger.LogInformation($"Add announcement");
+            return announcement;
+        }
+        [HttpPut("/api/announcement/{id}")]
+        public ActionResult<Announcement> UpdateAnnouncement(int id, Announcement announcement)
+        {
+            _announcementService.UpdateAnnouncement(id, announcement);
+
+            _logger.LogInformation($"Update announcement with id {id}");
+            return announcement;
+        }
+
+        [HttpDelete("/api/announcement/{id}")]
+        public ActionResult<int> DeleteAnnouncement(int id)
+        {
+            _announcementService.DeleteAnnouncement(id);
+            _logger.LogInformation($"Delete announcement with id {id}");
+            return id;
         }
     }
 }

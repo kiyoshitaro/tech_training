@@ -6,21 +6,40 @@ import Viewmore from "../Viewmore/Viewmore";
 export default class Events extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { events: [], loading: true };
+    this.state = {
+      events: [],
+      loading: true,
+      pageNum: 0,
+      pageSize: 3,
+      currPage: 0,
+    };
     this.process_data = this.process_data.bind(this);
     this.convert_time = this.convert_time.bind(this);
+    this.viewMoreEvent = this.viewMoreEvent.bind(this);
   }
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(this.state.currPage, this.state.pageSize);
   }
-  async fetchData() {
-    const response = await fetch("event");
+  async fetchData(currPage, pageSize) {
+    const response = await fetch(
+      `api/event?start=${currPage}&limit=${pageSize}`
+    );
     const data = await response.json();
     // debugger;
     this.setState({
-      events: data.map((event) => this.process_data(event)),
+      events: [
+        ...this.state.events,
+        ...data.data.map((event) => this.process_data(event)),
+      ],
       loading: false,
+      pageNum: data.pageNum,
     });
+  }
+  viewMoreEvent(e) {
+    e.preventDefault();
+    this.setState({ currPage: this.state.currPage + 1, loading: true }, () =>
+      this.fetchData(this.state.currPage, this.state.pageSize)
+    );
   }
   process_data(item) {
     // debugger;
@@ -90,7 +109,9 @@ export default class Events extends React.Component {
             );
           })}
         </div>
-        <Viewmore></Viewmore>
+        {this.state.currPage + 1 < this.state.pageNum && (
+          <Viewmore viewMore={this.viewMoreEvent}></Viewmore>
+        )}
       </div>
     );
   }

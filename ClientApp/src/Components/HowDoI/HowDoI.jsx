@@ -15,7 +15,7 @@ export default class HowDoI extends React.Component {
     this.fetchData();
   }
   async fetchData() {
-    const response = await fetch("faq");
+    const response = await fetch("api/faq");
     const data = await response.json();
     this.setState({
       faq: data,

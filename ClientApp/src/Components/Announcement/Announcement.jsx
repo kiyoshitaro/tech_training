@@ -17,13 +17,15 @@ export default class Announcement extends React.Component {
     this._getPreviousPage = this._getPreviousPage.bind(this);
     this._getNextPage = this._getNextPage.bind(this);
     this._getSpecificPage = this._getSpecificPage.bind(this);
+    this.deletePost = this.deletePost.bind(this);
+    this.editPost = this.editPost.bind(this);
   }
   async componentDidMount() {
     const response = await fetch(
-      `announcement?start=${this.state.currPage}&limit=${this.state.pageSize}`
+      `api/announcement?start=${this.state.currPage}&limit=${this.state.pageSize}`
     );
     const data = await response.json();
-    debugger;
+    // debugger;
     this.setState({
       posts: data.data,
       loading: false,
@@ -32,7 +34,7 @@ export default class Announcement extends React.Component {
   }
   async fetchData(currPage, pageSize) {
     const response = await fetch(
-      `announcement?start=${currPage}&limit=${pageSize}`
+      `api/announcement?start=${currPage}&limit=${pageSize}`
     );
     const data = await response.json();
     // debugger;
@@ -56,6 +58,23 @@ export default class Announcement extends React.Component {
       this.fetchData(this.state.currPage, this.state.pageSize)
     );
   }
+  async deletePost(id) {
+    const response = await fetch("api/announcement/" + id, {
+      method: "DELETE",
+    });
+    const id_ = await response.json();
+    this.setState({
+      posts: this.state.posts.filter((post) => post.id !== id_),
+    });
+  }
+  async editPost(post) {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(post),
+    };
+    const response = await fetch("api/announcement/" + post.id, requestOptions);
+  }
 
   render() {
     return this.state.loading ? (
@@ -65,7 +84,14 @@ export default class Announcement extends React.Component {
     ) : (
       <div>
         {this.state.posts.map((item, index) => {
-          return <Post key={index} item={item}></Post>;
+          return (
+            <Post
+              key={index}
+              item={item}
+              deletePost={this.deletePost}
+              editPost={this.editPost}
+            ></Post>
+          );
         })}
         <div className="pagination">
           {this.state.currPage > 0 && (

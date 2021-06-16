@@ -8,7 +8,11 @@ export default class Viewmore extends React.Component {
   }
   render() {
     return (
-      <a className="thumb-title viewmore" href="#">
+      <a
+        href="#"
+        className="thumb-title viewmore"
+        onClick={this.props.viewMore}
+      >
         View more
         <img className="thumb-img" src={Image.arrowicon} />
       </a>

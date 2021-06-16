@@ -23,13 +23,34 @@ namespace aspdotnetcore.Controllers
             _faqService = faqService;
         }
 
-        [HttpGet]
+        [HttpGet("/api/faq")]
         public List<Faq> Get()
         {
-            // var rng = new Random();
             return _faqService.GetAll();
+        }
+        [HttpPost("/api/faq")]
 
+        public ActionResult<Faq> AddFaq(Faq faq)
+        {
+            _faqService.AddFaq(faq);
+            _logger.LogInformation($"Add faq");
+            return faq;
+        }
+        [HttpPut("/api/faq/{id}")]
+        public ActionResult<Faq> UpdateFaq(int id, Faq faq)
+        {
+            _faqService.UpdateFaq(id, faq);
 
+            _logger.LogInformation($"Update faq with id {id}");
+            return faq;
+        }
+
+        [HttpDelete("/api/faq/{id}")]
+        public ActionResult<int> DeleteFaq(int id)
+        {
+            _faqService.DeleteFaq(id);
+            _logger.LogInformation($"Delete faq with id {id}");
+            return id;
         }
     }
 }
