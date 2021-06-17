@@ -24,7 +24,7 @@ namespace aspdotnetcore.Controllers
         }
 
         [HttpGet("/api/event")]
-        public ActionResult<Event> Get(int start=0, int limit=-1)
+        public ActionResult<Event> GetEvents(int start=0, int limit=-1)
         {
             var collection = new Dictionary<string, object>();
             List<Event> events = _eventService.GetPage(start,limit);
@@ -36,22 +36,18 @@ namespace aspdotnetcore.Controllers
                 return NotFound();
             }
             return Ok(collection);
-
         }
 
-        // public IEnumerable<Event> Get()
-        // {
-        //     return _eventService.GetAll();
-        // }
 
         [HttpPost("/api/event")]
-
         public ActionResult<Event> AddEvent(Event evt)
         {
             _eventService.AddEvent(evt);
             _logger.LogInformation($"Add faq");
             return evt;
         }
+
+
         [HttpPut("/api/event/{id}")]
         public ActionResult<Event> UpdateEvent(int id, Event evt)
         {

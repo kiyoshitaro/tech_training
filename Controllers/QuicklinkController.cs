@@ -24,7 +24,7 @@ namespace aspdotnetcore.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Quicklink> Get()
+        public IEnumerable<Quicklink> GetQuicklinks()
         {
             return _quicklinkService.GetAll();
         }

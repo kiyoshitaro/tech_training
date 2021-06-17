@@ -23,7 +23,7 @@ namespace aspdotnetcore.Controllers
         }
 
         [HttpGet("/api/announcement")]
-        public ActionResult<Announcement> Get(int start=0, int limit=-1)
+        public ActionResult<Announcement> GetAnnouncements(int start=0, int limit=-1)
         {
             var collection = new Dictionary<string, object>();
             List<Announcement> announcements = _announcementService.GetPage(start,limit);
@@ -40,24 +40,46 @@ namespace aspdotnetcore.Controllers
         [HttpPost("/api/announcement")]
         public ActionResult<Announcement> AddAnnouncement(Announcement announcement)
         {
-            _announcementService.AddAnnouncement(announcement);
-            _logger.LogInformation($"Add announcement");
+            try{
+                _announcementService.AddAnnouncement(announcement);
+                _logger.LogInformation($"Add announcement");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when adding announcement");
+            }
+
             return announcement;
         }
+
         [HttpPut("/api/announcement/{id}")]
         public ActionResult<Announcement> UpdateAnnouncement(int id, Announcement announcement)
         {
-            _announcementService.UpdateAnnouncement(id, announcement);
+            try{
+                _announcementService.UpdateAnnouncement(id, announcement);
+                _logger.LogInformation($"Update announcement with id {id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when editing announcement");
+            }
 
-            _logger.LogInformation($"Update announcement with id {id}");
             return announcement;
         }
+
 
         [HttpDelete("/api/announcement/{id}")]
         public ActionResult<int> DeleteAnnouncement(int id)
         {
-            _announcementService.DeleteAnnouncement(id);
-            _logger.LogInformation($"Delete announcement with id {id}");
+            try{
+                _announcementService.DeleteAnnouncement(id);
+                _logger.LogInformation($"Delete announcement with id {id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when deleting announcement");
+            }
+
             return id;
         }
     }

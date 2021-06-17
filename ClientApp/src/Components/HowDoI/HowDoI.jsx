@@ -7,21 +7,47 @@ import Viewmore from "../Viewmore/Viewmore";
 export default class HowDoI extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { faq: [], loading: true };
+    this.state = {
+      faq: [],
+      loading: true,
+      pageNum: 0,
+      pageSize: 3,
+      currPage: 0,
+    };
     // this.state.statuses = new Array(this.state.faq.length).fill(false);
     this.changeAllCollapse = this.changeAllCollapse.bind(this);
+    this.viewMoreFaq = this.viewMoreFaq.bind(this);
   }
-  componentDidMount() {
-    this.fetchData();
-  }
-  async fetchData() {
-    const response = await fetch("api/faq");
+  async componentDidMount() {
+    const response = await fetch(
+      `api/faq?start=${this.state.currPage}&limit=${this.state.pageSize}`
+    );
     const data = await response.json();
     this.setState({
-      faq: data,
+      faq: data.data,
       loading: false,
-      statuses: new Array(data.length).fill(false),
+      pageNum: data.pageNum,
+      statuses: new Array(data.data.length).fill(false),
     });
+  }
+  async fetchData(currPage, pageSize) {
+    const response = await fetch(`api/faq?start=${currPage}&limit=${pageSize}`);
+    const data = await response.json();
+    // debugger;
+    this.setState({
+      faq: [...this.state.faq, ...data.data],
+      loading: false,
+      statuses: [
+        ...this.state.statuses,
+        ...new Array(data.data.length).fill(false),
+      ],
+    });
+  }
+  viewMoreFaq(e) {
+    e.preventDefault();
+    this.setState({ currPage: this.state.currPage + 1, loading: true }, () =>
+      this.fetchData(this.state.currPage, this.state.pageSize)
+    );
   }
 
   changeAllCollapse(key, value) {
@@ -66,7 +92,9 @@ export default class HowDoI extends React.Component {
             );
           })}
         </div>
-        <Viewmore></Viewmore>
+        {this.state.currPage + 1 < this.state.pageNum && (
+          <Viewmore viewMore={this.viewMoreFaq}></Viewmore>
+        )}
       </div>
     );
   }

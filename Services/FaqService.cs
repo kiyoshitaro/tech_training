@@ -5,10 +5,12 @@ namespace aspdotnetcore.Services
 {
     public interface IFaqService
     {
-        List<Faq> GetAll();
+        // List<Faq> GetAll();
         Faq AddFaq(Faq faq);
         Faq UpdateFaq(int id, Faq faq);
         int DeleteFaq(int id);
+        List<Faq> GetPage(int start,int limit);
+        int GetPageNum(int limit);
     }
     public class FaqService: IFaqService
     {
@@ -37,11 +39,56 @@ namespace aspdotnetcore.Services
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
             },  
+            new Faq
+            {
+                Id = 4,
+                Question = "Lorem ipsum dolor sit amet",
+                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+            },  
+
+            new Faq
+            {
+                Id = 5,
+                Question = "Lorem ipsum dolor sit amet",
+                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+            },  
+
+            new Faq
+            {
+                Id = 6,
+                Question = "Lorem ipsum dolor sit amet",
+                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+            },  
+
         };
-        public List<Faq> GetAll()
+
+        public int GetPageNum(int limit)
         {
-            return _faqs;
+            if(limit == -1){
+                return 1;
+            }
+            else{
+                return (int)(_faqs.Count / limit + 1);
+            }
         }
+        public List<Faq> GetPage(int start,int limit)
+        {
+            if(limit == -1 ){
+                return _faqs;
+            }
+            else{
+                IEnumerable<Faq> filteringQuery =
+                    from faq in _faqs
+                    where faq.Id < (start+1)* limit  && faq.Id >= start* limit 
+                    select faq;
+                return filteringQuery.ToList();
+            }
+        }
+
+        // public List<Faq> GetAll()
+        // {
+        //     return _faqs;
+        // }
         public Faq AddFaq(Faq faq)
         {
             faq.Id = _faqs[_faqs.Count-1].Id+ 1 ;

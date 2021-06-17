@@ -24,10 +24,25 @@ namespace aspdotnetcore.Controllers
         }
 
         [HttpGet("/api/faq")]
-        public List<Faq> Get()
+        public ActionResult<Faq> GetFaqs(int start=0, int limit=-1)
         {
-            return _faqService.GetAll();
+            var collection = new Dictionary<string, object>();
+            List<Faq> faqs = _faqService.GetPage(start,limit);
+            collection.Add("data", faqs);
+            collection.Add("pageNum", _faqService.GetPageNum(limit));
+
+            if (faqs == null)
+            {
+                return NotFound();
+            }
+            return Ok(collection);
+
         }
+
+        // public List<Faq> Get()
+        // {
+        //     return _faqService.GetAll();
+        // }
         [HttpPost("/api/faq")]
 
         public ActionResult<Faq> AddFaq(Faq faq)
@@ -36,6 +51,7 @@ namespace aspdotnetcore.Controllers
             _logger.LogInformation($"Add faq");
             return faq;
         }
+
         [HttpPut("/api/faq/{id}")]
         public ActionResult<Faq> UpdateFaq(int id, Faq faq)
         {

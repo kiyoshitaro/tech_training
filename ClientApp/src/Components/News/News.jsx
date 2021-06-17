@@ -83,6 +83,15 @@ export default class Announcement extends React.Component {
       </p>
     ) : (
       <div>
+        {/* <div style={{ display: "grid" }}>
+          <button
+            className="button button1"
+            // style={{ position: "right" }}
+            // onClick={() => this.addPost(this.state.item)}
+          >
+            Add news
+          </button>
+        </div> */}
         {this.state.posts &&
           this.state.posts.map((item, index) => {
             return (

@@ -24,7 +24,7 @@ namespace aspdotnetcore.Controllers
 
         }
         [HttpGet("/api/news")]
-        public ActionResult<News> GetNews(int start=0, int limit=-1)
+        public ActionResult<News> GetNewss(int start=0, int limit=-1)
         {
             var collection = new Dictionary<string, object>();
             List<News> newss = _newsService.GetPage(start,limit);
@@ -37,27 +37,52 @@ namespace aspdotnetcore.Controllers
             }
             return Ok(collection);
         }
+
         [HttpPost("/api/news")]
         public ActionResult<News> AddNews(News news)
         {
-            _newsService.AddNews(news);
-            _logger.LogInformation($"Add news");
+            try
+            {
+                _newsService.AddNews(news);
+                _logger.LogInformation($"Add news");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when adding news");
+            }
+
             return news;
         }
+
         [HttpPut("/api/news/{id}")]
         public ActionResult<News> UpdateNews(int id, News news)
         {
+            try
+            {
             _newsService.UpdateNews(id, news);
-
             _logger.LogInformation($"Update news with id {id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when editing news");
+            }
+
             return news;
         }
 
         [HttpDelete("/api/news/{id}")]
         public ActionResult<int> DeleteNews(int id)
         {
-            _newsService.DeleteNews(id);
-            _logger.LogInformation($"Delete news with id {id}");
+            try
+            {
+                _newsService.DeleteNews(id);
+                _logger.LogInformation($"Delete news with id {id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Exception {ex.Message} when deleting news");
+            }
+
             return id;
         }
 

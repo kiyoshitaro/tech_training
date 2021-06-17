@@ -12,7 +12,7 @@ export default class Post extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.openEditPost = this.openEditPost.bind(this);
-    this.putEditPost = this.putEditPost.bind(this);
+    this.submitEditPost = this.submitEditPost.bind(this);
   }
   handleChange(event) {
     this.setState({
@@ -23,7 +23,7 @@ export default class Post extends React.Component {
     this.setState({ isEdit: true });
     // this.props.editPost({ ...this.props.item });
   }
-  putEditPost(post) {
+  submitEditPost(post) {
     this.setState({ isEdit: false });
     this.props.editPost(post);
   }
@@ -31,24 +31,6 @@ export default class Post extends React.Component {
   render() {
     return (
       <div>
-        <button className="button button2" onClick={this.openEditPost}>
-          Edit
-        </button>
-        {this.state.isEdit ? (
-          <button
-            className="button button1"
-            onClick={() => this.putEditPost(this.state.item)}
-          >
-            Post
-          </button>
-        ) : (
-          <button
-            className="button button3"
-            onClick={() => this.props.deletePost(this.state.item.id)}
-          >
-            Delete
-          </button>
-        )}
         <div className="post">
           <img className="img-left" src={this.state.item.img} />
           {this.state.isEdit ? (
@@ -91,6 +73,26 @@ export default class Post extends React.Component {
               this.state.item.tags.map((tag) => {
                 return <span className="tag">{tag}</span>;
               })}
+          </div>
+          <div style={{ float: "right" }}>
+            <button className="button button2" onClick={this.openEditPost}>
+              Edit
+            </button>
+            {this.state.isEdit ? (
+              <button
+                className="button button1"
+                onClick={() => this.submitEditPost(this.state.item)}
+              >
+                Submit
+              </button>
+            ) : (
+              <button
+                className="button button3"
+                onClick={() => this.props.deletePost(this.state.item.id)}
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       </div>
