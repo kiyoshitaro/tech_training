@@ -73,7 +73,8 @@ export default class Announcement extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(post),
     };
-    const response = await fetch("api/news/" + post.id, requestOptions);
+      const response = await fetch("api/news/" + post.id, requestOptions);
+      console.log(response);
   }
 
   render() {

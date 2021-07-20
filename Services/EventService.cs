@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using aspdotnetcore.Models;
 
 namespace aspdotnetcore.Services
 {
@@ -20,51 +21,16 @@ namespace aspdotnetcore.Services
             {
                 Id = 0,
                 Title = "Training",
-                EventDate = "2021-03-29T09:00:00Z",
-                EndDate = "2021-03-29T09:30:00Z",
+                //EventDate = "2021-03-29T09:00:00Z",
+                //EndDate = "2021-03-29T09:30:00Z",
             },
             new Event
             {
                 Id = 1,
                 Title = "IT maintainance",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
+                //EventDate = "2021-03-29T09:30:00Z",
+                //EndDate = "2021-03-29T10:30:00Z",
             },
-            new Event
-            {
-                Id = 2,
-                Title = "Meeting",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
-            },
-            new Event
-            {
-                Id = 3,
-                Title = "Testing",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
-            },
-            new Event
-            {
-                Id = 4,
-                Title = "IT maintainance",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
-            },
-            new Event
-            {
-                Id = 5,
-                Title = "IT maintainance",
-                EventDate = "2021-03-29T09:30:00Z",
-                EndDate = "2021-03-29T10:30:00Z",
-            },
-            new Event
-            {
-                Id = 6,
-                Title = "Report",
-                EventDate = "2021-03-30T10:00:00Z",
-                EndDate = "2021-03-30T10:30:00Z",
-            }
 
         };
         

@@ -7,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using aspdotnetcore.Services;
+using Microsoft.EntityFrameworkCore;
+using aspdotnetcore.Models;
+using System;
+using aspdotnetcore.Data;
+
 namespace aspdotnetcore
 {
     public class Startup
@@ -16,6 +21,7 @@ namespace aspdotnetcore
             Configuration = configuration;
         }
 
+        //public IConfiguration Configuration;
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -29,9 +35,8 @@ namespace aspdotnetcore
             services.AddTransient<IFaqService, FaqService>();
             services.AddTransient<IQuicklinkService, QuicklinkService>();
 
+            services.AddDbContext<ProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // services.AddDbContext<MvcMovieContext>(options =>
-            // options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
 
             services.AddSwaggerGen(c =>
             {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using aspdotnetcore.Services;
 using System.Text.Json;
+using aspdotnetcore.Models;
 
 namespace aspdotnetcore.Controllers
 {

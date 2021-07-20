@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using aspdotnetcore.Models;
 
 namespace aspdotnetcore.Services
 {
@@ -14,51 +15,53 @@ namespace aspdotnetcore.Services
     }
     public class FaqService: IFaqService
     {
+        //private FaqContext _context;
+        //private List<Faq> _faqs = _context.Faq.ToList();
         private List<Faq> _faqs = new List<Faq>(){
             new Faq
             {
                 Id = 0,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
             new Faq
             {
                 Id = 1,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
             new Faq
             {
                 Id = 2,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
             new Faq
             {
                 Id = 3,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
             new Faq
             {
                 Id = 4,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
 
             new Faq
             {
                 Id = 5,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
 
             new Faq
             {
                 Id = 6,
                 Question = "Lorem ipsum dolor sit amet",
                 Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },  
+            },
 
         };
 
