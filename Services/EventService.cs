@@ -46,7 +46,7 @@ namespace aspdotnetcore.Services
             }
             else
             {
-                List<Event> filteringQuery = _db.Event.Where(r => r.Id < (start + 1) * limit && r.Id >= start * limit).ToList();
+                List<Event> filteringQuery = _db.Event.Where(r => r.Id <= (start + 1) * limit && r.Id > start * limit).ToList();
                 return filteringQuery;
             }
         }

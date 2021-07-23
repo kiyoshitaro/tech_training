@@ -51,9 +51,10 @@ export default class Post extends React.Component {
               <div className="thumb-title">
                 <img className="thumb-img" src={Image.date} />
                 <input
+                  type="date"
                   className="post-time"
-                  onChange={this.handleChange}
-                  value={this.state.item.time}
+                    onChange={this.handleChange} 
+                    value={new Date(new Date(this.state.item.time).getTime() - (new Date(this.state.item.time).getTimezoneOffset() * 60000)).toISOString().slice(0, 10)}
                   name="time"
                 />
               </div>
@@ -64,7 +65,7 @@ export default class Post extends React.Component {
               <p className="post-content">{this.state.item.content}</p>
               <div className="thumb-title">
                 <img className="thumb-img" src={Image.date} />
-                    <p className="post-time">{new Date(this.state.item.time).toISOString().slice(0,10)}</p>
+                    <p className="post-time">{new Date(this.state.item.time).toLocaleDateString()}</p>
               </div>
             </>
           )}
