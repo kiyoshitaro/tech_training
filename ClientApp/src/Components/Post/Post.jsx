@@ -64,7 +64,7 @@ export default class Post extends React.Component {
               <p className="post-content">{this.state.item.content}</p>
               <div className="thumb-title">
                 <img className="thumb-img" src={Image.date} />
-                <p className="post-time">{this.state.item.time}</p>
+                    <p className="post-time">{new Date(this.state.item.time).toISOString().slice(0,10)}</p>
               </div>
             </>
           )}
@@ -75,23 +75,30 @@ export default class Post extends React.Component {
               })}
           </div>
           <div style={{ float: "right" }}>
-            <button className="button button2" onClick={this.openEditPost}>
-              Edit
-            </button>
-            {this.state.isEdit ? (
-              <button
-                className="button button1"
-                onClick={() => this.submitEditPost(this.state.item)}
-              >
-                Submit
-              </button>
-            ) : (
-              <button
-                className="button button3"
-                onClick={() => this.props.deletePost(this.state.item.id)}
-              >
-                Delete
-              </button>
+                {this.state.isEdit ? (
+                <>
+                    <button className="button button2" onClick={() => this.setState({ isEdit: false})}>
+                        Cancel
+                    </button>
+                  <button
+                    className="button button1"
+                    onClick={() => this.submitEditPost(this.state.item)}
+                  >
+                    Submit
+                  </button>
+                </>
+                    ) : (
+                <>
+                    <button className="button button2" onClick={this.openEditPost}>
+                         Edit
+                    </button>
+                      <button
+                        className="button button3"
+                        onClick={() => this.props.deletePost(this.state.item.id)}
+                      >
+                      Delete
+                    </button>
+               </>
             )}
           </div>
         </div>

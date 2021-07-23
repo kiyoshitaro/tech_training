@@ -1,69 +1,27 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using aspdotnetcore.Data;
 using aspdotnetcore.Models;
+using Microsoft.Extensions.Logging;
 
 namespace aspdotnetcore.Services
 {
     public interface IFaqService
     {
         // List<Faq> GetAll();
-        Faq AddFaq(Faq faq);
-        Faq UpdateFaq(int id, Faq faq);
-        int DeleteFaq(int id);
+        void AddFaq(Faq faq);
+        void UpdateFaq(int id, Faq faq);
+        void DeleteFaq(int id);
         List<Faq> GetPage(int start,int limit);
         int GetPageNum(int limit);
     }
     public class FaqService: IFaqService
     {
-        //private FaqContext _context;
-        //private List<Faq> _faqs = _context.Faq.ToList();
-        private List<Faq> _faqs = new List<Faq>(){
-            new Faq
-            {
-                Id = 0,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-            new Faq
-            {
-                Id = 1,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-            new Faq
-            {
-                Id = 2,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-            new Faq
-            {
-                Id = 3,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-            new Faq
-            {
-                Id = 4,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-
-            new Faq
-            {
-                Id = 5,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-
-            new Faq
-            {
-                Id = 6,
-                Question = "Lorem ipsum dolor sit amet",
-                Answer = "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            },
-
-        };
+        private readonly ProjectContext _db;
+        public FaqService( ProjectContext db) {
+            _db = db;
+        }
 
         public int GetPageNum(int limit)
         {
@@ -71,20 +29,19 @@ namespace aspdotnetcore.Services
                 return 1;
             }
             else{
-                return (int)(_faqs.Count / limit + 1);
+                return (int)(_db.Faq.Count() / limit + 1);
             }
         }
         public List<Faq> GetPage(int start,int limit)
         {
-            if(limit == -1 ){
-                return _faqs;
+            
+
+            if (limit == -1 ){
+                return _db.Faq.ToList();
             }
             else{
-                IEnumerable<Faq> filteringQuery =
-                    from faq in _faqs
-                    where faq.Id < (start+1)* limit  && faq.Id >= start* limit 
-                    select faq;
-                return filteringQuery.ToList();
+                List<Faq> filteringQuery = _db.Faq.Where(faq => faq.Id < (start + 1) * limit && faq.Id >= start * limit).ToList();
+                return filteringQuery;
             }
         }
 
@@ -92,35 +49,39 @@ namespace aspdotnetcore.Services
         // {
         //     return _faqs;
         // }
-        public Faq AddFaq(Faq faq)
+        public void AddFaq(Faq faq)
         {
-            faq.Id = _faqs[_faqs.Count-1].Id+ 1 ;
-            _faqs.Add(faq);
-            return faq;
+
+            if (faq.Id > 0)
+            {
+                UpdateFaq(faq.Id, faq);
+            }
+            else
+            {
+                _db.Faq.Add(faq);
+                _db.SaveChanges();
+            }
         }
 
-        public Faq UpdateFaq(int id, Faq faq)
+        public void UpdateFaq(int id, Faq faq)
         {
-            for (var index = _faqs.Count - 1; index >= 0; index--)
+            Faq _faq = _db.Faq.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_faq != null)
             {
-                if (_faqs[index].Id == id)
-                {
-                    _faqs[index] = faq;
-                }
+                _faq.Question = faq.Question;
+                _faq.Answer  = faq.Answer ;
+                _db.SaveChanges();
             }
-            return faq;
         }
 
-        public int DeleteFaq(int id)
+        public void DeleteFaq(int id)
         {
-            for (var index = _faqs.Count - 1; index >= 0; index--)
+            Faq _faq = _db.Faq.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_faq != null)
             {
-                if (_faqs[index].Id == id)
-                {
-                    _faqs.RemoveAt(index);
-                }
+                _db.Faq.Remove(_faq);
+                _db.SaveChanges();
             }
-            return id;
         }
     }
 }

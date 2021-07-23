@@ -9,6 +9,7 @@ namespace aspdotnetcore.Models
     public class Faq
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

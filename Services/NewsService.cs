@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using aspdotnetcore.Models;
+using aspdotnetcore.Data;
 
 namespace aspdotnetcore.Services
 {
@@ -9,33 +10,18 @@ namespace aspdotnetcore.Services
     {
         List<News> GetPage(int start,int limit);
         int GetPageNum(int limit);
-        News AddNews(News news);
-        News UpdateNews(int id, News news);
-        int DeleteNews(int id);
+        void AddNews(News news);
+        void UpdateNews(int id, News news);
+        void DeleteNews(int id);
 
     }
     public class NewsService: INewsService
     {
-
-        private List<News> _newss = new List<News>()
+        private readonly ProjectContext _db;
+        public NewsService(ProjectContext db)
         {
-            new News
-            {
-                Id = 0,
-                Title = "IT maintainance",
-                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                Img = "./Images/image_gallery.png",
-                //Time = "05/jan/2021"
-            },
-            new News
-            {
-                Id = 1,
-                Title = "IT maintainance",
-                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                Img = "./Images/image_gallery-1.png",
-                //Time = "05/jan/2021"
-            },
-        };
+            _db = db;
+        }
         
         public int GetPageNum(int limit)
         {
@@ -43,57 +29,55 @@ namespace aspdotnetcore.Services
                 return 1;
             }
             else{
-                return (int)(_newss.Count / limit + 1);
+                return (int)(_db.News.Count() / limit + 1);
             }
         }
-
-        public List<News> GetPage(int start,int limit)
+        public List<News> GetPage(int start, int limit)
         {
-            if(limit == -1 ){
-                return _newss;
-            }
-            else{
-                
-                IEnumerable<News> filteringQuery =
-                    from news in _newss
-                    where news.Id < (start+1)* limit  && news.Id >= start* limit 
-                    select news;
-
-                return filteringQuery.ToList();
-            }
-        }
-        public News AddNews(News news)
-        {
-            news.Id = _newss[_newss.Count-1].Id+ 1 ;
-            _newss.Add(news);
-            return news;
-        }
-
-        public News UpdateNews(int id, News news)
-        {
-            for (var index = _newss.Count - 1; index >= 0; index--)
+            if (limit == -1)
             {
-                if (_newss[index].Id == id)
-                {
-                    _newss[index] = news;
-                }
+                return _db.News.ToList();
             }
-            return news;
-        }
-
-        public int DeleteNews(int id)
-        {
-            for (var index = _newss.Count - 1; index >= 0; index--)
+            else
             {
-                if (_newss[index].Id == id)
-                {
-                    _newss.RemoveAt(index);
-                }
+                List<News> filteringQuery = _db.News.Where(r => r.Id < (start + 1) * limit && r.Id >= start * limit).ToList();
+                return filteringQuery;
             }
+        }
+        public void AddNews(News news)
+        {
 
-            return id;
+            if (news.Id > 0)
+            {
+                UpdateNews(news.Id, news);
+            }
+            else
+            {
+                _db.News.Add(news);
+                _db.SaveChanges();
+            }
+        }
+        public void UpdateNews(int id, News news)
+        {
+            News _news = _db.News.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_news != null)
+            {
+                _news.Content = news.Content;
+                _news.Time = news.Time;
+                _news.Img = news.Img;
+                _news.Title = news.Title;
+                _db.SaveChanges();
+            }
         }
 
-
+        public void DeleteNews(int id)
+        {
+            News _news = _db.News.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_news != null)
+            {
+                _db.News.Remove(_news);
+                _db.SaveChanges();
+            }
+        }
     }
 }

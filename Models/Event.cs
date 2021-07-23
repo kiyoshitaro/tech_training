@@ -8,13 +8,14 @@ namespace aspdotnetcore.Models
     public class Event
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("EventDate", TypeName = "Datetime")]
+        [Column("EventDate", TypeName = "Datetime2")]
 
         public DateTime EventDate { get; set; }
 
-        [Column("EndDate", TypeName = "Datetime")]
+        [Column("EndDate", TypeName = "Datetime2")]
 
         public DateTime EndDate { get; set; }
 

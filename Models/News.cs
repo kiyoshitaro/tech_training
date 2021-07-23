@@ -8,6 +8,7 @@ namespace aspdotnetcore.Models
     public class News
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column("Content")]

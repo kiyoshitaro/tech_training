@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using aspdotnetcore.Data;
 using aspdotnetcore.Models;
 
 namespace aspdotnetcore.Services
@@ -8,87 +10,87 @@ namespace aspdotnetcore.Services
     {
         List<Announcement> GetPage(int start,int limit);
         int GetPageNum(int limit);
-        int DeleteAnnouncement(int id);
-        Announcement UpdateAnnouncement(int id, Announcement announcement);
-        Announcement AddAnnouncement(Announcement announcement);
+        void DeleteAnnouncement(int id);
+        void UpdateAnnouncement(int id, Announcement announcement);
+        void AddAnnouncement(Announcement announcement);
     }
     public class AnnouncementService: IAnnouncementService
     {
+        private readonly ProjectContext _db;
+        public AnnouncementService(ProjectContext db)
+        {
+            _db = db;
+        }
 
-        private List<Announcement> _announcements = new List<Announcement>(){
-            new Announcement
+        //Id = 0,
+        //Title = "IT maintainance",
+        //Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        //Img = "./Images/image_gallery.png",
+        //Time = "15/jan/2021"
+
+        public List<Announcement> GetPage(int start, int limit)
+        {
+            if (limit == -1)
             {
-                Id = 0,
-                Title = "IT maintainance",
-                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                Img = "./Images/image_gallery.png",
-                //Time = "05/jan/2021"
-            },
-            new Announcement
+                return _db.Announcement.ToList();
+            }
+            else
             {
-                Id = 1,
-                Title = "Debug",
-                Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                Img = "./Images/image_gallery-1.png",
-                //Time = "05/jan/2021"
-            },
-           
-        };
-        
+                List<Announcement> filteringQuery = _db.Announcement.Where(r => r.Id < (start + 1) * limit && r.Id >= start * limit).ToList();
+                return filteringQuery;
+            }
+        }
+        public void AddAnnouncement(Announcement announcement)
+        {
+
+            if (announcement.Id > 0)
+            {
+                UpdateAnnouncement(announcement.Id, announcement);
+            }
+            else
+            {
+                _db.Announcement.Add(announcement);
+                _db.SaveChanges();
+            }
+        }
+        public void UpdateAnnouncement(int id, Announcement announcement)
+        {
+            News _announcement = _db.News.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_announcement != null)
+            {
+                try
+                {
+                    _announcement.Content = announcement.Content;
+                    _announcement.Time = Convert.ToDateTime(announcement.Time);
+                    _announcement.Img = announcement.Img;
+                    _announcement.Title = announcement.Title;
+                    _db.SaveChanges();
+
+                }
+                catch (Exception e) {
+                    Console.Write(e.Message);
+                }
+            }
+        }
+
+        public void DeleteAnnouncement(int id)
+        {
+            Announcement _announcement = _db.Announcement.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            if (_announcement != null)
+            {
+                _db.Announcement.Remove(_announcement);
+                _db.SaveChanges();
+            }
+        }
+
         public int GetPageNum(int limit)
         {
             if(limit == -1){
                 return 1;
             }
             else{
-                return (int)(_announcements.Count / limit + 1);
+                return (int)(_db.Announcement.Count() / limit + 1);
             }
         }
-        public List<Announcement> GetPage(int start,int limit)
-        {
-            if(limit == -1 ){
-                return _announcements;
-            }
-            else{
-                IEnumerable<Announcement> filteringQuery =
-                    from announcement in _announcements
-                    where announcement.Id < (start+1)* limit  && announcement.Id >= start* limit 
-                    select announcement;
-                return filteringQuery.ToList();
-            }
-        }
-
-        public Announcement AddAnnouncement(Announcement announcement)
-        {
-            announcement.Id = _announcements[_announcements.Count-1].Id+ 1 ;
-            _announcements.Add(announcement);
-            return announcement;
-        }
-
-        public Announcement UpdateAnnouncement(int id, Announcement announcement)
-        {
-            for (var index = _announcements.Count - 1; index >= 0; index--)
-            {
-                if (_announcements[index].Id == id)
-                {
-                    _announcements[index] = announcement;
-                }
-            }
-            return announcement;
-        }
-
-        public int DeleteAnnouncement(int id)
-        {
-            for (var index = _announcements.Count - 1; index >= 0; index--)
-            {
-                if (_announcements[index].Id == id)
-                {
-                    _announcements.RemoveAt(index);
-                }
-            }
-
-            return id;
-        }
-
     }
 }

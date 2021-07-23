@@ -7,6 +7,7 @@ namespace aspdotnetcore.Models
     public class Quicklink
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [MaxLength(100)]

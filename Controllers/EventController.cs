@@ -44,7 +44,7 @@ namespace aspdotnetcore.Controllers
         public ActionResult<Event> AddEvent(Event evt)
         {
             _eventService.AddEvent(evt);
-            _logger.LogInformation($"Add faq");
+            _logger.LogInformation($"Add Event");
             return evt;
         }
 
@@ -53,7 +53,6 @@ namespace aspdotnetcore.Controllers
         public ActionResult<Event> UpdateEvent(int id, Event evt)
         {
             _eventService.UpdateEvent(id, evt);
-
             _logger.LogInformation($"Update event with id {id}");
             return evt;
         }
