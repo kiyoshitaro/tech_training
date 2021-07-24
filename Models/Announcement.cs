@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspdotnetcore.Models
 {
+
     [Table("Announcements")]
 
     public class Announcement
@@ -13,18 +15,18 @@ namespace aspdotnetcore.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("Content")]
+        //[Column("Content")]
         public string Content { get; set; }
-        [Column("Time", TypeName = "Date")]
+        //[Column("Time", TypeName = "Date")]
         public DateTime Time { get; set; }
 
-        [MaxLength(100)]
-        [Column("Img")]
+        //[MaxLength(100)]
+        //[Column("Img")]
         public string Img { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        [Column("Title")]
+        //[Required]
+        //[MaxLength(100)]
+        //[Column("Title")]
         public string Title { get; set; }
 
     }

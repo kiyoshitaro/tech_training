@@ -10,19 +10,19 @@ namespace aspdotnetcore.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [MaxLength(100)]
-        [Column("Icon")]
+        //[MaxLength(100)]
+        //[Column("Icon")]
 
         public string Icon { get; set; }
 
-        [MaxLength(100)]
-        [Column("Link")]
+        //[MaxLength(100)]
+        //[Column("Link")]
 
         public string Link { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        [Column("Title")]
+        //[Required]
+        //[MaxLength(100)]
+        //[Column("Title")]
         public string Title { get; set; }
     }
 }

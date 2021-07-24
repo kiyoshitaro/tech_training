@@ -12,11 +12,11 @@ namespace aspdotnetcore.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        [Column("Question")]
+        //[Required]
+        //[Column("Question")]
         public string Question { get; set; }
 
-        [Column("Answer")]
+        //[Column("Answer")]
         public string Answer { get; set; }
     }
 }
