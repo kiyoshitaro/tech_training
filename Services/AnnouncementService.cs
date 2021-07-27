@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using aspdotnetcore.Data;
 using aspdotnetcore.Models;
-
 namespace aspdotnetcore.Services
 {
     public interface IAnnouncementService
@@ -17,6 +16,7 @@ namespace aspdotnetcore.Services
     public class AnnouncementService: IAnnouncementService
     {
         private readonly ProjectContext _db;
+        private readonly ProjectContext _context;
         public AnnouncementService(ProjectContext db)
         {
             _db = db;
@@ -79,6 +79,7 @@ namespace aspdotnetcore.Services
             if (_announcement != null)
             {
                 _db.Announcement.Remove(_announcement);
+                //_db.Announcement.ExecuteSqlCommand("DBCC CHECKIDENT ('table_name', RESEED, 1)");
                 _db.SaveChanges();
             }
         }

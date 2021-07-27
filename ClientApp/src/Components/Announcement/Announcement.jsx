@@ -1,5 +1,5 @@
 import React from "react";
-// import "./index.css";
+import "./index.css";
 import Image from "../../Base/Image.jsx";
 import Post from "../Post/Post";
 import Viewmore from "../Viewmore/Viewmore";

@@ -32,7 +32,7 @@ export default class Post extends React.Component {
     return (
       <div>
             <div className="post">
-                <input id="file-upload" name='upload_cont_img' type="file"/>
+                {/*<input id="file-upload" name='upload_cont_img' type="file"/>*/}
 
           <img className="img-left" src={this.state.item.img} />
           {this.state.isEdit ? (
