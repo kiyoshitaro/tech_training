@@ -14,7 +14,7 @@ export default class Announcement extends React.Component {
           content:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           time: "05/jan/2021",
-          tags: ["Human Resource"],
+          tags: [],
           img: Image.image_gallery,
         },
         {
@@ -22,7 +22,7 @@ export default class Announcement extends React.Component {
           content:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           time: "05/jan/2021",
-          tags: ["Human Resource"],
+          tags: [],
           img: Image.image_gallery_1,
         },
         {
@@ -30,7 +30,7 @@ export default class Announcement extends React.Component {
           content:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           time: "05/jan/2021",
-          tags: ["Human Resource"],
+          tags: [],
           img: Image.image_gallery_2,
         },
         {
@@ -38,7 +38,7 @@ export default class Announcement extends React.Component {
           content:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor metus, interdum at scelerisque in, porta at lacus. Maecenas dapibus luctus cursus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           time: "05/jan/2021",
-          tags: ["Human Resource"],
+          tags: [],
           img: Image.image_gallery_3,
         },
       ],

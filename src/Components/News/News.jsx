@@ -46,7 +46,7 @@ export default class Announcement extends React.Component {
   }
   render() {
     return (
-      <div className="">
+      <div>
         {this.state.posts.map((item, index) => {
           return <Post key={index} item={item}></Post>;
         })}
