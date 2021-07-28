@@ -45,8 +45,12 @@ Version|Date|Comments
 - Clone this repository
 - Ensure that you are at the solution folder
 - in the command-line run:
-  - **npm install**
-  - **gulp serve**
+  - **npm install @pnp/sp --save**
+  - **yo @microsoft/sharepoint**
+  - **gulp serve** 
+  - **gulp clean** (cleans SharePoint and temp folders) 
+  - **gulp bundle --ship** (Creates the solution bundles) 
+  - **gulp package-solution --ship** (Recreates /SharePoint/”webpart”.sppkg)
 
 > Include any additional steps as needed.
 
