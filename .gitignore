@@ -1,0 +1,11 @@
+*/node_modules
+node_modules
+bin/
+Bin/
+obj/
+Obj/
+.vs
+*bin/
+*obj/
+*.vs/
+*.dat
