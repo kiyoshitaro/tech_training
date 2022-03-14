@@ -106,14 +106,14 @@ Docker run -it --name “name2” —volumes-from id id_image
 
 ### PERSIST
 
-Docker volume ls
+docker volume ls
 
-Docker volumn create todo-db
+docker volumn create todo-db
 
 docker run -dp 3000:3000 -v todo-db:/etc/todos “container”
 —> save database
 
-Docker volumn rm “”name”
+docker volumn rm “”name”
 
 docker volume inspect “name”
 
@@ -125,8 +125,24 @@ docker run -dp 3000:3000 -w /app -v "$(pwd):/app" node:12-alpine sh -c "yarn ins
 docker build -t getting-started .
 \\ getting-started is name-tag
 
-MULTI-CONTAINER:
-docker network create todo-app
+### MULTI-CONTAINER:
+
+docker network ls
+
+docker network inspect bridge (watch containers)
+
+docker network create --driver mynetwork
+
+docker network rm mynetwork
+
+docker run -it --network mynetwork -p 8888:80 imageid
+
+### Compose
+
+![](imgs/compose.png)
+
+
+docker-compose up
 
 docker run -d \
  --network todo-app --network-alias mysql \
