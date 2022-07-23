@@ -65,10 +65,10 @@ class Solution:
         mx = -math.inf
         tmp = 0
         for num in nums:
-            tmp += num
-            prefSum.append(tmp)
             mn = min(mn, tmp)
             prefMin.append(mn)
+            tmp += num
+            prefSum.append(tmp)
         for i in range(len(prefSum)-1):
             mx = max(mx, prefSum[i+1] - prefMin[i+1])
 
