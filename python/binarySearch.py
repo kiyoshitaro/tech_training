@@ -1,4 +1,4 @@
-from quickSort import quickSort
+from sorting.quickSort import quickSort
 
 def binarySearch(arr, l, r,x):
     if r >= l :
