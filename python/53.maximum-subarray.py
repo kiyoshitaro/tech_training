@@ -59,21 +59,14 @@ import math
 # @lc code=start
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        prefSum = [0]
-        prefMin = [0]
         mn = 0
         mx = -math.inf
         tmp = 0
         for num in nums:
             mn = min(mn, tmp)
-            prefMin.append(mn)
             tmp += num
-            prefSum.append(tmp)
-        for i in range(len(prefSum)-1):
-            mx = max(mx, prefSum[i+1] - prefMin[i+1])
-
+            mx = max(mx, tmp - mn)
         return mx
-        # return int(max(mx, tmp) - min(mn, tmp))
 
 
 # @lc code=end
