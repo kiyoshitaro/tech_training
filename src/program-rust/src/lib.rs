@@ -8,6 +8,8 @@ use solana_program::{
     pubkey::Pubkey,
 };
 
+pub mod hello_instruction;
+use crate::hello_instruction::HelloInstruction;
 /// Define the type of state stored in accounts
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub struct GreetingAccount {
@@ -25,7 +27,7 @@ pub fn process_instruction(
     _instruction_data: &[u8], // Ignored, all helloworld instructions are hellos
 ) -> ProgramResult {
     msg!("Hello World Rust program entrypoint");
-
+    let instruction = HelloInstruction::unpack(_instruction_data)?;
     // Iterating accounts is safer than indexing
     let accounts_iter = &mut accounts.iter();
 
@@ -40,7 +42,20 @@ pub fn process_instruction(
 
     // Increment and store the number of times the account has been greeted
     let mut greeting_account = GreetingAccount::try_from_slice(&account.data.borrow())?;
-    greeting_account.counter += 1;
+
+    match instruction {
+        HelloInstruction::Increment => {
+            greeting_account.counter += 1;
+        },
+        HelloInstruction::Decrement => {
+            greeting_account.counter -= 1;
+        }
+        HelloInstruction::Set(val) => {
+            greeting_account.counter = val;
+        }
+    }
+
+    // greeting_account.counter += 1;
     greeting_account.serialize(&mut &mut account.data.borrow_mut()[..])?;
 
     msg!("Greeted {} time(s)!", greeting_account.counter);

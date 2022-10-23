@@ -14,7 +14,8 @@ import {
 import fs from 'mz/fs';
 import path from 'path';
 import * as borsh from 'borsh';
-
+import * as BufferLayout from '@solana/buffer-layout';
+import { Buffer } from 'buffer';
 import {getPayer, getRpcUrl, createKeypairFromFile} from './utils';
 
 /**
@@ -195,6 +196,31 @@ export async function checkProgram(): Promise<void> {
   }
 }
 
+
+function createIncrementInstruction(): Buffer{
+  const layout = BufferLayout.struct([BufferLayout.u8('instruction')]);
+  const data = Buffer.alloc(layout.span);
+  layout.encode({instruction: 0}, data);
+  console.log("Increment____________:", JSON.stringify( data));
+  return data;
+}
+
+function createDecrementInstruction(): Buffer{
+  const layout = BufferLayout.struct([BufferLayout.u8('instruction')]);
+  const data = Buffer.alloc(layout.span);
+  layout.encode({instruction: 1}, data);
+  console.log("Decrement____________:", JSON.stringify( data), JSON.stringify(payer));
+  return data;
+}
+
+function createSetInstruction(): Buffer{
+  const layout = BufferLayout.struct([BufferLayout.u8('instruction'), BufferLayout.u32('value')]);
+  const data = Buffer.alloc(layout.span);
+  layout.encode({instruction: 2, value: 100}, data);
+  console.log("Set____________:", JSON.stringify( data));
+  return data;
+}
+
 /**
  * Say hello
  */
@@ -203,7 +229,7 @@ export async function sayHello(): Promise<void> {
   const instruction = new TransactionInstruction({
     keys: [{pubkey: greetedPubkey, isSigner: false, isWritable: true}],
     programId,
-    data: Buffer.alloc(0), // All instructions are hellos
+    data: createDecrementInstruction(), // All instructions are hellos
   });
   await sendAndConfirmTransaction(
     connection,
