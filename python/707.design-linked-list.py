@@ -80,6 +80,7 @@ class Node:
     def __init__(self, val=0):
         self.val = val
         self.next = None
+        self.prev = None
 
 class MyLinkedList:
 
@@ -123,6 +124,9 @@ class MyLinkedList:
         for _ in range(index-1):
             temp = temp.next
         newtemp.next = temp.next
+        newtemp.prev = temp
+        if temp.next:
+            temp.next.prev = newtemp
         temp.next = newtemp
 
         self.size +=1
@@ -137,6 +141,8 @@ class MyLinkedList:
                 temp = self.head
                 for _ in range(index -1):
                     temp = temp.next
+                if temp.next.next:
+                    temp.next.next.prev = temp
                 temp.next = temp.next.next
                 
             self.size-=1          
