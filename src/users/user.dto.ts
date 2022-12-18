@@ -4,12 +4,12 @@ import { Expose } from 'class-transformer';
 // Cannot use interface with class-validator decorator 
 export class IUserDto {
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'test message' })
   @Length(5, 7)
-  @Expose()
+  // @Expose()
   username: string;
 
-  @Expose()
+  // @Expose()
   password: string;
 }
 export enum EUser {

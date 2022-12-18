@@ -1,15 +1,45 @@
-import { Body, Controller, Get, Param, ParseEnumPipe, ParseIntPipe, Post, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, ParseEnumPipe, ParseIntPipe, Post, UsePipes, ValidationPipe } from "@nestjs/common";
 import { EUser, IUserDto } from "./user.dto";
 import { plainToClass } from 'class-transformer';
+import { UserService } from "./user.service";
+import { ModuleRef } from "@nestjs/core";
+import { IConfig } from "./user.module";
 @Controller('users')
 export class UserController {
+  // C1: moduleRef
+  // constructor(private moduleRef: ModuleRef) {
+  // }
+
+  // C2: contructor injection
+  // constructor(private readonly userService: UserService) {
+  // }
+
+  // C3: contructor injection
+  constructor(
+    @Inject(UserService) private readonly userService: UserService,
+    @Inject('config') private readonly config: IConfig,
+    @Inject("user_service") private readonly user_service: UserService
+  ) {
+    console.log(config);
+  }
+
+  // C1: moduleRef
+  // testInjectCreateUser(@Body() user: IUserDto) {
+  //   const userService = this.moduleRef.get(UserService); r
+  //   return userService.createUser(user)
+  // }
+
+  // C2
+  testInjectCreateUser(@Body() user: IUserDto) {
+    return this.userService.createUser(user)
+  }
+
+
   // Pipe
   // Transformer
   // Validator
-
-
   // (2) Validation pipes, must install class-validator and class-transformer
-  // @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe())
   @Post()
   createUser(@Body() user: IUserDto): IUserDto {
     // transformation
