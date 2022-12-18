@@ -54,7 +54,10 @@ const config: IConfig = {
   ],
 
   // Share module
-  imports: [StoreModule.register({ dir: "test", file: "test.json" })],
+  imports: [
+    // StoreModule.register({ dir: "test", file: "test.json" })
+    StoreModule.forFeature({ file: "test.json" })
+  ],
 })
 export class UserModule {
 
