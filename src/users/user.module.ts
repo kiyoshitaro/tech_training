@@ -1,10 +1,12 @@
 import { Module } from "@nestjs/common";
+import { StoreModule } from "src/stores/store.module";
+import { StoreService } from "src/stores/store.service";
 import { UserMockService } from "./user-mock.service";
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
-const createUserService = (config: IConfig) => {
+const createStoreService = (config: IConfig) => {
   console.log(config);
-  return new UserService();
+  return new StoreService();
 }
 export interface IConfig {
   id: string;
@@ -39,8 +41,8 @@ const config: IConfig = {
   },
   // useFactory
   {
-    provide: "user_service",
-    useFactory: createUserService,
+    provide: "store_service",
+    useFactory: createStoreService,
     // pass params
     inject: [
       {
@@ -49,8 +51,10 @@ const config: IConfig = {
       }
     ]
   }
-
   ],
+
+  // Share module
+  imports: [StoreModule.register({ dir: "test", file: "test.json" })],
 })
 export class UserModule {
 

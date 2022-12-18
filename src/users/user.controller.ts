@@ -4,6 +4,7 @@ import { plainToClass } from 'class-transformer';
 import { UserService } from "./user.service";
 import { ModuleRef } from "@nestjs/core";
 import { IConfig } from "./user.module";
+import { StoreService } from "src/stores/store.service";
 @Controller('users')
 export class UserController {
   // C1: moduleRef
@@ -18,7 +19,7 @@ export class UserController {
   constructor(
     @Inject(UserService) private readonly userService: UserService,
     @Inject('config') private readonly config: IConfig,
-    @Inject("user_service") private readonly user_service: UserService
+    @Inject("store_service") private readonly store_service: StoreService
   ) {
     console.log(config);
   }
