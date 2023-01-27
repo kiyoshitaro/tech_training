@@ -1,0 +1,27 @@
+{
+  "name": "tech_training",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-dev --respawn ./src/strategy/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiyoshitaro/tech_training.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kiyoshitaro/tech_training/issues"
+  },
+  "homepage": "https://github.com/kiyoshitaro/tech_training#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "ts-node-dev": "^2.0.0"
+  }
+}
