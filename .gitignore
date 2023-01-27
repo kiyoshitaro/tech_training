@@ -16,4 +16,11 @@ django/datasets
 django/.pip_cache
 django/opt
 django/node_modules
+<<<<<<< HEAD
 *node_modules/*
+=======
+
+*node_modules/*
+*.vs/*
+*.dat
+>>>>>>> 96db1cb48b23b1c81f6addca821d8030a29eb3ee
