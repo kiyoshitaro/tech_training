@@ -4,8 +4,9 @@ coverage
 coverage.json
 typechain
 typechain-types
-
+package-lock.json
 # Hardhat files
 cache
+cache-zk
 artifacts
-
+artifacts-zk
