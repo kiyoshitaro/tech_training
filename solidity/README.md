@@ -9,9 +9,13 @@ npm init -y
 npm install --save-dev hardhat
 npx hardhat
 
+# choose defaultNetwork in hardhat.config.ts
 npx hardhat compile (--force)
+
+# If the contract was already compiled in ZKSYNC, it won't recompile until you delete the artifacts-zk and cache-zk folders, or change the compiler version.
+
 npx hardhat clean
-npx hardhat test
+npx hardhat test (--network)
 npx hardhat coverage
 
 npx hardhat node

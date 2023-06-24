@@ -7,6 +7,7 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + '/.env' });
 
 const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY || "";
+const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "";
 const INFURA_API_KEY = process.env.INFURA_API_KEY || "";
 
 const zkSyncTestnet =
@@ -17,9 +18,11 @@ const zkSyncTestnet =
       zksync: true,
     }
     : {
-      url: "https://zksync2-testnet.zksync.dev",
+      // url: "https://zksync2-testnet.zksync.dev",
+      url: "https://testnet.era.zksync.dev",
       ethNetwork: "goerli",
       zksync: true,
+      verifyURL: 'https://zksync2-testnet-explorer.zksync.dev/contract_verification'  // Verification endpoint
     };
 
 const config: HardhatUserConfig = {
@@ -28,8 +31,9 @@ const config: HardhatUserConfig = {
     compilerSource: "binary",
     settings: {},
   },
-  defaultNetwork: "zkSyncTestnet",
+  // defaultNetwork: "zkSyncTestnet",
   // defaultNetwork: "localGanache",
+  defaultNetwork: "goerli",
   networks: {
     localGanache: {
       url: "http://172.25.208.1:8545",
@@ -39,6 +43,11 @@ const config: HardhatUserConfig = {
     //   url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
     //   accounts: [SEPOLIA_PRIVATE_KEY],
     // },
+    goerli: {
+      url: `https://rpc.ankr.com/eth_goerli	`,
+      accounts: [GOERLI_PRIVATE_KEY],
+    },
+
     zkSyncTestnet,
   },
   solidity: "0.8.18",
