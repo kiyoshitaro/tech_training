@@ -1,33 +1,20 @@
+import type * as ethersjs from "ethers";
 import { ethers } from "hardhat";
-// const {
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 //   loadFixture,
 // } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { expect } = require("chai");
-
 describe("Token contract", function () {
-  // async function deployTokenFixture() {
-  //   const [owner, addr1, addr2] = await ethers.getSigners();
-
-  //   const hardhatToken = await ethers.deployContract("Token");
-
-  //   // Fixtures can return anything you consider useful for your tests
-  //   return { hardhatToken, owner, addr1, addr2 };
-  // }
-
   describe("Deployment", function () {
-    // `it` is another Mocha function. This is the one you use to define each
-    // of your tests. It receives the test name, and a callback function.
-    //
-    // If the callback function is async, Mocha will `await` it.
+    let hardhatToken: ethersjs.Contract;
+    let owner: SignerWithAddress, addr1: SignerWithAddress, addr2: SignerWithAddress;
+    beforeEach(async () => {
+      [owner, addr1, addr2] = await ethers.getSigners();
+      hardhatToken = await ethers.deployContract("Tardis");
+    });
     it("Should set the right owner", async function () {
-      // const { hardhatToken, owner, addr1 } = await loadFixture(
-      //   deployTokenFixture
-      // );
-      const [owner] = await ethers.getSigners();
-      const hardhatToken = await ethers.deployContract("Tardis");
-
-      // `expect` receives a value and wraps it in an assertion object. These
-      // objects have a lot of utility methods to assert values.
+      // const [owner] = await ethers.getSigners();
+      // const hardhatToken = await ethers.deployContract("Tardis");
 
       // This test expects the owner variable stored in the contract to be
       // equal to our Signer's owner.
@@ -35,18 +22,19 @@ describe("Token contract", function () {
     });
 
     it("Should assign the total supply of tokens to the owner", async function () {
-      const [owner] = await ethers.getSigners();
-      const hardhatToken = await ethers.deployContract("Tardis");
       const ownerBalance = await hardhatToken.balanceOf(owner.address);
       expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
     });
   });
 
   describe("Transactions", function () {
+    let hardhatToken: ethersjs.Contract;
+    let owner: SignerWithAddress, addr1: SignerWithAddress, addr2: SignerWithAddress;
+    beforeEach(async () => {
+      [owner, addr1, addr2] = await ethers.getSigners();
+      hardhatToken = await ethers.deployContract("Tardis");
+    });
     it("Should transfer tokens between accounts", async function () {
-      const [owner, addr1, addr2] = await ethers.getSigners();
-
-      const hardhatToken = await ethers.deployContract("Tardis");
       // Transfer 50 tokens from owner to addr1
       await expect(
         hardhatToken.transfer(addr1.address, 50)
@@ -60,8 +48,6 @@ describe("Token contract", function () {
     });
 
     it("Should emit Transfer events", async function () {
-      const [owner, addr1, addr2] = await ethers.getSigners();
-      const hardhatToken = await ethers.deployContract("Tardis");
       // Transfer 50 tokens from owner to addr1
       await expect(hardhatToken.transfer(addr1.address, 50))
         .to.emit(hardhatToken, "Transfer")
@@ -75,10 +61,7 @@ describe("Token contract", function () {
     });
 
     it("Should fail if sender doesn't have enough tokens", async function () {
-      const [owner, addr1, addr2] = await ethers.getSigners();
-      const hardhatToken = await ethers.deployContract("Tardis");
       const initialOwnerBalance = await hardhatToken.balanceOf(owner.address);
-
       // Try to send 1 token from addr1 (0 tokens) to owner.
       // `require` will evaluate false and revert the transaction.
       await expect(
