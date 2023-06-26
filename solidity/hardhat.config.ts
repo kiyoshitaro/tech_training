@@ -7,7 +7,7 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + '/.env' });
 
 const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY || "";
-const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "";
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const INFURA_API_KEY = process.env.INFURA_API_KEY || "";
 
 const zkSyncTestnet =
@@ -31,9 +31,9 @@ const config: HardhatUserConfig = {
     compilerSource: "binary",
     settings: {},
   },
-  // defaultNetwork: "zkSyncTestnet",
+  defaultNetwork: "zkSyncTestnet",
   // defaultNetwork: "localGanache",
-  defaultNetwork: "goerli",
+  // defaultNetwork: "goerli",
   networks: {
     localGanache: {
       url: "http://172.25.208.1:8545",
@@ -45,7 +45,7 @@ const config: HardhatUserConfig = {
     // },
     goerli: {
       url: `https://rpc.ankr.com/eth_goerli	`,
-      accounts: [GOERLI_PRIVATE_KEY],
+      accounts: [PRIVATE_KEY],
     },
 
     zkSyncTestnet,

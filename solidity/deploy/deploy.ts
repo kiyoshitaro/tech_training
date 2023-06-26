@@ -4,7 +4,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 
 // An example of a deploy script that will deploy and call a simple contract.
-const privatekey = process.env.ZK_GOERLI_PRIVATE_KEY || "";
+const privatekey = process.env.PRIVATE_KEY || "";
 if (!privatekey) {
   throw "Private key not detected!";
 }
