@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { MY_ADDRESS, TDS_TOKEN_ADDRESS_ZK_TESTNET, USDC_TOKEN_ADDRESS_ZK_TESTNET, zk_provider } from '../constant';
+import { MY_ADDRESS, MY_ADDRESS_2, TDS_TOKEN_ADDRESS_ZK_TESTNET, USDC_TOKEN_ADDRESS_ZK_TESTNET, estimateGas, getContract, myWallet, zk_provider } from '../constant';
 import TDSJson from "../abis/Tardis.json";
 import USDCJson from "../abis/ERC20.json";
 
@@ -22,8 +22,11 @@ const getTardisBalance = async (accountAddress: string) => {
     console.error('Error:', error);
   }
 }
+
+// const contract = getContract(TDS_TOKEN_ADDRESS_ZK_TESTNET, TDSJson.abi);
+const contract = getContract(USDC_TOKEN_ADDRESS_ZK_TESTNET, USDCJson.abi);
+
 (async () => {
-  const contract = new ethers.Contract(TDS_TOKEN_ADDRESS_ZK_TESTNET, TDSJson.abi, zk_provider)
   const name = await contract.name()
   const symbol = await contract.symbol()
   const totalSupply = await contract.totalSupply()
@@ -37,4 +40,9 @@ const getTardisBalance = async (accountAddress: string) => {
 
   const tardisBalance = await getTardisBalance(MY_ADDRESS);
   console.log(`\nTDS Balance of ${MY_ADDRESS} --> ${tardisBalance} TDS\n`);
+
+  // ESTIMATE GAS TRANSFER
+  const constractWithWallet = contract.connect(myWallet);
+  const gsE = await estimateGas(constractWithWallet, 'transfer', [MY_ADDRESS_2, 10000]);
+  console.log("🚀 ~ file: 02-read-contract.ts:42 ~ gsE:", `${gsE} ETH`)
 })()

@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + '/.env' });
 
@@ -13,3 +13,24 @@ export const myWallet = new ethers.Wallet(process.env.PRIVATE_KEY, zk_provider)
 export const getContract = (contractAddress: string, abi: any) => {
   return new ethers.Contract(contractAddress, abi, zk_provider);
 }
+
+export const estimateGas = async (constractWithWallet: Contract, methodName, methodParams) => {
+
+  // Create a contract instance
+  // const contract = new ethers.Contract(contractAddress, abi, zk_provider);
+  // const constractWithWallet = contract.connect(myWallet);
+
+  // // Get the method's interface
+  // const methodInterface = new ethers.utils.Interface(abi);
+  // const methodData = methodInterface.encodeFunctionData(methodName, methodParams);
+
+  // Estimate gas for the method call
+  try {
+    const gasEstimate = await constractWithWallet.estimateGas[methodName](...methodParams);
+    return ethers.utils.formatEther(gasEstimate);
+  } catch (error) {
+    console.error(`Failed to estimate gas for method "${methodName}":`, error);
+    throw error;
+  }
+}
+
