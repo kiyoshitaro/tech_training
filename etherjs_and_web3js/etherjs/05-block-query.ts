@@ -7,28 +7,29 @@ const contract = getContract(TDS_TOKEN_ADDRESS_ZK_TESTNET, TDSJson.abi);
 // const contract = getContract(USDC_TOKEN_ADDRESS_ZK_TESTNET, USDCJson.abi);
 
 (async () => {
-  // const block = await zk_provider.getBlockNumber();
-  // console.log("🚀 ~ file: constract_event.ts:7 ~ block:", block);
+  const block = await zk_provider.getBlockNumber();
+  console.log("🚀 ~ file: constract_event.ts:7 ~ block:", block);
 
-  // const blockInfo = await zk_provider.getBlock(block)
-  // console.log("🚀 ~ file: constract_event.ts:12 ~ blockInfo:", blockInfo)
+  const blockInfo = await zk_provider.getBlock(block)
+  console.log("🚀 ~ file: constract_event.ts:12 ~ blockInfo:", blockInfo)
 
-  // const { transactions } = await zk_provider.getBlockWithTransactions(block)
+  const { transactions } = await zk_provider.getBlockWithTransactions(block)
 
-  // console.log(`\nLogging first transaction in block:\n`)
-  // console.log(transactions[0]);
-  // utils.formatUnits(await zk_provider.getGasPrice(), "gwei")
-  console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(await zk_provider.getGasPrice(), "gwei"));
-  const {
-    gasPrice,
-    lastBaseFeePerGas,
-    maxFeePerGas,
-    maxPriorityFeePerGas
-  } = await zk_provider.getFeeData()
-  console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(gasPrice, "gwei"))
-  console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(lastBaseFeePerGas, "gwei"))
-  console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(maxFeePerGas, "gwei"))
-  console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(maxPriorityFeePerGas, "gwei"))
+  console.log(`\nLogging first transaction in block:\n`)
+  console.log(transactions[0]);
+  utils.formatUnits(await zk_provider.getGasPrice(), "gwei")
+
+  // console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(await zk_provider.getGasPrice(), "gwei"));
+  // const {
+  //   gasPrice,
+  //   lastBaseFeePerGas,
+  //   maxFeePerGas,
+  //   maxPriorityFeePerGas
+  // } = await zk_provider.getFeeData()
+  // console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(gasPrice, "gwei"))
+  // console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(lastBaseFeePerGas, "gwei"))
+  // console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(maxFeePerGas, "gwei"))
+  // console.log("🚀 ~ file: 05-block-query.ts:21 ~ utils.formatUnits ", utils.formatUnits(maxPriorityFeePerGas, "gwei"))
 
 
   // const _t = await contract.balanceOf(MY_ADDRESS);

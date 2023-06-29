@@ -34,3 +34,21 @@ export const estimateGas = async (constractWithWallet: Contract, methodName, met
   }
 }
 
+export const listenForTransactions = (walletAddress: string) => {
+  zk_provider.on('block', async (blockNumber) => {
+    console.log("🚀 ~ file: test.ts:19 ~ provider.on ~ blockNumber:", blockNumber)
+    try {
+      const block = await zk_provider.getBlock(blockNumber);
+      if (block) {
+        for (const transactionHash of block.transactions) {
+          const transaction = await zk_provider.getTransaction(transactionHash);
+          if (transaction.to === walletAddress) {
+            console.log(`Incoming transaction detected: from ${transaction.from} to ${transaction.to}: ${ethers.utils.formatEther(transaction.value)} ETH`);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
