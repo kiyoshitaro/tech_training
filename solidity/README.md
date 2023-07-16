@@ -28,6 +28,11 @@ npx hardhat deploy-zksync --script deploy.ts
 REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
+
+# flatten to verify and publish
+npx hardhat flatten contracts/Tardis.sol > contracts-flatten/Tardis.sol
+# flat define as task in hardhat.config.ts
+npx hardhat flat contracts-flatten/Tardis.sol > contracts-flatten/Tardis-output.sol
 ```
 
 Run local net: 
