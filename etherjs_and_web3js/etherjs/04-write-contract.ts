@@ -13,16 +13,16 @@ const TDSContract = getContract(TDS_TOKEN_ADDRESS_ZK_TESTNET, TDSJson.abi);
   const constractWithWallet = TDSContract.connect(myWallet);
 
   // ESTIMATE GAS TRANSFER
-  const gsE = await estimateGas(constractWithWallet, 'transfer', [MY_ADDRESS_2, 1000000000000000]);
-  console.log("🚀 ~ file: 04-write-contract.ts:17 ~ Estimate gas", `${gsE} ETH`)
+  // const gsE = await estimateGas(constractWithWallet, 'transfer', [MY_ADDRESS_2, 10000000000000]);
+  // console.log("🚀 ~ file: 04-write-contract.ts:17 ~ Estimate gas", `${gsE} ETH`)
 
   // TRANSFER
-  const tx = await constractWithWallet.transfer(MY_ADDRESS_4, 1000000000000000);
+  const tx = await constractWithWallet.transfer(MY_ADDRESS_4, 10000000000000);
 
   // NOTE: Calculate gasfee in ETH
   const txReceip = await tx.wait(1);
   const gasFee = Number(ethers.utils.formatEther(txReceip.gasUsed.mul(txReceip.effectiveGasPrice)));
-  console.log("🚀 ~ file: write_contract.ts:14 ~ Real gas:", gasFee)
+  console.log("🚀 ~ file: write_contract.ts:14 ~ Real gas:", gasFee, ethers.utils.formatEther(txReceip.gasUsed), txReceip.effectiveGasPrice.toNumber())
 
   const senderBalanceAfter = await TDSContract.balanceOf(MY_ADDRESS);
   const receiverBalanceAfter = await TDSContract.balanceOf(MY_ADDRESS_4);
