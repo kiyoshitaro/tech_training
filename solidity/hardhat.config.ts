@@ -1,4 +1,4 @@
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@matterlabs/hardhat-zksync-deploy";
 import "@matterlabs/hardhat-zksync-solc";
@@ -9,6 +9,20 @@ dotenv.config({ path: __dirname + '/.env' });
 const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const INFURA_API_KEY = process.env.INFURA_API_KEY || "";
+
+task("flat", "Flattens and prints contracts and their dependencies (Resolves licenses)")
+  .addOptionalVariadicPositionalParam("files", "The files to flatten", undefined, types.inputFile)
+  .setAction(async ({ files }, hre) => {
+    let flattened = await hre.run("flatten:get-flattened-sources", { files });
+
+    // Remove every line started with "// SPDX-License-Identifier:"
+    flattened = flattened.replace(/SPDX-License-Identifier:/gm, "License-Identifier:");
+    flattened = `// SPDX-License-Identifier: MIXED\n\n${flattened}`;
+
+    // Remove every line started with "pragma experimental ABIEncoderV2;" except the first one
+    flattened = flattened.replace(/pragma experimental ABIEncoderV2;\n/gm, ((i) => (m: any) => (!i++ ? m : ""))(0));
+    console.log(flattened);
+  });
 
 const zkSyncTestnet =
   process.env.NODE_ENV == "test"
@@ -31,9 +45,9 @@ const config: HardhatUserConfig = {
     compilerSource: "binary",
     settings: {},
   },
-  defaultNetwork: "zkSyncTestnet",
+  // defaultNetwork: "zkSyncTestnet",
   // defaultNetwork: "localGanache",
-  // defaultNetwork: "goerli",
+  defaultNetwork: "goerli",
   networks: {
     localGanache: {
       url: "http://172.25.208.1:8545",
