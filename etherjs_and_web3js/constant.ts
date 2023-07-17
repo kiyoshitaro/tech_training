@@ -28,6 +28,7 @@ import {
   PopulatedTransaction,
 } from 'ethers';
 import { TransactionRequest } from "zksync-web3/build/src/types";
+import { ERC20 } from "./etherjs/erc20";
 
 export const CONTRACTS_ADDRESS = {
   280: {
@@ -50,6 +51,16 @@ export const CONTRACTS_ADDRESS = {
   },
 };
 
+export const classicPoolFactory = async () => {
+  const { chainId } = await zk_native_provider.getNetwork();
+  const contractAddresses = CONTRACTS_ADDRESS[chainId].SyncSwap;
+  return new ZkContract(
+    contractAddresses.SyncSwapClassicPoolFactory,
+    SyncSwapClassicPoolFactoryABI,
+    zk_native_provider,
+  );
+}
+
 export const stablePoolPoolFactory = async () => {
   const { chainId } = await zk_native_provider.getNetwork();
   const contractAddresses = CONTRACTS_ADDRESS[chainId].SyncSwap;
@@ -59,6 +70,17 @@ export const stablePoolPoolFactory = async () => {
     zk_native_provider,
   );
 }
+
+export const convertAmount = async (
+  amount: string,
+  inputTokenAddress: string,
+): Promise<BigNumber> => {
+  const erc20 = new ERC20(inputTokenAddress, zk_native_provider);
+  const decimals = await erc20.getDecimals();
+  const modifiedAmount = Number(amount).toFixed(decimals);
+  return ethers.utils.parseUnits(modifiedAmount, decimals);
+};
+
 
 export const estimateGas = async (constractWithWallet: Contract, methodName, methodParams) => {
 
