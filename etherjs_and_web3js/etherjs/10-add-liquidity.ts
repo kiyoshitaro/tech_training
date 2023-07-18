@@ -1,7 +1,6 @@
-import { Wallet, types, utils, Contract } from "zksync-web3";
-import { MY_ADDRESS, zk_native_provider, eth_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, router, MY_ADDRESS_7 } from '../constant';
-import { BigNumber, PopulatedTransaction, VoidSigner, ethers } from "ethers";
-import ZksyncAbi from '../abis/Zksync.json';
+import { Wallet,  Contract } from "zksync-web3";
+import { MY_ADDRESS, zk_native_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, router } from '../constant';
+import { BigNumber, VoidSigner, ethers } from "ethers";
 import * as dotenv from "dotenv";
 import { ETH_ADDRESS } from "zksync-web3/build/src/utils";
 import SyncSwapClassicPoolABI from '../abis/syncswap/SyncSwapClassicPool.json';
@@ -138,13 +137,6 @@ const signTransaction = async (transaction: any, pk: string) => {
 }
 
 (async () => {
-  // const transaction = await buildTransaction(
-  //   TOKENS[(await zk_native_provider.getNetwork()).chainId].USDC.address,
-  //   TOKENS[(await zk_native_provider.getNetwork()).chainId].zkUSD.address,
-  //   '3173158314771015138906643999.231532',
-  //   MY_ADDRESS,
-  // );
-
   const transaction = await buildTransaction(
     TOKENS[(await zk_native_provider.getNetwork()).chainId].zkUSD.address,
     TOKENS[(await zk_native_provider.getNetwork()).chainId].USDC.address,
