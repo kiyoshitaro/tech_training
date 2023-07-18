@@ -40,7 +40,7 @@ export const TOKENS: Record<
     USDC: {
       name: 'USD Coin (goerli)',
       symbol: 'USDC',
-      address: '0x40609141db628beee3bfab8034fc2d8278d0cc78',
+      address: '0x0faF6df7054946141266420b43783387A78d82A9',
       decimals: 6,
     },
     zkUSD: {

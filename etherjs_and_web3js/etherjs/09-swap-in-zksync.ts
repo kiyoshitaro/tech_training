@@ -77,6 +77,7 @@ const buildTransaction = async (inputTokenAddress: string,
   options?: {},
 ) => {
   const convertedAmount = await convertAmount(amount, inputTokenAddress);
+  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:80 ~ convertedAmount:", convertedAmount)
   const { poolAddress } = await getPoolInformationFromContract(
     inputTokenAddress,
     outputTokenAddress,
@@ -125,7 +126,7 @@ const buildTransaction = async (inputTokenAddress: string,
     paths, // paths
     0, // amountOutMin // Note: ensures slippage here
     BigNumber.from(Math.floor(Date.now() / 1000)).add(1800), // deadline // 30 minutes
-    { value: isNative ? amount : '0' },
+    { value: isNative ? convertedAmount : '0' },
   );
 
   const voidSigner = new VoidSigner(walletAddress, zk_native_provider);
@@ -138,19 +139,27 @@ const signTransaction = async (transaction: any, pk: string) => {
 }
 
 (async () => {
+  // const transaction = await buildTransaction(
+  //   TOKENS[(await zk_native_provider.getNetwork()).chainId].USDC.address,
+  //   TOKENS[(await zk_native_provider.getNetwork()).chainId].zkUSD.address,
+  //   '3173158314771015138906643999.231532',
+  //   MY_ADDRESS,
+  // );
+
   const transaction = await buildTransaction(
+    TOKENS[(await zk_native_provider.getNetwork()).chainId].WETH.address,
     TOKENS[(await zk_native_provider.getNetwork()).chainId].USDC.address,
-    TOKENS[(await zk_native_provider.getNetwork()).chainId].zkUSD.address,
-    String(10 ** 27),
+    '0.01',
     MY_ADDRESS,
   );
+
   const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
-  const trx = await eth_provider.sendTransaction(signedTransaction);
+  const trx = await zk_native_provider.sendTransaction(signedTransaction);
   const trxReceip = await trx.wait(1);
   const gasFee = Number(
     ethers.utils.formatEther(
       trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice).mul(WEI6),
     ),
   )
-  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, gasFee)
+  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, `$${gasFee}`)
 })()

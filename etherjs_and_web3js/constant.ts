@@ -90,7 +90,7 @@ export const convertAmount = async (
 ): Promise<BigNumber> => {
   const erc20 = new ERC20(inputTokenAddress, zk_native_provider);
   const decimals = await erc20.getDecimals();
-  const modifiedAmount = String(amount);
+  const modifiedAmount = Number(amount).toFixed(decimals);
   return ethers.utils.parseUnits(modifiedAmount, decimals);
 };
 
