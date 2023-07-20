@@ -46,12 +46,18 @@ export class ERC20 {
   };
 
   async isValidAllowance(amount: string, allowanceAmount: BigNumber) {
-    const decimals = await this.getDecimals();
-    console.log({ decimals });
-    const modifiedAmount = Number(amount).toFixed(decimals);
-    const amountBigNum = ethers.utils.parseUnits(modifiedAmount, decimals);
-    console.log(amountBigNum.toString());
-    console.log(amountBigNum.lte(allowanceAmount));
+    const amountBigNum = await this.parseValue(amount);
     return amountBigNum.lte(allowanceAmount);
+  }
+
+  async formatValue(amount: BigNumber) {
+    const decimals = await this.getDecimals();
+    return ethers.utils.formatUnits(amount, decimals);
+  }
+
+  async parseValue(amount: string): Promise<BigNumber> {
+    const decimals = await this.getDecimals();
+    const modifiedAmount = Number(amount).toFixed(decimals);
+    return ethers.utils.parseUnits(modifiedAmount, decimals);
   }
 }

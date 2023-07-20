@@ -6,6 +6,7 @@ dotenv.config({ path: __dirname + '/.env' });
 import SyncSwapStablePoolABI from './abis/syncswap/SyncSwapStablePool.json';
 import SyncSwapClassicPoolFactoryABI from './abis/syncswap/SyncSwapStablePoolFactory.json';
 import SyncSwapRouterABI from './abis/syncswap/SyncSwapRouter.json';
+import UniswapV2Route02ABI from './abis/UniswapV2Route02.json';
 
 export const ZKSYNC_TESTNET_PROVIDER = 'https://testnet.era.zksync.dev';
 export const ZKSYNC_MAINNET_PROVIDER = 'https://mainnet.era.zksync.io';
@@ -15,6 +16,7 @@ export const MY_ADDRESS_2 = '0xbC278D6583b97399014F3B3c64D295135660C629';
 export const MY_ADDRESS_3 = '0xd40A929027c04CEecf78E034b7F828CF999EEC79';
 export const MY_ADDRESS_4 = '0x6Ff7A794182D94d33bfcdEc7324fa16DA73F9db4';
 export const MY_ADDRESS_7 = '0x390F8C4Cd9b057BA722dA945B3c58b4D66008361';
+export const MAX_AMOUNT_APPROVE_TOKEN = '100000000000000000000000000000000';
 export const zk_provider = new ethers.providers.JsonRpcProvider(ZKSYNC_TESTNET_PROVIDER)
 export const zk_native_provider = new ZkProvider(ZKSYNC_TESTNET_PROVIDER);
 export const eth_provider = new ethers.providers.JsonRpcProvider(ETH_GOERLI_TESTNET_PROVIDER)
@@ -52,6 +54,16 @@ export const CONTRACTS_ADDRESS = {
       SyncSwapRouter: '0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295',
     },
   },
+  1: {
+    UniswapV2: {
+      UniswapV2Router02: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+    },
+  },
+  5: {
+    UniswapV2: {
+      UniswapV2Router02: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+    },
+  },
 };
 
 export const classicPoolFactory = async () => {
@@ -74,7 +86,7 @@ export const stablePoolPoolFactory = async () => {
   );
 }
 
-export const router = async () => {
+export const syncSwapRouter = async () => {
   const { chainId } = await zk_native_provider.getNetwork();
   const contractAddresses = CONTRACTS_ADDRESS[Number(chainId)].SyncSwap;
   return new ZkContract(
@@ -83,6 +95,17 @@ export const router = async () => {
     zk_native_provider,
   );
 }
+
+export const uniswapRouter = async () => {
+  const { chainId } = await eth_provider.getNetwork();
+  const contractAddresses = CONTRACTS_ADDRESS[Number(chainId)].UniswapV2;
+  return new ZkContract(
+    contractAddresses.UniswapV2Router02,
+    UniswapV2Route02ABI['abi'],
+    eth_provider,
+  );
+}
+
 
 export const convertAmount = async (
   amount: string,

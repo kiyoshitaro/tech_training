@@ -76,6 +76,32 @@ export const TOKENS: Record<
       decimals: 6,
     },
   },
-  1: {},
-  5: {},
+  1: {
+    TKN: {
+      name: 'TKN',
+      symbol: '$TKN',
+      address: '0xb478c6245e3D85D6EC3486B62ea872128d562541',
+      decimals: 18,
+    },
+    WETH: {
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      decimals: 18,
+    },
+  },
+  5: {
+    TKN: {
+      name: 'TKN (goerli)',
+      symbol: '$TKN',
+      address: '0x61f275c54577a66cf4e4ccc6D20CbE04d31ae889',
+      decimals: 18,
+    },
+    WETH: {
+      name: 'Wrapped Ether (goerli)',
+      symbol: 'WETH',
+      address: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
+      decimals: 18,
+    },
+  },
 };

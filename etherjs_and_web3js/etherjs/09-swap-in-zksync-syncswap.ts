@@ -1,5 +1,5 @@
 import { Wallet, types, utils, Contract } from "zksync-web3";
-import { MY_ADDRESS, zk_native_provider, eth_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, router, MY_ADDRESS_7 } from '../constant';
+import { MY_ADDRESS, zk_native_provider, eth_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, syncSwapRouter, MY_ADDRESS_7 } from '../constant';
 import { BigNumber, PopulatedTransaction, VoidSigner, ethers } from "ethers";
 import ZksyncAbi from '../abis/Zksync.json';
 import * as dotenv from "dotenv";
@@ -121,8 +121,8 @@ const buildTransaction = async (inputTokenAddress: string,
   ];
 
   // Note: checks approval for ERC20 tokens.
-  // The router will handle the deposit to the pool's vault account.
-  const response = await (await router()).populateTransaction.swap(
+  // The syncSwapRouter will handle the deposit to the pool's vault account.
+  const response = await (await syncSwapRouter()).populateTransaction.swap(
     paths, // paths
     0, // amountOutMin // Note: ensures slippage here
     BigNumber.from(Math.floor(Date.now() / 1000)).add(1800), // deadline // 30 minutes
@@ -156,10 +156,13 @@ const signTransaction = async (transaction: any, pk: string) => {
   const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
   const trx = await zk_native_provider.sendTransaction(signedTransaction);
   const trxReceip = await trx.wait(1);
+
   const gasFee = Number(
     ethers.utils.formatEther(
-      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice).mul(WEI6),
+      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice),
     ),
   )
-  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, `$${gasFee}`)
+  const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
+  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, `${gasFee} ETH ~ ${feeUSD}`)
+
 })()
