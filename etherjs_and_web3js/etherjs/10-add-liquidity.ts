@@ -1,5 +1,5 @@
-import { Wallet,  Contract } from "zksync-web3";
-import { MY_ADDRESS, zk_native_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, router } from '../constant';
+import { Wallet, Contract } from "zksync-web3";
+import { MY_ADDRESS, zk_native_provider, WEI6, convertAmount, stablePoolPoolFactory, classicPoolFactory, syncSwapRouter } from '../constant';
 import { BigNumber, VoidSigner, ethers } from "ethers";
 import * as dotenv from "dotenv";
 import { ETH_ADDRESS } from "zksync-web3/build/src/utils";
@@ -118,7 +118,7 @@ const buildTransaction = async (
       amount: amountB,
     },
   ];
-  const response = await (await router()).populateTransaction.addLiquidity2(
+  const response = await (await syncSwapRouter()).populateTransaction.addLiquidity2(
     poolAddress, // pool
     inputs,
     encodedRecipient,
@@ -149,8 +149,9 @@ const signTransaction = async (transaction: any, pk: string) => {
   const trxReceip = await trx.wait(1);
   const gasFee = Number(
     ethers.utils.formatEther(
-      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice).mul(WEI6),
+      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice),
     ),
   )
-  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, `$${gasFee}`)
+  const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
+  console.log("🚀 ~ file: 09-swap-eth-to-usdc-zk.ts:155 ~ trxReceip:", trxReceip, `${gasFee} ETH ~ ${feeUSD}`)
 })()

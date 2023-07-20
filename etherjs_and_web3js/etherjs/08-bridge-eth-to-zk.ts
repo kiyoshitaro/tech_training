@@ -3,6 +3,7 @@ import { MY_ADDRESS, zk_native_provider, eth_provider, WEI6 } from '../constant'
 import { BigNumber, PopulatedTransaction, ethers } from "ethers";
 import ZksyncAbi from '../abis/Zksync.json';
 import * as dotenv from "dotenv";
+import { ETH_ADDRESS } from "zksync-web3/build/src/utils";
 dotenv.config({ path: __dirname + '../.env' });
 
 const fakeWallet: Wallet = new Wallet(
@@ -152,10 +153,12 @@ const signTransaction = async (transaction: any, pk: string) => {
   const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
   const trx = await eth_provider.sendTransaction(signedTransaction);
   const trxReceip = await trx.wait(1);
+
   const gasFee = Number(
     ethers.utils.formatEther(
-      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice).mul(WEI6),
+      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice),
     ),
   )
-  console.log("🚀 ~ file: 08-bridge-eth-to-zk.ts:154 ~ trxReceip:", trxReceip, gasFee)
+  const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
+  console.log("🚀 ~ file: 08-bridge-eth-to-zk.ts:154 ~ trxReceip:", trxReceip, `${gasFee} ETH ~ ${feeUSD}`)
 })()
