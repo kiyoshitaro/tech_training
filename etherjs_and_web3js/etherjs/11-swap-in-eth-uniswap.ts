@@ -107,13 +107,11 @@ const approveTokenAndSlippage = async (
   const erc20 = new ERC20(inputTokenAddress, eth_provider);
   const path = [inputTokenAddress, outputTokenAddress];
   const amountIn = await erc20.parseValue(amountInput);
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:107 ~ amountIn:", amountIn.toString())
   const amountOut = (await (await uniswapRouter()).getAmountsOut(amountIn, path))[
     path.length - 1
   ];
   const slippagePercent = Number(Number(slippage).toFixed(1)) * 10;
   const amountOutMin = amountOut.mul(1000 - slippagePercent).div(1000);
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:113 ~ amountOutMin:", amountOutMin.toString())
   return await buildTransaction(
     inputTokenAddress,
     outputTokenAddress,
@@ -124,21 +122,21 @@ const approveTokenAndSlippage = async (
 }
 
 (async () => {
-  const transaction = await approveTokenAndSlippage(
-    TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-    TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
-    '0.1',
-    10,
-    MY_ADDRESS,
-  );
-
   // const transaction = await approveTokenAndSlippage(
-  //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
   //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-  //   '100000',
-  //   50,
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
+  //   '0.1',
+  //   10,
   //   MY_ADDRESS,
   // );
+
+  const transaction = await approveTokenAndSlippage(
+    TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
+    TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+    '80000',
+    50,
+    MY_ADDRESS,
+  );
 
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:133 ~ transaction:", transaction)
 
@@ -152,5 +150,5 @@ const approveTokenAndSlippage = async (
     ),
   )
   const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:138 ~ gasFee:", trxReceip.transactionHash, trxReceip.blockHash, `${gasFee} ETH ~ ${feeUSD}`)
+  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:138 ~ gasFee:", trxReceip.transactionHash, trxReceip.blockHash, `${gasFee} ETH ~ $${feeUSD}`)
 })()
