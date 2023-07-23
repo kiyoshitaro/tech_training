@@ -160,5 +160,5 @@ const signTransaction = async (transaction: any, pk: string) => {
     ),
   )
   const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
-  console.log("🚀 ~ file: 08-bridge-eth-to-zk.ts:154 ~ trxReceip:", trxReceip, `${gasFee} ETH ~ ${feeUSD}`)
+  console.log("🚀 ~ file: 08-bridge-eth-to-zk.ts:154 ~ trxReceip:", trxReceip, `${gasFee} ETH ~ $${feeUSD}`)
 })()

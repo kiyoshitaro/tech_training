@@ -44,6 +44,9 @@ export const CONTRACTS_ADDRESS = {
       SyncSwapStablePoolFactory: '0xB6a70D6ab2dE494592546B696208aCEeC18D755f',
       SyncSwapRouter: '0xB3b7fCbb8Db37bC6f572634299A58f51622A847e',
     },
+    Orbiter: {
+      OrbiterMaker: '0xa08606A85bf58AFB7c3d464Fc6cF78A159933DD1',
+    },
   },
   324: {
     SyncSwap: {
@@ -53,15 +56,24 @@ export const CONTRACTS_ADDRESS = {
       SyncSwapStablePoolFactory: '0x5b9f21d407F35b10CbfDDca17D5D84b129356ea3',
       SyncSwapRouter: '0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295',
     },
+    Orbiter: {
+      OrbiterMaker: '0x80C67432656d59144cEFf962E8fAF8926599bCF8',
+    },
   },
   1: {
     UniswapV2: {
       UniswapV2Router02: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
     },
+    Orbiter: {
+      OrbiterMaker: '0x80C67432656d59144cEFf962E8fAF8926599bCF8',
+    },
   },
   5: {
     UniswapV2: {
       UniswapV2Router02: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+    },
+    Orbiter: {
+      OrbiterMaker: '0xa08606A85bf58AFB7c3d464Fc6cF78A159933DD1',
     },
   },
 };
@@ -106,12 +118,16 @@ export const uniswapRouter = async () => {
   );
 }
 
-
+export enum ELayer {
+  ETHEREUM,
+  ZKSYNC
+}
 export const convertAmount = async (
   amount: string,
   inputTokenAddress: string,
+  layer: ELayer = ELayer.ZKSYNC,
 ): Promise<BigNumber> => {
-  const erc20 = new ERC20(inputTokenAddress, zk_native_provider);
+  const erc20 = new ERC20(inputTokenAddress, layer === ELayer.ZKSYNC ? zk_native_provider : eth_provider);
   const decimals = await erc20.getDecimals();
   const modifiedAmount = Number(amount).toFixed(decimals);
   return ethers.utils.parseUnits(modifiedAmount, decimals);
