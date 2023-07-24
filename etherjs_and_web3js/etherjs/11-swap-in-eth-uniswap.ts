@@ -1,5 +1,5 @@
 import { Wallet } from "zksync-web3";
-import { MY_ADDRESS, zk_native_provider, WEI6, eth_provider, uniswapRouter, MAX_AMOUNT_APPROVE_TOKEN } from '../constant';
+import { MY_ADDRESS, zk_native_provider, WEI6, eth_provider, uniswapRouter, MAX_AMOUNT_APPROVE_TOKEN, getRandomInt } from '../constant';
 import { BigNumber, VoidSigner, ethers } from "ethers";
 import * as dotenv from "dotenv";
 import { TOKENS } from "../token";
@@ -14,6 +14,9 @@ const buildTransaction = async (
   amountIn: BigNumber,
   amountOutMin: BigNumber,
   walletAddress: string,
+  options?: {
+    gasLimit?: BigNumber;
+  },
 ) => {
   let response: any;
 
@@ -45,6 +48,10 @@ const buildTransaction = async (
         deadline,
       );
   }
+  response.gasLimit = options?.gasLimit
+    ? options?.gasLimit
+    : BigNumber.from(getRandomInt(550000, 650000));
+
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:28 ~ response:", response)
   const voidSigner = new VoidSigner(walletAddress, eth_provider);
   return toStringTransaction(await voidSigner.populateTransaction(response));
@@ -122,21 +129,21 @@ const approveTokenAndSlippage = async (
 }
 
 (async () => {
-  // const transaction = await approveTokenAndSlippage(
-  //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-  //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
-  //   '0.1',
-  //   10,
-  //   MY_ADDRESS,
-  // );
-
   const transaction = await approveTokenAndSlippage(
-    TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
     TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-    '80000',
-    50,
+    TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
+    '0.04',
+    10,
     MY_ADDRESS,
   );
+
+  // const transaction = await approveTokenAndSlippage(
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+  //   '80000',
+  //   50,
+  //   MY_ADDRESS,
+  // );
 
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:133 ~ transaction:", transaction)
 

@@ -149,7 +149,7 @@ const signTransaction = async (transaction: any, pk: string) => {
 }
 
 (async () => {
-  const transaction = await buildTransaction(MY_ADDRESS, '0.001');
+  const transaction = await buildTransaction(MY_ADDRESS, '0.01');
   const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
   const trx = await eth_provider.sendTransaction(signedTransaction);
   const trxReceip = await trx.wait(1);

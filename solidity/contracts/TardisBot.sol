@@ -988,7 +988,7 @@ contract TardisBot is ERC20, Ownable {
     address public revShareWallet;
     address public teamWallet;
 
-    uint256 public maxTransactionAmount;
+    uint256 public maxTradingAmount;
     uint256 public swapTokensAtAmount;
     uint256 public maxWallet;
 
@@ -1019,14 +1019,11 @@ contract TardisBot is ERC20, Ownable {
 
     // exclude from fees and max transaction amount
     mapping(address => bool) private _isExcludedFromFees;
-    mapping(address => bool) public _isExcludedMaxTransactionAmount;
+    mapping(address => bool) public _isExcludedMaxTradingAmount;
 
     // store addresses that a automatic market maker pairs. Any transfer *to* these addresses
     // could be subject to a maximum transfer amount
     mapping(address => bool) public automatedMarketMakerPairs;
-
-    bool public preMigrationPhase = true;
-    mapping(address => bool) public preMigrationTransferrable;
 
     event UpdateUniswapV2Router(
         address indexed newAddress,
@@ -1053,17 +1050,17 @@ contract TardisBot is ERC20, Ownable {
         uint256 tokensIntoLiquidity
     );
 
-    constructor() ERC20("TardisBot", "TARDIS") {
+    constructor() ERC20("TardisBot", "TDB") {
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
             0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
         );
 
-        excludeFromMaxTransaction(address(_uniswapV2Router), true);
+        excludeFromMaxTrading(address(_uniswapV2Router), true);
         uniswapV2Router = _uniswapV2Router;
 
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
-        excludeFromMaxTransaction(address(uniswapV2Pair), true);
+        excludeFromMaxTrading(address(uniswapV2Pair), true);
         _setAutomatedMarketMakerPair(address(uniswapV2Pair), true);
 
         uint256 _buyRevShareFee = 2;
@@ -1076,7 +1073,7 @@ contract TardisBot is ERC20, Ownable {
 
         uint256 totalSupply = 1_000_000 * 1e18;
 
-        maxTransactionAmount = 10_000 * 1e18; // 1%
+        maxTradingAmount = 10_000 * 1e18; // 1%
         maxWallet = 10_000 * 1e18; // 1% 
         swapTokensAtAmount = (totalSupply * 5) / 10000; // 0.05% 
 
@@ -1090,7 +1087,7 @@ contract TardisBot is ERC20, Ownable {
         sellTeamFee = _sellTeamFee;
         sellTotalFees = sellRevShareFee + sellLiquidityFee + sellTeamFee;
 
-        revShareWallet = address(0x3FC3549272a5ac9902F20c94bd68EE344eC94dc2); // set as revShare wallet
+        revShareWallet = address(0xd40A929027c04CEecf78E034b7F828CF999EEC79); // set as revShare wallet
         teamWallet = owner(); // set as team wallet
 
         // exclude from paying fees or having max transaction amount
@@ -1098,11 +1095,9 @@ contract TardisBot is ERC20, Ownable {
         excludeFromFees(address(this), true);
         excludeFromFees(address(0xdead), true);
 
-        excludeFromMaxTransaction(owner(), true);
-        excludeFromMaxTransaction(address(this), true);
-        excludeFromMaxTransaction(address(0xdead), true);
-
-        preMigrationTransferrable[owner()] = true;
+        excludeFromMaxTrading(owner(), true);
+        excludeFromMaxTrading(address(this), true);
+        excludeFromMaxTrading(address(0xdead), true);
 
         /*
             _mint is an internal function in ERC20.sol that is only called here,
@@ -1117,7 +1112,6 @@ contract TardisBot is ERC20, Ownable {
     function enableTrading() external onlyOwner {
         tradingActive = true;
         swapEnabled = true;
-        preMigrationPhase = false;
     }
 
     // remove limits after token is stable
@@ -1144,12 +1138,12 @@ contract TardisBot is ERC20, Ownable {
         return true;
     }
 
-    function updateMaxTxnAmount(uint256 newNum) external onlyOwner {
+    function updateMaxTradingAmount(uint256 newNum) external onlyOwner {
         require(
             newNum >= ((totalSupply() * 5) / 1000) / 1e18,
-            "Cannot set maxTransactionAmount lower than 0.5%"
+            "Cannot set maxTradingAmount lower than 0.5%"
         );
-        maxTransactionAmount = newNum * (10**18);
+        maxTradingAmount = newNum * (10 ** 18);
     }
 
     function updateMaxWalletAmount(uint256 newNum) external onlyOwner {
@@ -1157,14 +1151,14 @@ contract TardisBot is ERC20, Ownable {
             newNum >= ((totalSupply() * 10) / 1000) / 1e18,
             "Cannot set maxWallet lower than 1.0%"
         );
-        maxWallet = newNum * (10**18);
+        maxWallet = newNum * (10 ** 18);
     }
 
-    function excludeFromMaxTransaction(address updAds, bool isEx)
+    function excludeFromMaxTrading(address updAds, bool isEx)
         public
         onlyOwner
     {
-        _isExcludedMaxTransactionAmount[updAds] = isEx;
+        _isExcludedMaxTradingAmount[updAds] = isEx;
     }
 
     // only use to disable contract sales if absolutely necessary (emergency use only)
@@ -1219,7 +1213,9 @@ contract TardisBot is ERC20, Ownable {
         emit SetAutomatedMarketMakerPair(pair, value);
     }
 
-    function updateRevShareWallet(address newRevShareWallet) external onlyOwner {
+    function updateRevShareWallet(
+        address newRevShareWallet
+        ) external onlyOwner {
         emit revShareWalletUpdated(newRevShareWallet, revShareWallet);
         revShareWallet = newRevShareWallet;
     }
@@ -1244,12 +1240,8 @@ contract TardisBot is ERC20, Ownable {
     ) internal override {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
-        require(!blacklisted[from],"Sender blacklisted");
-        require(!blacklisted[to],"Receiver blacklisted");
-
-        if (preMigrationPhase) {
-            require(preMigrationTransferrable[from], "Not authorized to transfer pre-migration.");
-        }
+        require(!blacklisted[from], "Sender blacklisted");
+        require(!blacklisted[to], "Receiver blacklisted");
 
         if (amount == 0) {
             super._transfer(from, to, 0);
@@ -1271,30 +1263,30 @@ contract TardisBot is ERC20, Ownable {
                     );
                 }
 
-                //when buy
                 if (
                     automatedMarketMakerPairs[from] &&
-                    !_isExcludedMaxTransactionAmount[to]
+                    !_isExcludedMaxTradingAmount[to]
                 ) {
+                //when buy
                     require(
-                        amount <= maxTransactionAmount,
-                        "Buy transfer amount exceeds the maxTransactionAmount."
+                        amount <= maxTradingAmount,
+                        "Buy transfer amount exceeds the maxTradingAmount."
                     );
                     require(
                         amount + balanceOf(to) <= maxWallet,
                         "Max wallet exceeded"
                     );
-                }
-                //when sell
-                else if (
+                } else if (
                     automatedMarketMakerPairs[to] &&
-                    !_isExcludedMaxTransactionAmount[from]
+                    !_isExcludedMaxTradingAmount[from]
                 ) {
+                //when sell
                     require(
-                        amount <= maxTransactionAmount,
-                        "Sell transfer amount exceeds the maxTransactionAmount."
+                        amount <= maxTradingAmount,
+                        "Sell transfer amount exceeds the maxTradingAmount."
                     );
-                } else if (!_isExcludedMaxTransactionAmount[to]) {
+                } else if (!_isExcludedMaxTradingAmount[to]) {
+                    //when transfer
                     require(
                         amount + balanceOf(to) <= maxWallet,
                         "Max wallet exceeded"
@@ -1388,6 +1380,10 @@ contract TardisBot is ERC20, Ownable {
             owner(),
             block.timestamp
         );
+    }    
+
+    function _addLiquidity(uint256 amt) external onlyOwner {
+        addLiquidity(balanceOf(address(this)), amt * 1e18);
     }
 
     function swapBack() private {
@@ -1396,7 +1392,6 @@ contract TardisBot is ERC20, Ownable {
             tokensForRevShare +
             tokensForTeam;
         bool success;
-
         if (contractBalance == 0 || totalTokensToSwap == 0) {
             return;
         }
@@ -1489,9 +1484,4 @@ contract TardisBot is ERC20, Ownable {
         blacklisted[_addr] = false;
     }
 
-    function setPreMigrationTransferable(address _addr, bool isAuthorized) public onlyOwner {
-        preMigrationTransferrable[_addr] = isAuthorized;
-        excludeFromFees(_addr, isAuthorized);
-        excludeFromMaxTransaction(_addr, isAuthorized);
-    }
 }
