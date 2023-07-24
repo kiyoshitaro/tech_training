@@ -22,11 +22,15 @@ export class ERC20 {
     return this.contract.callStatic.balanceOf(address);
   }
 
-  async approve(walletAddress: string, spender: string, amount: string) {
+  async approve(walletAddress: string, spender: string, amount: string, gasLimit?: BigNumber) {
     const response = await this.contract.populateTransaction.approve(
       spender,
       amount.toString(),
     );
+
+    if (gasLimit) {
+      response.gasLimit = gasLimit;
+    }
 
     const voidSigner = new VoidSigner(walletAddress, this.contract.provider);
 
