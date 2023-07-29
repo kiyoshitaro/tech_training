@@ -16,6 +16,7 @@ const buildTransaction = async (
   walletAddress: string,
   options?: {
     gasLimit?: BigNumber;
+    maxPriorityFeePerGas?: BigNumber;
   },
 ) => {
   let response: any;
@@ -48,11 +49,9 @@ const buildTransaction = async (
         deadline,
       );
   }
-  response.gasLimit = options?.gasLimit
-    ? options?.gasLimit
-    : BigNumber.from(getRandomInt(550000, 650000));
-
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:28 ~ response:", response)
+  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:28 ~ response:", toStringTransaction(response))
+  if(options?.gasLimit) response.gasLimit = options?.gasLimit;
+if(options?.maxPriorityFeePerGas) response.maxPriorityFeePerGas = options?.maxPriorityFeePerGas
   const voidSigner = new VoidSigner(walletAddress, eth_provider);
   return toStringTransaction(await voidSigner.populateTransaction(response));
 };
@@ -96,6 +95,10 @@ const approveTokenAndSlippage = async (
   amountInput: string,
   slippage: number,
   address: string,
+  options?: {
+    gasLimit?: BigNumber;
+    maxPriorityFeePerGas?: BigNumber;
+  },
 ) => {
   const WETH = TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address;
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:89 ~ WETH:", WETH.toString())
@@ -119,23 +122,31 @@ const approveTokenAndSlippage = async (
   ];
   const slippagePercent = Number(Number(slippage).toFixed(1)) * 10;
   const amountOutMin = amountOut.mul(1000 - slippagePercent).div(1000);
+  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:126 ~ amountOutMin:", amountOutMin.toString())
   return await buildTransaction(
     inputTokenAddress,
     outputTokenAddress,
     amountIn,
     amountOutMin,
     address,
+    options
   );
 }
 
 (async () => {
-  const transaction = await approveTokenAndSlippage(
-    TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-    TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
-    '0.04',
-    10,
-    MY_ADDRESS,
-  );
+  // const transaction = await approveTokenAndSlippage(
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
+  //   '0.04',
+  //   10,
+  //   MY_ADDRESS,
+  //   {
+  //     gasLimit: BigNumber.from(getRandomInt(550000, 650000)),
+  //     maxPriorityFeePerGas: BigNumber.from(getRandomInt(1500000000, 2000000000))
+  //   }
+  //   );
+
+
 
   // const transaction = await approveTokenAndSlippage(
   //   TOKENS[(await eth_provider.getNetwork()).chainId].TKN.address,
@@ -143,7 +154,37 @@ const approveTokenAndSlippage = async (
   //   '80000',
   //   50,
   //   MY_ADDRESS,
+  //   {
+  //     gasLimit: BigNumber.from(getRandomInt(550000, 650000)),
+  //     maxPriorityFeePerGas: BigNumber.from(getRandomInt(1500000000, 2000000000))
+  //   }
   // );
+
+
+  // const transaction = await approveTokenAndSlippage(
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+  //   '0xc405a68Be0967D0002DbbeB8De0084F24086D36c',
+  //   '0.1',
+  //   30,
+  //   '0xbC278D6583b97399014F3B3c64D295135660C629',
+  // );
+
+  const transaction = await approveTokenAndSlippage(
+    TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+    '0xb478c6245e3d85d6ec3486b62ea872128d562541',
+    '0.1',
+    10,
+    MY_ADDRESS,
+  );
+
+  // const transaction = await approveTokenAndSlippage(
+  //   '0xc405a68Be0967D0002DbbeB8De0084F24086D36c',
+  //   TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
+  //   '80000',
+  //   50,
+  //   '0xbC278D6583b97399014F3B3c64D295135660C629',
+  // );
+
 
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:133 ~ transaction:", transaction)
 
