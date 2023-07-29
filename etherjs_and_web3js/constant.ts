@@ -20,6 +20,7 @@ export const MAX_AMOUNT_APPROVE_TOKEN = '100000000000000000000000000000000';
 export const zk_provider = new ethers.providers.JsonRpcProvider(ZKSYNC_TESTNET_PROVIDER)
 export const zk_native_provider = new ZkProvider(ZKSYNC_TESTNET_PROVIDER);
 export const eth_provider = new ethers.providers.JsonRpcProvider(ETH_GOERLI_TESTNET_PROVIDER)
+// export const eth_provider = new ethers.providers.JsonRpcProvider(`https://crimson-winter-sun.quiknode.pro/${process.env.QUICKNODE_KEY}`)
 export const TDS_TOKEN_ADDRESS_ZK_TESTNET = '0x09825c8C53Ac725A526360a33Cb0260e83c598F5';
 export const USDC_TOKEN_ADDRESS_ZK_TESTNET = '0x0faF6df7054946141266420b43783387A78d82A9'
 export const ZKUSDC_TOKEN_ADDRESS_ZK_TESTNET = '0xA4D8FECEf6C4f77bDe74eDBc7931de2e47828B3F'
