@@ -171,9 +171,9 @@ const approveTokenAndSlippage = async (
 
   const transaction = await approveTokenAndSlippage(
     TOKENS[(await eth_provider.getNetwork()).chainId].WETH.address,
-    '0xb478c6245e3d85d6ec3486b62ea872128d562541',
+    '0x61f275c54577a66cf4e4ccc6D20CbE04d31ae889',
     '0.1',
-    10,
+    5,
     MY_ADDRESS,
   );
 
@@ -188,15 +188,15 @@ const approveTokenAndSlippage = async (
 
   console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:133 ~ transaction:", transaction)
 
-  const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:136 ~ signedTransaction:", signedTransaction)
-  const trx = await eth_provider.sendTransaction(signedTransaction);
-  const trxReceip = await trx.wait(1);
-  const gasFee = Number(
-    ethers.utils.formatEther(
-      trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice),
-    ),
-  )
-  const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
-  console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:138 ~ gasFee:", trxReceip.transactionHash, trxReceip.blockHash, `${gasFee} ETH ~ $${feeUSD}`)
+  // const signedTransaction = await signTransaction(transaction, process.env.PRIVATE_KEY as string);
+  // console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:136 ~ signedTransaction:", signedTransaction)
+  // const trx = await eth_provider.sendTransaction(signedTransaction);
+  // const trxReceip = await trx.wait(1);
+  // const gasFee = Number(
+  //   ethers.utils.formatEther(
+  //     trxReceip.gasUsed.mul(trxReceip.effectiveGasPrice),
+  //   ),
+  // )
+  // const feeUSD = Number(await zk_native_provider.getTokenPrice(ETH_ADDRESS)) * gasFee
+  // console.log("🚀 ~ file: 11-swap-in-eth-uniswap.ts:138 ~ gasFee:", trxReceip.transactionHash, trxReceip.blockHash, `${gasFee} ETH ~ $${feeUSD}`)
 })()
