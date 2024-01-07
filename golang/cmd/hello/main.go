@@ -170,3 +170,6 @@ func intDivision(num int, den int) (int, int, error){
 	var rem int = num % den
 	return res, rem, err
 }
+
+// go build .\cmd\hello\main.go
+// .\main.exe
