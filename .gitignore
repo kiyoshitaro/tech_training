@@ -19,3 +19,4 @@ django/node_modules
 *node_modules/*
 *.vs/*
 *.dat
+*.exe

@@ -7,10 +7,11 @@ import SyncSwapStablePoolABI from './abis/syncswap/SyncSwapStablePool.json';
 import SyncSwapClassicPoolFactoryABI from './abis/syncswap/SyncSwapStablePoolFactory.json';
 import SyncSwapRouterABI from './abis/syncswap/SyncSwapRouter.json';
 import UniswapV2Route02ABI from './abis/UniswapV2Route02.json';
+import PancakeswapV3RouterABI from './abis/PancakeswapV3/router.json';
 
 export const ZKSYNC_TESTNET_PROVIDER = 'https://testnet.era.zksync.dev';
 export const ZKSYNC_MAINNET_PROVIDER = 'https://mainnet.era.zksync.io';
-export const ETH_GOERLI_TESTNET_PROVIDER = 'https://eth-goerli.g.alchemy.com/v2/demo';
+export const ETH_GOERLI_TESTNET_PROVIDER = 'https://goerli.blockpi.network/v1/rpc/public';
 export const MY_ADDRESS = '0xf9F689367990f981BCD267FB1A4c45f63B6Bd7b1';
 export const MY_ADDRESS_2 = '0xbC278D6583b97399014F3B3c64D295135660C629';
 export const MY_ADDRESS_3 = '0xd40A929027c04CEecf78E034b7F828CF999EEC79';
@@ -48,6 +49,10 @@ export const CONTRACTS_ADDRESS = {
     Orbiter: {
       OrbiterMaker: '0xa08606A85bf58AFB7c3d464Fc6cF78A159933DD1',
     },
+    PancakeswapV3: {
+      PancakeswapV3Factory: '0x48e6Bc3f2546E63908cd09b04E2B3f78e57B6292',
+      PancakeswapV3Router: '0x4DC9186c6C5F7dd430c7b6D8D513076637902241',
+    },
   },
   324: {
     SyncSwap: {
@@ -59,6 +64,10 @@ export const CONTRACTS_ADDRESS = {
     },
     Orbiter: {
       OrbiterMaker: '0x80C67432656d59144cEFf962E8fAF8926599bCF8',
+    },
+    PancakeswapV3: {
+      PancakeswapV3Factory: '0x1BB72E0CbbEA93c08f535fc7856E0338D7F7a8aB',
+      PancakeswapV3Router: '0xf8b59f3c3Ab33200ec80a8A58b2aA5F5D2a8944C',
     },
   },
   1: {
@@ -118,6 +127,17 @@ export const uniswapRouter = async () => {
     eth_provider,
   );
 }
+
+export const pancakeswapZkRouter = async () => {
+  const { chainId } = await zk_native_provider.getNetwork();
+  const contractAddresses = CONTRACTS_ADDRESS[Number(chainId)].PancakeswapV3;
+  return new ZkContract(
+    contractAddresses.PancakeswapV3Router,
+    PancakeswapV3RouterABI,
+    zk_native_provider,
+  );
+}
+
 
 export enum ELayer {
   ETHEREUM,
