@@ -8,6 +8,7 @@
   },
   "author": "",
   "dependencies": {
+    "@sentry/node": "^7.107.0",
     "ethereumjs-tx": "^1.3.5",
     "ethers": "5.7.2",
     "web3": "^1.0.0-beta.34",
