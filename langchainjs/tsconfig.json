@@ -18,7 +18,8 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "lib": [
-      "ES2017"
+      "ES2017",
+      "DOM"
     ],
     "resolveJsonModule": true
   },
