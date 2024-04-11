@@ -47,15 +47,16 @@ const openAIKey = process.env.OPENAI_API_KEY;
   }
   const prompt = `
   \n Hướng dẫn: ${JSON.stringify(instruction)} \\n
-  \n Bối cảnh: ${JSON.stringify(ds)} 
+  \n Bối cảnh tử vi học: ${JSON.stringify(ds)} 
   \n Câu hỏi: ${question} 
   `;
   const model = new ChatOpenAI({
-    configuration: {
-      baseURL: 'http://localhost:1234/v1'
-    },
-    // openAIApiKey: openAIKey,
+    // configuration: {
+    //   baseURL: 'http://localhost:1234/v1'
+    // },
+    openAIApiKey: openAIKey,
     // modelName: 'gpt-4-1106-preview',
+    modelName: 'gpt-3.5-turbo-1106',
   });
   const stream = await model.stream(prompt);
   const chunks: any[] = [];
