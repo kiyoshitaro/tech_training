@@ -13,8 +13,11 @@ const openAIKey = process.env.OPENAI_API_KEY;
   `;
 
   const model = new ChatOpenAI({
-    openAIApiKey: openAIKey,
-    modelName: 'gpt-4-1106-preview',
+    configuration: {
+      baseURL: 'http://localhost:1234'
+    },
+    // openAIApiKey: openAIKey,
+    // modelName: 'gpt-4-1106-preview',
   });
   const stream = await model.stream(prompt);
   const chunks: any[] = [];
