@@ -13,13 +13,13 @@ const openAIKey = process.env.OPENAI_API_KEY;
   `;
 
   const model = new ChatOpenAI({
-    configuration: {
-      baseURL: 'http://localhost:1234'
-    },
-    // openAIApiKey: openAIKey,
-    // modelName: 'gpt-4-1106-preview',
+    // configuration: {
+    //   baseURL: 'http://localhost:1234'
+    // },
+    openAIApiKey: openAIKey,
+    modelName: 'gpt-4-1106-preview',
   });
-  const stream = await model.stream(prompt);
+  const stream = await model.stream('Bạn có kiến thức về tử vi. Tôi sinh giờ Bính Tuất 17h30 ngày 31/08/1998, lá số tử vi của tôi có các cách cung nào đặc biệt');
   const chunks: any[] = [];
   for await (const chunk of stream) {
     console.log("🚀 ~ forawait ~ chunk:", chunk.content)
