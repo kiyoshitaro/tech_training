@@ -22,20 +22,21 @@ const toDataUrl = (url: any, callback: any) => {
 }
 
 (async () => {
-  var imageAsBase64 = fs.readFileSync(path.join(__dirname, '../assets/invoice.png'), 'base64');
+  var imageAsBase64 = fs.readFileSync(path.join(__dirname, '../assets/laso.png'), 'base64');
 
   const openai = new OpenAI({
-    apiKey: openAIKey,
+    // apiKey: openAIKey,
+    baseURL: 'http://localhost:1234/v1'
   });
   const completion = await openai.chat.completions.create({
     messages: [
-      // { role: "system", content: "You are a math professor." },
+      { role: "system", content: "Bạn có kiến thức về tử vi." },
       // { role: "user", content: "Who are you?" },
       {
         role: "user", content: [
           {
             "type": "text",
-            "text": "What’s in this image?",
+            "text": "Mô tả lá số sau đây",
           },
           {
             "type": "image_url",

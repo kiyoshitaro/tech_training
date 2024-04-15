@@ -14,7 +14,7 @@ const openAIKey = process.env.OPENAI_API_KEY;
 
   const model = new ChatOpenAI({
     // configuration: {
-    //   baseURL: 'http://localhost:1234'
+    //   baseURL: 'http://localhost:1234/v1'
     // },
     openAIApiKey: openAIKey,
     modelName: 'gpt-4-1106-preview',
