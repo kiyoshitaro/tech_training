@@ -126,12 +126,23 @@
           "saoDacTinh": null
         },
         {
+          "saoID": 87,
+          "saoTen": "Thiên thọ",
+          "saoNguHanh": "O",
+          "saoLoai": 5,
+          "saoPhuongVi": "",
+          "saoAmDuong": null,
+          "vongTrangSinh": 0,
+          "cssSao": "hanhTho",
+          "saoDacTinh": null
+        },
+        {
           "saoID": 85,
           "saoTen": "Phong cáo",
           "saoNguHanh": "O",
           "saoLoai": 4,
-          "saoPhuongVi": "",
-          "saoAmDuong": null,
+          "saoPhuongVi": null,
+          "saoAmDuong": 1,
           "vongTrangSinh": 0,
           "cssSao": "hanhTho",
           "saoDacTinh": null
@@ -419,12 +430,12 @@
         {
           "saoID": 108,
           "saoTen": "Thiên không",
-          "saoNguHanh": "T",
+          "saoNguHanh": "H",
           "saoLoai": 11,
           "saoPhuongVi": "",
           "saoAmDuong": null,
           "vongTrangSinh": 0,
-          "cssSao": "hanhThuy",
+          "cssSao": "hanhHoa",
           "saoDacTinh": null
         },
         {
@@ -585,12 +596,12 @@
         {
           "saoID": 84,
           "saoTen": "Thai phụ",
-          "saoNguHanh": "K",
+          "saoNguHanh": "O",
           "saoLoai": 6,
-          "saoPhuongVi": "",
-          "saoAmDuong": null,
+          "saoPhuongVi": null,
+          "saoAmDuong": 1,
           "vongTrangSinh": 0,
-          "cssSao": "hanhKim",
+          "cssSao": "hanhTho",
           "saoDacTinh": null
         },
         {
@@ -820,8 +831,8 @@
           "saoTen": "Long trì",
           "saoNguHanh": "T",
           "saoLoai": 3,
-          "saoPhuongVi": "",
-          "saoAmDuong": null,
+          "saoPhuongVi": null,
+          "saoAmDuong": 1,
           "vongTrangSinh": 0,
           "cssSao": "hanhThuy",
           "saoDacTinh": null
@@ -862,7 +873,7 @@
       ],
       "cungAmDuong": 1,
       "cungTen": "Ngọ",
-      "cungThan": true,
+      "cungThan": false,
       "cungChu": "Tài Bạch",
       "cungDaiHan": "82",
       "cungTieuHan": "Thìn"
@@ -1042,8 +1053,8 @@
           "saoTen": "Phượng các",
           "saoNguHanh": "O",
           "saoLoai": 3,
-          "saoPhuongVi": "",
-          "saoAmDuong": null,
+          "saoPhuongVi": null,
+          "saoAmDuong": 1,
           "vongTrangSinh": 0,
           "cssSao": "hanhTho",
           "saoDacTinh": null
@@ -1079,17 +1090,6 @@
           "saoAmDuong": null,
           "vongTrangSinh": 0,
           "cssSao": "hanhThuy",
-          "saoDacTinh": null
-        },
-        {
-          "saoID": 87,
-          "saoTen": "Thiên thọ",
-          "saoNguHanh": "O",
-          "saoLoai": 5,
-          "saoPhuongVi": "",
-          "saoAmDuong": null,
-          "vongTrangSinh": 0,
-          "cssSao": "hanhTho",
           "saoDacTinh": null
         },
         {
@@ -1215,7 +1215,7 @@
           "saoAmDuong": 1,
           "vongTrangSinh": 0,
           "cssSao": "hanhTho",
-          "saoDacTinh": null
+          "saoDacTinh": "V"
         },
         {
           "saoID": 32,
@@ -1297,7 +1297,7 @@
       ],
       "cungAmDuong": 1,
       "cungTen": "Tuất",
-      "cungThan": false,
+      "cungThan": true,
       "cungChu": "Mệnh",
       "cungDaiHan": "2",
       "cungTieuHan": "Thân"

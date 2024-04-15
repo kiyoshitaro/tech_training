@@ -77,7 +77,15 @@ export class diaBan {
 
   cungChu(thangSinhAmLich: number, gioSinhAmLich: number): { cungSoDiaBan: number, tenCung: string }[] {
     console.log("🚀 ~ diaBan ~ cungChu ~ thangSinhAmLich: number, gioSinhAmLich: number:", thangSinhAmLich, gioSinhAmLich)
-    this.cungThan = dichCung(3, thangSinhAmLich - 1, gioSinhAmLich - 1);
+    // this.cungThan = dichCung(3, thangSinhAmLich - 1, gioSinhAmLich - 1);
+
+    // Bắt đầu từ cung số 3, tương ứng với Dần, tương ứng với tháng 1 trong năm
+    // Tiến theo chiều tháng sinh
+    // Giật lùi lại theo chiều ngày sinh
+    this.cungThan = dichCung(3, thangSinhAmLich - 1);
+    this.cungThan = dichCung(this.cungThan, 1 - gioSinhAmLich);
+
+
     this.cungMenh = dichCung(3, thangSinhAmLich - 1, -(gioSinhAmLich) + 1);
     let cungPhuMau = dichCung(this.cungMenh, 1);
     let cungPhucDuc = dichCung(this.cungMenh, 2);
