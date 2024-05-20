@@ -18,6 +18,9 @@ const openAIKey = process.env.OPENAI_API_KEY;
 (async () => {
   const tools = [new PriceTool()];
   const llm = new ChatOpenAI({
+    //     configuration: {
+    //   baseURL: 'http://localhost:1234/v1'
+    // },
     modelName: "gpt-3.5-turbo-1106",
     temperature: 0,
     openAIApiKey: openAIKey,
