@@ -2,6 +2,7 @@ import { ChatOpenAI } from '@langchain/openai';
 import path from 'path';
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, '../.env') });
+import fs from 'fs'
 
 const openAIKey = process.env.OPENAI_API_KEY;
 
@@ -19,7 +20,7 @@ const openAIKey = process.env.OPENAI_API_KEY;
     openAIApiKey: openAIKey,
     modelName: 'gpt-4-1106-preview',
   });
-  const stream = await model.stream('Bạn có kiến thức về tử vi. Tôi sinh giờ Bính Tuất 17h30 ngày 31/08/1998, lá số tử vi của tôi có các cách cung nào đặc biệt');
+  let laso = fs.readFileSync(path.join(__dirname, '../assets/me.json'), 'utf-8');
   const chunks: any[] = [];
   for await (const chunk of stream) {
     console.log("🚀 ~ forawait ~ chunk:", chunk.content)

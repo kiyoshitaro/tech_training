@@ -27,7 +27,7 @@ const openAIKey = process.env.OPENAI_API_KEY;
   const vectorStore = await MemoryVectorStore.fromDocuments(
     splitDocs,
     new OpenAIEmbeddings({
-      openAIApiKey: openAIKey
+      openAIApiKey: openAIKey,
       // configuration: {
       //   baseURL: 'http://localhost:1234/v1'
       // }
