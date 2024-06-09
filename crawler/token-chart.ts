@@ -63,54 +63,106 @@ const getBestPairsTokenByAddress = async (contractAddress: string) => {
   const userAgent = new UserAgent();
   const page = await browser.newPage();
   page.setUserAgent(userAgent.toString());
-  await page.setViewport({ width: 1920, height: 1080 });
-  console.log("🚀 ~ `https://dexscreener.com/solana/${pair?.pairAddress}?embed=1&theme=dark&trades=0&info=0`:", `https://dexscreener.com/solana/${pair?.pairAddress}?embed=1&theme=dark&trades=0&info=0`)
+  await page.setViewport({ width: 1000, height: 1000 });
 
   await page.goto(`https://dexscreener.com/solana/${pair?.pairAddress}?embed=1&theme=dark&trades=0&info=0`);
   page.on('console', message => {
     console.log(`Browser console: ${message.text()}`);
   });
-  const resultBase64 = await page.evaluate(async () => {
+
+  const checkReady = await page.evaluate(async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    async function checkReady(onReady) {
+        try {
+          (document as any).querySelector("iframe").contentWindow.widgetReady(() => {
+                onReady("okie");
+            });
+        } catch (e) {
+            await sleep(100);
+            await checkReady(onReady);
+        }
+    }
+    async function waitReady() {
+        return new Promise(resolve => {
+            checkReady(resolve);
+        });
+    }
+    await waitReady();
+  });
+  const setResolution = '1h';
+  const createResolution = await page.evaluate(async (setResolution) => {
+    console.log("🚀 ~ CrawlService ~ createResolution ~ setResolution:", setResolution)
+    await (document as any).querySelector("iframe").contentWindow.tradingViewApi.chart().setResolution(setResolution)
+  },setResolution);
+
+
+  let indicators = [
+    {
+        "indicatorName": "MACD",
+        "settings": [12, 26, "close", 9]
+    },
+    {
+        "indicatorName": "Moving Average Exponential",
+        "settings": [12, "close", 0, "SMA", 9]
+    },
+    {
+      "indicatorName": "Moving Average Exponential",
+      "settings": [21, "close", 0, "SMA", 9]
+    },
+    {
+        "indicatorName": "Relative Strength Index",
+        "settings": [14, "SMA", 14]
+    }
+  ];
+
+  const createStudy = await page.evaluate(async (indicators) => {
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
-    async function checkReady(onReady) {
-      try {
-        (document as any).querySelector("iframe").contentWindow.widgetReady(() => {
-          onReady("okie");
-        });
-      } catch (e) {
-        await sleep(100);
-        await checkReady(onReady);
+    const studies = (document as any).querySelector("iframe").contentWindow.tradingViewApi.chart().getAllStudies();
+    const studyNames = studies.map(study => study.name);
+    indicators.forEach(indicator => {
+      const { indicatorName, settings } = indicator;
+      if (studyNames.includes(indicatorName)) {
+          console.log(`Study name ${indicatorName} exists`);
+      } else {
+        (document as any).querySelector("iframe").contentWindow.tradingViewApi.activeChart().createStudy(indicatorName, false, false, settings);
+        
+        console.log(`Study created ${indicatorName}`);
       }
-    }
+    });
+    async function checkLoading() {
+      const inLoading = (document as any).querySelector("iframe").contentWindow.tradingViewApi.chart()._chartWidget._inLoadingState;
+      if (inLoading) {
+          console.log('Chart is still loading, retrying...');
+          await sleep(100);
+          await checkLoading(); // Recursive call
+      } else {
+          console.log('Chart loading is done.');
+    
+      }
+  }
+  // Start the check
+    await checkLoading();
+  },indicators);
 
-    async function waitReady() {
-      return new Promise(resolve => {
-        checkReady(resolve);
-      });
-    }
 
-    await waitReady();
-    (document as any).querySelector("iframe").contentWindow.tradingViewApi.chart().setResolution("4h");
-    // Execute the desired actions after the page is ready
-    (document as any).querySelector("iframe").contentWindow.tradingViewApi.activeChart().createStudy("Relative Strength Index");
-    (document as any).querySelector("iframe").contentWindow.tradingViewApi.activeChart().createStudy('MACD', false, false, { in_0: 14, in_1: 30, in_3: 'close', in_2: 9 });
-    // Wait for 500 milliseconds
-    await sleep(1500);
-
+  const resultBase64 = await page.evaluate(async () => {
     async function saveChartToPNG() {
       const screenshotCanvas = await (document as any).querySelector("iframe").contentWindow.tradingViewApi.takeClientScreenshot();
       return screenshotCanvas.toDataURL();
     }
+    // Call the function to save the chart to PNG and return the result
     return await saveChartToPNG();
   });
   const endGetBase64 = Date.now();
+    
+  // const imageBuffer = Buffer.from(resultBase64.replace(/^data:\w+\/\w+;base64,/, ''));
+  // fs.writeFileSync('image.png', imageBuffer, 'base64');
   console.log("🚀 ~ Time endGetBase64:", (endGetBase64 - startBrowser) / 1000)
   await browser.close();
-
-  const imageBuffer = Buffer.from(resultBase64.replace(/^data:image\/\w+;base64,/, ''));
-  fs.writeFileSync('image.png', imageBuffer, 'base64');
 
   const chat = new ChatOpenAI({
     modelName: 'gpt-4-vision-preview',
@@ -185,5 +237,11 @@ const getBestPairsTokenByAddress = async (contractAddress: string) => {
   for await (const chunk of res) {
     finalContent += chunk.content;
   }
+  let base64Data  =   resultBase64.replace(/^data:image\/png;base64,/, "");
+  base64Data  +=  base64Data.replace('+', ' ');
+  const binaryData  =   new Buffer(base64Data, 'base64').toString('binary');
+  fs.writeFile("out.png", binaryData, "binary", function (err) {
+      console.log(err); // writes out file without error, but it's not a valid image
+  });
   console.log("🚀 ~ ANALYZER:", finalContent)
 })()

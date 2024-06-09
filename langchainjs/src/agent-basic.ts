@@ -14,6 +14,12 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const openAIKey = process.env.OPENAI_API_KEY;
+import { CallbackHandler } from "langfuse-langchain";
+const langfuseHandler = new CallbackHandler({
+  secretKey: process.env.LANGFUSE_SECRET_KEY,
+  publicKey: process.env.LANGFUSE_PUBLIC_KEY,
+  baseUrl: "http://localhost:3000", // 🇪🇺 EU region
+});
 
 (async () => {
   const tools = [new PriceTool()];
@@ -47,7 +53,7 @@ const openAIKey = process.env.OPENAI_API_KEY;
   });
   const result = await agentExecutor.invoke({
     input: "eth price",
-  })
+  }, { callbacks: [langfuseHandler] })
   console.log("🚀 ~ result:", result)
   // const input = `
   // \n History Chat: ${JSON.stringify([{
