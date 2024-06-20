@@ -20,7 +20,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, '../.env') });
 const openAIKey = process.env.OPENAI_API_KEY;
-const REPO_PATH = path.join(__dirname, '../../../project-server');
+const REPO_PATH = path.join(__dirname, '../../../../prediction-market-server/src/');
 
 import { CallbackHandler } from "langfuse-langchain";
 const langfuseHandler = new CallbackHandler({
@@ -29,7 +29,7 @@ const langfuseHandler = new CallbackHandler({
   baseUrl: "http://localhost:3000",
 });
 
-const loadData =async () => {
+const loadData = async () => {
   const loader = new DirectoryLoader(REPO_PATH, {
     ".ts": (path) => new TextLoader(path),
   });
@@ -41,29 +41,30 @@ const loadData =async () => {
   const texts = await javascriptSplitter.splitDocuments(docs);
   console.log("Loaded ", texts.length, " documents.", texts[0]);
   await Milvus.fromDocuments(
-    texts.filter((doc) => doc?.pageContent),     
+    texts.filter((doc) => doc?.pageContent),
     new OpenAIEmbeddings({
       openAIApiKey: openAIKey,
-    }), 
+    }),
     {
       clientConfig: {
-        address: "localhost:19530",
+        address: "localhost:19531",
         database: "code_understanding",
       },
-    collectionName: "codes",
-  });
+      collectionName: "codes",
+    });
 }
 (async () => {
   // await loadData();
-  const vectorStore = new Milvus(    
-    new OpenAIEmbeddings(  { openAIApiKey: openAIKey }), 
-{
-    clientConfig: {
-      address: "localhost:19530",
-      database: "code_understanding",
-    },
-    collectionName: "codes",
-  })
+  // return;
+  const vectorStore = new Milvus(
+    new OpenAIEmbeddings({ openAIApiKey: openAIKey }),
+    {
+      clientConfig: {
+        address: "localhost:19531",
+        database: "code_understanding",
+      },
+      collectionName: "codes",
+    })
   const retriever = vectorStore.asRetriever({
     // searchType: "mmr", // Use max marginal relevance search
     searchType: "similarity",
@@ -78,7 +79,7 @@ const loadData =async () => {
     ),
     HumanMessagePromptTemplate.fromTemplate("Question: {question}"),
   ]);
-    
+
   const questionGeneratorTemplate = ChatPromptTemplate.fromMessages([
     AIMessagePromptTemplate.fromTemplate(
       "Given the following conversation about a codebase and a follow up question, rephrase the follow up question to be a standalone question."
@@ -86,7 +87,7 @@ const loadData =async () => {
     AIMessagePromptTemplate.fromTemplate(`Follow Up Input: {question}
   Standalone question:`),
   ]);
-    
+
   const combineDocumentsChain = RunnableSequence.from([
     {
       question: (output: string) => output,
@@ -99,7 +100,7 @@ const loadData =async () => {
     model,
     new StringOutputParser(),
   ]);
-  
+
   const conversationalQaChain = RunnableSequence.from([
     {
       question: (i: { question: string }) => i.question,
@@ -109,14 +110,16 @@ const loadData =async () => {
     new StringOutputParser(),
     combineDocumentsChain,
   ]);
-    
+
   // const question = "Introduce all technologies used in this project?";
-  const question = "Give me code to create redis adapter in socket";
+  const question = "HttpCacheInterceptor is not cache with ttl when i add redisStore";
   const result = await conversationalQaChain.invoke({
     question,
-  }, { callbacks: [langfuseHandler] });
+  },
+    { callbacks: [langfuseHandler] }
+  );
   console.log("🚀 ~ result:", result)
-  
-  
+
+
 })();
 
