@@ -18,18 +18,18 @@ import { CallbackHandler } from "langfuse-langchain";
 const langfuseHandler = new CallbackHandler({
   secretKey: process.env.LANGFUSE_SECRET_KEY,
   publicKey: process.env.LANGFUSE_PUBLIC_KEY,
-  baseUrl: "http://localhost:3000", // 🇪🇺 EU region
+  baseUrl: "http://localhost:1234", // 🇪🇺 EU region
 });
 
 (async () => {
   const tools = [new PriceTool()];
   const llm = new ChatOpenAI({
-    //     configuration: {
-    //   baseURL: 'http://localhost:1234/v1'
-    // },
-    modelName: "gpt-3.5-turbo-1106",
-    temperature: 0,
-    openAIApiKey: openAIKey,
+    configuration: {
+      baseURL: 'http://localhost:3002/v1'
+    },
+    // modelName: "gpt-3.5-turbo-1106",
+    // temperature: 0,
+    // openAIApiKey: openAIKey,
   });
   // const prompt = await pull<ChatPromptTemplate>(
   //   "hwchase17/openai-functions-agent"

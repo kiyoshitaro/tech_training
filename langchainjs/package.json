@@ -11,6 +11,7 @@
     "@langchain/community": "^0.0.20",
     "@langchain/mistralai": "^0.0.19",
     "@zilliz/milvus2-sdk-node": "^2.4.2",
+    "axios": "^1.7.2",
     "bip39-ts": "^1.0.6",
     "cheerio": "^1.0.0-rc.12",
     "html-to-text": "^9.0.5",
