@@ -25,7 +25,7 @@ const toDataUrl = (url: any, callback: any) => {
   let imageAsBase64 = fs.readFileSync(path.join(__dirname, '../assets/dexscreener.com_DCM_WETH_2024-05-20_17-30-08.png'), 'base64');
   const openai = new OpenAI({
     apiKey: openAIKey,
-    // baseURL: 'http://localhost:1234/v1'
+    // baseURL: 'http://localhost:3001/v1'
   });
   const completion = await openai.chat.completions.create({
     messages: [
