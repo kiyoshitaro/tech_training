@@ -25,7 +25,7 @@ const langfuseHandler = new CallbackHandler({
   const tools = [new PriceTool()];
   const llm = new ChatOpenAI({
     configuration: {
-      baseURL: 'http://localhost:3002/v1'
+      baseURL: 'http://localhost:3001/v1'
     },
     // modelName: "gpt-3.5-turbo-1106",
     // temperature: 0,
