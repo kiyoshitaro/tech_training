@@ -20,7 +20,8 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.join(__dirname, '../.env') });
 const openAIKey = process.env.OPENAI_API_KEY;
-const REPO_PATH = path.join(__dirname, '../../../../prediction-market-server/src/');
+// const REPO_PATH = path.join(__dirname, '../../../../app-server');
+const REPO_PATH = path.join(__dirname, '../../../../../../home/kiyoshitaro/code/app-server');
 
 import { CallbackHandler } from "langfuse-langchain";
 const langfuseHandler = new CallbackHandler({
@@ -47,10 +48,10 @@ const loadData = async () => {
     }),
     {
       clientConfig: {
-        address: "localhost:19531",
+        address: "localhost:19530",
         database: "code_understanding",
       },
-      collectionName: "codes",
+      collectionName: "app_server",
     });
 }
 (async () => {
@@ -60,10 +61,10 @@ const loadData = async () => {
     new OpenAIEmbeddings({ openAIApiKey: openAIKey }),
     {
       clientConfig: {
-        address: "localhost:19531",
+        address: "localhost:19530",
         database: "code_understanding",
       },
-      collectionName: "codes",
+      collectionName: "lootbot_server",
     })
   const retriever = vectorStore.asRetriever({
     // searchType: "mmr", // Use max marginal relevance search
@@ -112,7 +113,7 @@ const loadData = async () => {
   ]);
 
   // const question = "Introduce all technologies used in this project?";
-  const question = "HttpCacheInterceptor is not cache with ttl when i add redisStore";
+  const question = "Write me description about this project with tech stack in 5 sentences to add in my CV";
   const result = await conversationalQaChain.invoke({
     question,
   },
