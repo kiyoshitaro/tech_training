@@ -499,4 +499,6 @@ id text
 ]
 
 
+python -m graphrag.index --init --root .
+python -m graphrag.index --root .
 python -m graphrag.query --root . --method local ""
