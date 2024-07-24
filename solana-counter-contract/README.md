@@ -6,8 +6,8 @@ anchor build
 anchor deploy
 ```
 
-<!-- COPY Uint8Array.from(
+COPY Uint8Array.from(
         bs58.decode(
           'privatekey',
         ),
-      ) to wallet.json -->
+      ) to wallet.json
