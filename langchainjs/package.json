@@ -9,6 +9,7 @@
   "author": "",
   "dependencies": {
     "@langchain/community": "^0.0.20",
+    "@langchain/langgraph": "^0.0.31",
     "@langchain/mistralai": "^0.0.19",
     "@zilliz/milvus2-sdk-node": "^2.4.2",
     "axios": "^1.7.2",
