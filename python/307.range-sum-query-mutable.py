@@ -68,100 +68,47 @@
 class NumArray:
     def __init__(self, nums: List[int]):    
       
-        self.MAX_INT = 2**31-1
-        self.src = nums
-        self.len = len(nums)
-        # Maximum size of segment tree
-        self.total_nodes = 2 * (int)(2**(int)(ceil(log2(len(nums))))) - 1;
-        self.tree = [0] * self.total_nodes
-        self.dues = [0] * self.total_nodes
-        self.build()
-
-    def build(self) :
-        self._build_tree(left=0, right=self.len-1, par=0)
+        n = len(nums)
+        if n == 0: return
+        max_size = 2 * pow(2, int(math.ceil(math.log(n, 2)))) - 1
+        self.seg_tree = [0 for i in range(max_size)]
+        self.nums = nums[:]
+        self._build_tree(0, n-1, 0)
                 
-    def _build_tree(self, left, right, par):
-        if left == right:
-            self.tree[par] = self.src[left]
-            return
-        div = (left + right)//2
-        self._build_tree(left, div, (par<<1)+1)
-        self._build_tree(div+1, right, (par<<1)+2)
-        self.tree[par]=self._combine(self.tree[(par<<1)+1], self.tree[(par<<1)+2])
-  
-    def _query(self, low, high, left, right, par):
-              
-        if self.dues[par] > 0:
-            self.tree[par] += self.dues[par]
-            if left is not right:
-                self.dues[(par<<1)+1] += self.dues[par]
-                self.dues[(par<<1)+2] += self.dues[par]
-            self.dues[par]=0;
-            
-        if low <= left and high >= right:
-            return self.tree[par]
-        
-        div = int((right+left)/2)
-        
-        if low > div or high < left:
-            return self._query(low, high, div+1, right, (par<<1)+2)      
-        if low > right or high < div+1:
-            return self._query(low, high, left, div, (par<<1)+1)
-          
-        return self._combine(self._query(low, high, left, div, (par<<1)+1),
-                  self._query(low, high, div+1, right, (par<<1)+2) )
-        
-    def _combine(self,x,y): 
-        return x + y
-      
-    def sumRange(self, left: int, right: int) -> int:
-        print(self.tree)
-        return self._query(left, right, 0, self.len-1, 0);
-  
-    def update(self, index: int, val: int) -> None:
-        return self._update_sum(1 , 0 , self.len - 1 , index , val)
-  
-    def _update_sum(self, v, low, high, pos, new_val):
-        if low == high: 
-            self.tree[v] = new_val
+    def _build_tree(self, start, end, curr):
+        if start > end: return # empty list
+        if start == end:
+            self.seg_tree[curr] = self.nums[start]
         else:
-            div = int((low + high) / 2)
-            if pos <= div:
-                self._update_sum(v*2-1, low, div, pos, new_val)
-            else: 
-                self._update_sum(v*2, div+1, high, pos, new_val)
-            self.tree[v] = self.tree[v*2] + self.tree[v*2+1]
-            
-    # def _update_range(self, low, high, value):
-    #     return self._update(low, high, value, 0, self.len-1, 0)
-
-    # def _update(self, low, high, value, left, right, par):
-    #     if self.dues[par] > 0:
-    #         self.tree[par] += self.dues[par]
-    #         if left is not right:
-    #             self.dues[(par<<1)+1] += self.dues[par]
-    #             self.dues[(par<<1)+2] += self.dues[par]
-    #         self.dues[par]=0;
-
-    #     if low > right or high < left:
-    #         return;
-
-    #     if low <= left and high >= right:
-    #         self.tree[par] += value
-    #         if(left is not right):
-    #             self.dues[(par<<1)+1] += value
-    #             self.dues[(par<<1)+2] += value
-    #         return
-
-    #     div = (right+left)//2
-    #     self._update(low, high, value, left, div, (par<<1)+1)
-    #     self._update(low, high, value, div+1, right, (par<<1)+2)
+            mid = start + (end - start)//2
+            self.seg_tree[curr] = self._build_tree(start, mid, curr*2+1) + self._build_tree(mid+1, end, curr*2+2)
+        return self.seg_tree[curr]        
         
-
-
-# Your NumArray object will be instantiated and called as such:
-# obj = NumArray(nums)
-# obj.update(index,val)
-# param_2 = obj.sumRange(left,right)
+  
+    def update(self, i, val):
+        diff = val - self.nums[i]
+        self.nums[i] = val
+        self.update_sum(0, len(self.nums)-1, i, 0, diff)
+    
+    def update_sum(self, start, end, idx, curr, diff):
+        self.seg_tree[curr] += diff
+        if start == end: return
+        mid = start + (end - start)//2
+        if start <= idx <= mid:
+            self.update_sum(start, mid, idx, curr*2+1, diff)
+        else:
+            self.update_sum(mid+1, end, idx, curr*2+2, diff)
+        
+    def sumRange(self, i, j):
+        return self.get_sum(0, len(self.nums)-1, i, j, 0)
+        
+    def get_sum(self, start, end, qstart, qend, curr):
+        mid = start + (end - start)//2
+        if qstart > end or qend < start:
+            return 0
+        elif start >= qstart and end <= qend:
+            return self.seg_tree[curr]
+        else:
+            return self.get_sum(start, mid, qstart, qend, curr*2+1) + self.get_sum(mid+1, end, qstart, qend, curr*2+2)
 # @lc code=end
 
