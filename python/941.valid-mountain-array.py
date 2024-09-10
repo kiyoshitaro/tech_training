@@ -52,20 +52,13 @@
 # @lc code=start
 class Solution:
     def validMountainArray(self, arr: List[int]) -> bool:
-        incr = 0
-        for i in range(1, len(arr)):
-            if arr[i] == arr[i-1]:
-                return False
-            elif arr[i] > arr[i-1]:
-                if incr == 2:
-                    return False
-                incr = 1
-            else:
-                if incr == 0:
-                    return False
-                incr = 2
-
-        return incr == 2
+        n = len(arr)
+        left, right = 0, n - 1
+        while left + 1 < n and arr[left] < arr[left + 1]:
+            left += 1
+        while right - 1 >= 0 and arr[right] < arr[right - 1]:
+            right -= 1
+        return left == right and left != 0 and right != n - 1
 
 # @lc code=end
 
