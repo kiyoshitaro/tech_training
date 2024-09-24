@@ -1,0 +1,5 @@
+yt-dlp==2024.8.6
+moviepy==1.0.3
+TikTokApi==6.5.2
+Pillow==8.4.0
+# brew install ffmpeg
