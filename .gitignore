@@ -20,3 +20,4 @@ django/node_modules
 *.vs/*
 *.dat
 *.exe
+**/.DS_Store
