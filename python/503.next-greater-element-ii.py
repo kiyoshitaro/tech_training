@@ -52,17 +52,6 @@
 #
 
 # @lc code=start
-class Solution:
-    def nextGreaterElements(self, nums: List[int]) -> List[int]:
-        res = [-1] * len(nums)
-        stack = []
-        for i in range(2 * len(nums)):
-            if(i >= len(nums)):
-                i = i - len(nums)
-            while stack and nums[stack[-1]] < nums[i]:
-                res[stack.pop()] = nums[i]
-            stack.append(i)
-        return res
-        
+c        
 # @lc code=end
 
