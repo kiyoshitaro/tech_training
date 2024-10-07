@@ -204,8 +204,8 @@ async function createGraph(
   };
 
   const graph = await createGraph(onStream, onEvent, {
-    contractAddress: "GTH3wG3NErjwcf7VGCoXEXkgXSHvYhx5gtATeeM5JAS1",
-    walletAddress: "Av9ZubuZKCqEanoZhxyWASfFYudV2Tp3CzrQi1YHDsJ9",
+    contractAddress: "AvFAn1AKUAj9j7EK1GHKr15hhMeBf7z8SJENxmXpzxpc",
+    walletAddress: "4Gt6G8qKVZMp7muuS7K5djeTTGbQeutXdTGokXmAmRko",
   });
 
   // NOTE: INVOKE
@@ -214,7 +214,7 @@ async function createGraph(
       history_chat: [
         new HumanMessage({
           content: "Get balance of my wallet",
-          // "Get top holder of this token: GTH3wG3NErjwcf7VGCoXEXkgXSHvYhx5gtATeeM5JAS1",
+          // "Get top holder of this token: AvFAn1AKUAj9j7EK1GHKr15hhMeBf7z8SJENxmXpzxpc",
         }),
       ],
     },
