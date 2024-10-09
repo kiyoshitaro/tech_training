@@ -39,6 +39,7 @@
 # 
 #
 
+# NOTE: monotonic stack
 # @lc code=start
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
