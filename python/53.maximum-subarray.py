@@ -58,15 +58,68 @@ import math
 
 # @lc code=start
 class Solution:
+# cách tiếp cận tuyến tính (Kadane) và cách tiếp cận chia để trị (Divide & Conquer)
+# class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        mn = 0
-        mx = -math.inf
-        tmp = 0
-        for num in nums:
-            mn = min(mn, tmp)
-            tmp += num
-            mx = max(mx, tmp - mn)
-        return mx
+        res = nums[0]
+        currTotal = 0
+        
+        for i in range(len(nums)):
+            currTotal += nums[i]
+            res = max(res, currTotal)
+            if(currTotal < 0):
+                currTotal = 0
+        return res
+
+#         # prefixSum = [0]
+#         # curr = 0
+#         # for i in nums:
+#         #     curr += i
+#         #     prefixSum.append(curr)
+#         # l, r = 0, len(prefixSum) - 1
+#         # minL, maxR = l, r
+#         # print(prefixSum)
+#         # while l < r:
+#         #     print(minL, l , maxR, r)
+#         #     if(prefixSum[minL] > prefixSum[l]):
+#         #         minL = l
+#         #     l +=1 
+#         #     if(prefixSum[maxR] < prefixSum[r]):
+#         #         maxR = r
+#         #     r -=1 
+#         # return max(prefixSum[maxR] - prefixSum[minL], max(nums))
+
+# # Divide & Conquer: O(nlogn)
+# class Solution:
+#     def maxSubArray(self, nums: List[int]) -> int:
+#         def findMaxSubArray(left, right):
+#             if left == right:
+#                 return nums[left]
+
+#             mid = (left + right) // 2
+#             max_left = findMaxSubArray(left, mid)
+#             max_right = findMaxSubArray(mid + 1, right)
+#             max_cross = findMaxCrossingSum(nums, left, mid, right)
+
+#             return max(max_left, max_right, max_cross)
+
+#         def findMaxCrossingSum(nums, left, mid, right):
+#             left_sum = float('-inf')
+#             curr_sum = 0
+#             for i in range(mid, left - 1, -1):  # Quét từ giữa về trái
+#                 curr_sum += nums[i]
+#                 left_sum = max(left_sum, curr_sum)
+
+#             right_sum = float('-inf')
+#             curr_sum = 0
+#             for i in range(mid + 1, right + 1):  # Quét từ giữa về phải
+#                 curr_sum += nums[i]
+#                 right_sum = max(right_sum, curr_sum)
+
+#             return left_sum + right_sum  # Tổng tốt nhất qua giữa
+
+#         return findMaxSubArray(0, len(nums) - 1)
+        
 
 
 # @lc code=end
