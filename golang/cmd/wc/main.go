@@ -76,5 +76,9 @@ func main() {
 	}
 	fmt.Printf("%q: %d words\n", os.Args[1], words)
 }
-
-// CPU Profiler -> Memory Profiler -> Heap Allocations -> Escape Analysis -> Heap Allocations
+// go build
+// time ./wc big.txt
+// go tool pprof -http=:8080 mem.pprof
+// -> CPU Profiler (detect syscall slow -> buffer) 
+// -> Memory Profiler(detect memloc consumes mem -> heap escape -> global var) 
+// -> Trace Profiler (detect single thread, goroutine scatter -> group task, goroutine not stable in thread -> worker pool, ...)
