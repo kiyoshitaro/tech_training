@@ -23,6 +23,7 @@ func readbyte0(f io.Reader) (rune, error) {
 	return rune(buff[0]), err
 }
 
+// 500MB: 51.46s user - 114.32s system - 100% cpu - 2:45.05 total, cpu syscall slow
 func wc0(filePath string) int {
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -63,6 +64,9 @@ func readbyte(f io.Reader) (rune, error) {
 	return rune(buff[0]), err
 }
 
+// 500MB without shared buffer: 55.75s user - 0.16s system - 104% cpu - 53.362 total , use 65kb
+// 500MB with shared buffer: 3.29s user - 0.08s system - 100% cpu - 3.359 total, use 9.4kb in average
+// function isSpace is scattered 
 func wc1(filePath string) int {
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -97,6 +101,8 @@ func wc1(filePath string) int {
 	return words
 }
 
+// 500MB: 1.74s user - 0.01s system - 100% cpu - 1.743 total, 
+// function isSpace continuos but only use run in 1 goroutine - single thread 
 func wc2(filePath string) int {
 	// Dùng mmap để ánh xạ toàn bộ file vào không gian địa chỉ bộ nhớ của tiến trình -> truy cập file như truy cập mảng trong RAM
 	// CPU Không cần syscall đọc file liên tục -> Không cần copy từ kernel sang user,
@@ -121,7 +127,7 @@ func wc2(filePath string) int {
 	}
 	return words
 }
-
+// 500MB: 3.21s user - 0.16s system - 913% cpu - 0.369 total, use more resource but total time low
 func wc3(filePath string) int {
 	f, err := mmap.Open(filePath)
 	if err != nil {
@@ -198,8 +204,8 @@ func main() {
 
 	// total := wc0(os.Args[1])
 	// total := wc1(os.Args[1])
-	// total := wc2(os.Args[1])
-	total := wc3(os.Args[1])
+	total := wc2(os.Args[1])
+	// total := wc3(os.Args[1])
 	fmt.Printf("%q: %d words\n", os.Args[1], total)
 }
 
