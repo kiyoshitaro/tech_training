@@ -2,15 +2,32 @@
 // =====================================================
 // Nghiên cứu các kỹ thuật tối ưu hóa nhân ma trận từ cơ bản đến nâng cao
 //
-// Biên dịch: gcc -O3 -mavx2 -mfma -std=c11 matmul.c -o matmul
+// Biên dịch 1 luồng:
+//    gcc -O3 -mavx2 -mfma -std=c11 matmul.c -o matmul
+//
+// Biên dịch đa luồng (OpenMP):
+//    gcc -O3 -fopenmp -mavx2 -mfma -std=c11 matmul.c -o matmul
+//    - Số thread mặc định ≈ số core (có thể điều khiển bằng biến môi trường OMP_NUM_THREADS)
 //
 // Các kỹ thuật được giới thiệu (theo thứ tự độ phức tạp):
 // 1. Naive: Ba vòng lặp đơn thuần (O(n³))
 // 2. Reorder: Sắp xếp lại vòng lặp để tối ưu bộ nhớ cache
+// 2b. Reorder + OpenMP: Song song hóa theo hàng của ma trận C
 // 3. Transposed: Chuyển vị ma trận B để cải thiện locality
-// 4. Blocked: Chia ma trận thành các khối nhỏ (cache blocking) -> để
+// 4. Blocked: Chia ma trận thành các khối nhỏ (cache blocking)
 // 5. Register: Giữ kết quả trung gian trong thanh ghi (register blocking)
 // 6. AVX2: Sử dụng SIMD (Single Instruction Multiple Data) với 256-bit vectors
+
+// Method              Time (ms)   Correct
+// ------               --------   -------
+// Naive (aligned)      141.21 ms   OK
+// Naive (malloc)       141.82 ms   OK
+// Reorder                9.20 ms   OK
+// Reorder (OMP)          4.58 ms   OK
+// Transposed           104.47 ms   OK
+// Blocked               63.99 ms   OK
+// Register              51.66 ms   OK
+// AVX2                   8.63 ms   OK
 // =====================================================
 
 #define _POSIX_C_SOURCE 199309L
@@ -20,6 +37,10 @@
 #include <math.h>
 #include <time.h>
 #include <immintrin.h> // Cho các intrinsics AVX2
+
+#ifdef _OPENMP
+#include <omp.h> // OpenMP cho đa luồng (chỉ cần khi biên dịch với -fopenmp)
+#endif
 
 // =====================================================
 // Cấu trúc dữ liệu Ma trận
@@ -169,6 +190,44 @@ void matmul_reorder(Matrix A, Matrix B, Matrix C)
             for (int j = 0; j < B.cols; j++)
                 MAT(C, i, j) += a * MAT(B, k, j);
         }
+}
+
+// =====================================================
+// PHƯƠNG PHÁP 2b: Loop Reorder + OpenMP (đa luồng)
+// =====================================================
+// Ý tưởng: Dùng lại thuật toán reorder (một trong những thuật toán đơn luồng hiệu quả nhất ở trên),
+// nhưng chia công việc theo hàng i của ma trận C.
+//
+// Tại sao chia theo i?
+// - Mỗi i tương ứng với một hàng C[i][*]
+// - Các thread khác nhau xử lý các giá trị i khác nhau
+// - Không có 2 thread nào cùng ghi vào một phần tử C[i][j] => KHÔNG có race condition
+//
+// Cách bật đa luồng:
+// - Biên dịch với cờ: -fopenmp (xem hướng dẫn ở đầu file)
+// - Tuỳ chọn số thread:
+//     export OMP_NUM_THREADS=8 hoặc OMP_NUM_THREADS=8 ./matmul
+//   (nếu không đặt, OpenMP thường chọn ≈ số core logic)
+//
+// Lưu ý:
+// - Nếu BIÊN DỊCH KHÔNG có -fopenmp, #pragma omp sẽ bị compiler bỏ qua
+//   => hàm này gần như giống hệt matmul_reorder (chạy 1 thread, không sao).
+void matmul_reorder_omp(Matrix A, Matrix B, Matrix C)
+{
+    memset(C.data, 0, sizeof(float) * C.rows * C.cols);
+
+    // Mỗi thread xử lý một nhóm các hàng i khác nhau của C
+    // schedule(static) chia đều số hàng cho các thread (phù hợp khi mỗi hàng có chi phí tương tự)
+    #pragma omp parallel for schedule(static)
+    for (int i = 0; i < A.rows; i++)
+    {
+        for (int k = 0; k < A.cols; k++)
+        {
+            float a = MAT(A, i, k);
+            for (int j = 0; j < B.cols; j++)
+                MAT(C, i, j) += a * MAT(B, k, j);
+        }
+    }
 }
 
 // =====================================================
@@ -464,6 +523,7 @@ int main()
     benchmark("Naive (aligned)", matmul_naive, A, B, C, REF);
     benchmark("Naive (malloc) ", matmul_naive, A_m, B_m, C_m, REF);
     benchmark("Reorder", matmul_reorder, A, B, C, REF);
+    benchmark("Reorder (OMP)", matmul_reorder_omp, A, B, C, REF);
 
     // Phương pháp Transposed cần transpose B trước
     Matrix BT = transpose_alloc(B);
