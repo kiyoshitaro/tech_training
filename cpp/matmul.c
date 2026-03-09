@@ -17,17 +17,61 @@
 // 4. Blocked: Chia ma trận thành các khối nhỏ (cache blocking)
 // 5. Register: Giữ kết quả trung gian trong thanh ghi (register blocking)
 // 6. AVX2: Sử dụng SIMD (Single Instruction Multiple Data) với 256-bit vectors
+// 7. Minimal (AMH): Cache blocking nhiều tầng + AVX2 (theo sslotin/amh-code)
 
 // Method              Time (ms)   Correct
 // ------               --------   -------
-// Naive (aligned)      141.21 ms   OK
-// Naive (malloc)       141.82 ms   OK
-// Reorder                9.20 ms   OK
-// Reorder (OMP)          4.58 ms   OK
-// Transposed           104.47 ms   OK
-// Blocked               63.99 ms   OK
-// Register              51.66 ms   OK
-// AVX2                   8.63 ms   OK
+// Naive (aligned)      138.26 ms   OK
+// Naive (malloc)       140.86 ms   OK
+// Reorder                9.34 ms   OK
+// Reorder (OMP)          1.70 ms   OK
+// Transposed           103.79 ms   OK
+// Blocked               63.73 ms   OK
+// Register              51.99 ms   OK
+// AVX2                   8.80 ms   OK
+// Minimal (AMH)         15.78 ms   OK
+// 1) Naive vs Reorder (~15x nhanh hơn)
+//    Naive chạy 138 ms, Reorder ~9.3 ms. Khác biệt chủ yếu do locality: Naive truy cập B theo cột
+//    (stride lớn) nên cache miss rất nhiều; Reorder (i->k->j) đọc A[i][k], B[k][j], C[i][j] theo
+//    hướng cache-friendly (sequential theo hàng), nên dù cùng O(n³) nhưng thời gian thực tế giảm mạnh.
+//
+// 2) Aligned vs malloc
+//    Naive (aligned) 138.26 ms, Naive (malloc) 140.86 ms — chênh lệch nhỏ. Căn chỉnh 64B giúp
+//    cache line và SIMD hiệu quả hơn chút; với Naive thì bottleneck vẫn là số lần miss chứ không
+//    phải alignment nên lợi ích không lớn.
+//
+// 3) Reorder vs Reorder (OMP)
+//    Reorder 9.34 ms, Reorder (OMP) 1.70 ms — OMP nhanh hơn ~5.5x. Khi build với -fopenmp và
+//    chạy trên nhiều core, công việc chia theo hàng i của C nên mỗi thread xử lý độc lập, không
+//    race; băng thông L3/RAM đủ cho nhiều core cùng đọc A, B. Reorder (OMP) vì vậy tận dụng được
+//    đa nhân và trở thành một trong các phiên bản nhanh nhất nếu không dùng SIMD.
+//
+// 4) Transposed chậm hơn Reorder
+//    Transposed 103.79 ms — vẫn kiểu naive (i->j->k) nhưng đã transpose B để đọc “theo hàng”.
+//    Tốt hơn Naive thuần (138 ms) nhưng chậm hơn Reorder vì: (i) phải trả chi phí transpose O(n²),
+//    (ii) thứ tự vòng lặp vẫn là i,j,k nên số lần load C và tổ chức vòng lặp kém tối ưu hơn i->k->j.
+//
+// 5) Blocked, Register
+//    Blocked 63.73 ms, Register 51.99 ms — nhanh hơn Transposed/Naive nhờ tái dùng cache/register,
+//    nhưng chậm hơn Reorder đơn giản. Với N=512 và BS=128, Reorder đã rất “sạch” và cache-friendly;
+//    Blocked thêm overhead chia khối và có thể không match tốt với kích thước cache trên máy đo.
+//    Register (2x2) giảm store nhưng vẫn ít scalar ops so với SIMD.
+//
+// 6) AVX2 và Reorder (OMP)
+//    Reorder (OMP) 1.70 ms hiện nhanh nhất (đa luồng). AVX2 8.80 ms là phiên bản đơn luồng nhanh
+//    nhất: 8 float/lệnh (FMA), vòng trong đơn giản (load 8, FMA, store 8) nên tận dụng pipeline và
+//    memory tốt. Kết hợp AVX2 + OpenMP (song song theo hàng) thường cho thời gian còn thấp hơn nữa
+//    trên đa core.
+//
+// 7) Minimal (AMH) chậm hơn AVX2 (15.78 ms)
+//    Minimal 15.78 ms — chậm hơn AVX2 ~1.8x. Tile sizes (384, 192, 96) và micro-panel (6x16)
+//    được tune cho ma trận rất lớn và cache L2/L3 cụ thể; với N=512:
+//    - Working set vừa nhỏ, vòng lặp nhiều tầng (i3, i2, i1, x, y, k, i, j) tạo overhead và biên
+//      (bounds check, chia block lẻ).
+//    - AVX2 “phẳng” (i, k, j) ít nhánh hơn, dễ cho CPU dự đoán và tối ưu.
+//    Trên N lớn (1920, 4096…) Minimal/AMH thường bắt kịp hoặc vượt AVX2 đơn giản vì cache blocking
+//    trả công khi dữ liệu không còn fit L2/L3.
+//
 // =====================================================
 
 #define _POSIX_C_SOURCE 199309L
@@ -464,6 +508,96 @@ void matmul_avx2(Matrix A, Matrix B, Matrix C)
 }
 
 // =====================================================
+// PHƯƠNG PHÁP 7: AMH "Minimal" (sslotin/amh-code style)
+// =====================================================
+// Tham khảo: https://github.com/sslotin/amh-code/blob/main/matmul/minimal.cc
+//
+// Ý tưởng: Kết hợp nhiều tầng cache blocking + AVX2 với kích thước tile tối ưu:
+//   - L3 tile: 384 (k) x 192 (i) x 96 (j) — chia ma trận thành các khối lớn
+//   - Micro-panel: 6 hàng x 16 cột (2 vector __m256) — tận dụng register & cache line
+//
+// Thứ tự vòng lặp: i3(j) -> i2(i) -> i1(k) -> x (6 rows) -> y (16 cols) -> k -> i, j
+// Trong mỗi (x,y,k) ta cập nhật C[x:x+6][y:y+16] += A[x:x+6][k] * B[k][y:y+16] bằng FMA 6x2 vector.
+//
+// Cách chọn Tile sizes (từ minimal.cc / AMH):
+//   - T1 = 384 (chiều k): Khối k lớn giữ nhiều cột A và hàng B trong cache. 384*4 bytes ~ 1.5 KB
+//     mỗi “strip”; tổng working set của 3 khối (A_block, B_block, C_block) nằm gọn trong L2/L3.
+//   - T2 = 192 (chiều i): Số hàng của khối C (và A). 192 * 96 * 4 ~ 72 KB cho một C_block —
+//     vừa với L2 per-core (~512 KB) khi kết hợp với A_block, B_block.
+//   - T3 = 96 (chiều j): Số cột của khối C và B. 96 * 4 = 384 bytes/hàng, nhiều hàng 192
+//     => C_block 192x96 float ~ 72 KB; B_block 384x96 ~ 144 KB. Tổng ~ vài trăm KB, fit L2.
+//   - MR = 6 (micro rows): Số hàng nhỏ trong innermost loop. 6 phần tử A cùng 1 k giữ trong
+//     thanh ghi (broadcast 1 scalar thành __m256), ít load/store C, tận dụng FMA throughput.
+//   - NR = 16 (micro cols) = 2 * 8: Hai vector __m256 (2*8 float) mỗi lần, vừa bội của
+//     cache line (64B = 16 float), giảm conflict miss và tăng reuse trong L1.
+//
+// Tóm lại: T1,T2,T3 chọn để working set fit L2/L3; MR, NR chọn theo SIMD 8-float, cache line
+// và áp lực thanh ghi — có thể tune theo từng CPU (L2/L3 size, số vector reg).
+//
+// Yêu cầu: N (số hàng/cột) nên là bội của 16 để SIMD đủ; với N không chia hết có xử lý biên.
+void matmul_minimal(Matrix A, Matrix B, Matrix C)
+{
+    const int n = A.rows;
+    if (n != A.cols || n != B.rows || n != B.cols || n != C.rows || n != C.cols)
+        return;
+
+    memset(C.data, 0, sizeof(float) * C.rows * C.cols);
+
+    // Tile sizes (xem comment trên: L2/L3 + micro-panel MR/NR)
+    const int T3 = 96;  // j (column) block
+    const int T2 = 192; // i (row) block
+    const int T1 = 384; // k block
+    const int MR = 6;   // micro rows
+    const int NR = 16;  // micro cols = 2 * 8
+
+    for (int i3 = 0; i3 < n; i3 += T3)
+        for (int i2 = 0; i2 < n; i2 += T2)
+            for (int i1 = 0; i1 < n; i1 += T1)
+            {
+                int k_end = i1 + T1 < n ? i1 + T1 : n;
+                for (int x = i2; x < i2 + T2 && x < n; x += MR)
+                    for (int y = i3; y < i3 + T3 && y + NR <= n; y += NR)
+                        for (int k = i1; k < k_end; k++)
+                        {
+                            for (int i = 0; i < MR; i++)
+                            {
+                                int row = x + i;
+                                if (row >= n)
+                                    break;
+                                float a_val = MAT(A, row, k);
+                                __m256 av = _mm256_set1_ps(a_val);
+                                for (int j = 0; j < 2; j++)
+                                {
+                                    int col = y + j * 8;
+                                    if (col + 8 > n)
+                                        break;
+                                    __m256 bv = _mm256_load_ps(&B.data[k * B.cols + col]);
+                                    __m256 cv = _mm256_load_ps(&C.data[row * C.cols + col]);
+                                    cv = _mm256_fmadd_ps(av, bv, cv);
+                                    _mm256_store_ps(&C.data[row * C.cols + col], cv);
+                                }
+                            }
+                        }
+            }
+
+    // Phần cột còn lại (n không chia hết cho 16): xử lý bằng AVX2 từng hàng như kernel thường
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++)
+        {
+            int j = (n / 16) * 16;
+            for (; j + 8 <= n; j += 8)
+            {
+                __m256 a = _mm256_set1_ps(MAT(A, i, k));
+                __m256 b = _mm256_load_ps(&B.data[k * B.cols + j]);
+                __m256 c = _mm256_load_ps(&C.data[i * C.cols + j]);
+                _mm256_store_ps(&C.data[i * C.cols + j], _mm256_fmadd_ps(a, b, c));
+            }
+            for (; j < n; j++)
+                MAT(C, i, j) += MAT(A, i, k) * MAT(B, k, j);
+        }
+}
+
+// =====================================================
 // Hàm benchmark (So sánh hiệu suất)
 // =====================================================
 // Chạy hàm nhân ma trận nhiều lần và lấy kết quả tốt nhất
@@ -493,7 +627,7 @@ int main()
 {
     // Khởi tạo seed ngẫu nhiên (0 = kết quả lặp lại, để kiểm tra đúng/sai)
     srand(0);
-    int N = 512;
+    int N = 1024;
 
     // Tạo các ma trận: A, B, C (kết quả), REF (tham chiếu - từ naive)
     Matrix A = matrix_create(N, N);
@@ -532,6 +666,7 @@ int main()
     benchmark("Blocked", matmul_blocked, A, B, C, REF);
     benchmark("Register", matmul_register, A, B, C, REF);
     benchmark("AVX2", matmul_avx2, A, B, C, REF);
+    benchmark("Minimal (AMH)", matmul_minimal, A, B, C, REF);
 
     matrix_free(&A);
     matrix_free(&B);
