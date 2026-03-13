@@ -26,7 +26,7 @@
 // Naive (malloc)       140.86 ms   OK
 // Reorder                9.34 ms   OK
 // Reorder (OMP)          1.70 ms   OK
-// Transposed           103.79 ms   OK
+// Transposed           103.79 ms   OK //11.4 ms with -ffast-math
 // Blocked               63.73 ms   OK
 // Register              51.99 ms   OK
 // AVX2                   8.80 ms   OK
@@ -53,6 +53,12 @@
 //    Transposed 103.79 ms — vẫn kiểu naive (i->j->k) nhưng đã transpose B để đọc “theo hàng”.
 //    Tốt hơn Naive thuần (138 ms) nhưng chậm hơn Reorder vì: (i) phải trả chi phí transpose O(n²),
 //    (ii) thứ tự vòng lặp vẫn là i,j,k nên số lần load C và tổ chức vòng lặp kém tối ưu hơn i->k->j.
+//    với -ffast-math:
+//     sum += x0; sum += x1; sum += x2;... => CPU phải đợi lệnh trước hoàn thành (qua hết pipeline) mới bắt đầu lệnh sau.
+//    với -ffast-math thì cpu sẽ thực hiện pipeline các lệnh liên tiếp:
+//     sum0 += x0; sum1 += x1; sum2 += x2; sum3 += x3;... 
+//    => CPU sẽ làm các lệnh của các chuỗi xen kẽ (sum0, sum1, sum2, sum3 cùng “nằm” trong pipeline) => throughput tăng
+
 //
 // 5) Blocked, Register
 //    Blocked 63.73 ms, Register 51.99 ms — nhanh hơn Transposed/Naive nhờ tái dùng cache/register,
